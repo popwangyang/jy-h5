@@ -1,0 +1,52 @@
+{
+    "count": 5,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "user_id": 1,
+            "user_name": "游明",
+            "user_role": "KTV商家",
+            "record": "播放时长（秒）由61变为60",
+            "belong_table": "setting",
+            "create_date": "2019-03-25 11:35:57",
+            "update_date": "2019-03-25 11:35:57"
+        },
+		{
+		    "user_id": 2,
+		    "user_name": "游明",
+		    "user_role": "KTV商家",
+		    "record": "播放时长（秒）由61变为60",
+		    "belong_table": "setting",
+		    "create_date": "2019-03-25 11:35:57",
+		    "update_date": "2019-03-25 11:35:57"
+		},
+		{
+		    "user_id": 3,
+		    "user_name": "游明",
+		    "user_role": "KTV商家",
+		    "record": "播放时长（秒）由61变为60",
+		    "belong_table": "setting",
+		    "create_date": "2019-03-25 11:35:57",
+		    "update_date": "2019-03-25 11:35:57"
+		},
+		{
+		    "user_id": 4,
+		    "user_name": "游明",
+		    "user_role": "KTV商家",
+		    "record": "播放时长（秒）由61变为60",
+		    "belong_table": "setting",
+		    "create_date": "2019-03-25 11:35:57",
+		    "update_date": "2019-03-25 11:35:57"
+		},
+		{
+		    "user_id": 5,
+		    "user_name": "游明",
+		    "user_role": "KTV商家",
+		    "record": "播放时长（秒）由61变为60",
+		    "belong_table": "setting",
+		    "create_date": "2019-03-25 11:35:57",
+		    "update_date": "2019-03-25 11:35:57"
+		}
+    ]
+}

@@ -1,0 +1,359 @@
+{
+    "count": 3,
+    "next": null,
+    "previous": null,
+    "results": [
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		},
+		{
+		    "id": 10,
+		    "code": "J00000003",
+		    "code_show": "PER00003",
+		    "nickname": "wukun",
+		    "username": "123@qq.com",
+		    "email": "123@qq.com",
+		    "is_superuser": false,
+		    "is_active": true,
+		    "phone": "1234567890",
+		    "gender": 1,
+		    "job_state": 1,
+		    "is_all_area": false,
+		    "area_code_list": [
+		        "110000",
+		        "120000",
+		        "130000"
+		    ],
+		    "group": [
+		        {
+		            "id": 1,
+		            "code": "G00000001",
+		            "name": "鲸易管理端",
+		            "type": 1,
+		            "description": "",
+		            "is_active": 1,
+		            "permissions": [
+		                1,
+		                2,
+		                3,
+		                4
+		            ],
+		            "permission_children": [
+		                2,
+		                4
+		            ]
+		        }
+		    ],
+		    "area_name_list": [
+		        "北京市",
+		        "天津市",
+		        "河北省"
+		    ]
+		}
+    ]
+}

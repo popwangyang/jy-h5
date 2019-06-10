@@ -1,0 +1,508 @@
+{
+	"admin@hlchang.cn": {
+		"user": {
+			"id": 1,
+			"code": "J00000001",
+			"nickname": "admin",
+			"username": "admin@hlchang.cn",
+			"email": "admin@hlchang.cn",
+			"avator": "https:\/\/avatars1.githubusercontent.com/u/1911623?v=4",
+			"is_superuser": true,
+			"is_active": true,
+			"phone": null,
+			"gender": 1,
+			"job_state": 1,
+			"is_all_area": true,
+			"area_code_list": [],
+			"ktv_id": null,
+			"right_id": null,
+			"group": [{
+				"id": 1,
+				"code": "g_maket",
+				"name": "市场总监",
+				"type": 1,
+				"description": "",
+				"is_active": 1,
+				"permissions": [
+					1,
+					2,
+					3,
+					4,
+					5,
+					6,
+					7,
+					8,
+					9,
+					10,
+					17,
+					18,
+					19,
+					20
+				],
+				"create_date": "2019-03-15 15:28:30",
+				"update_date": "2019-03-15 15:28:30",
+				"permission_children": [
+					2,
+					4,
+					6,
+					7,
+					8,
+					9,
+					10,
+					18,
+					19,
+					20
+				]
+			}],
+			"create_date": "2019-03-15 15:28:30",
+			"update_date": "2019-03-15 15:28:30",
+			"area_name_list": [],
+			"code_show": "PER00001"
+		},
+		"permission_list": [
+			"Finance",			 
+			"Finance-Approval",
+			"Finance-Settlement",
+			"Finance-refund",
+			"Recharge", 
+			"setting", 
+			"Jurisdiction_page",
+			"user-page",
+			"VOD_page",
+			"parameter-page"
+		],
+		"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQGhsY2hhbmcuY24iLCJ1c2VybmFtZSI6ImFkbWluQGhsY2hhbmcuY24iLCJ1c2VyX2lkIjoxLCJvcmlnX2lhdCI6MTU1MjYzNjI0NywiZXhwIjoxNTUzMjQxMDQ3fQ.O2KgOfUdKFeFCcQjXmcMQj61NVVLWqiL755t5urmYwI",
+		"permission_tree": [{
+				"code": "menu_ktv_management",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+					"code": "ktv_update",
+					"parent": 1,
+					"is_selected": true,
+					"name": "KTV编辑",
+					"id": 2,
+					"type": 2
+				}],
+				"name": "管理",
+				"id": 1,
+				"type": 1
+			},
+			{
+				"code": "menu_right_management",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+					"code": "right_update",
+					"parent": 3,
+					"is_selected": true,
+					"name": "权利人编辑",
+					"id": 4,
+					"type": 2
+				}],
+				"name": "权利人管理",
+				"id": 3,
+				"type": 1
+			},
+			{
+				"code": "menu_user_management",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+						"code": "user_create",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号创建",
+						"id": 6,
+						"type": 2
+					},
+					{
+						"code": "user_update",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号编辑",
+						"id": 7,
+						"type": 2
+					},
+					{
+						"code": "user_delete",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号删除",
+						"id": 8,
+						"type": 2
+					},
+					{
+						"code": "user_list",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号查询",
+						"id": 9,
+						"type": 2
+					},
+					{
+						"code": "user_password_reset",
+						"parent": 5,
+						"is_selected": true,
+						"name": "重置密码",
+						"id": 10,
+						"type": 2
+					}
+				],
+				"name": "账号（KTV商家、内容供应商和娱网管理端）管理",
+				"id": 5,
+				"type": 1
+			},
+			{
+				"code": "menu_setting",
+				"parent": null,
+				"is_selected": false,
+				"children": [{
+					"code": "menu_group_management",
+					"parent": 11,
+					"is_selected": false,
+					"children": [{
+							"code": "group_create",
+							"parent": 12,
+							"is_selected": false,
+							"children": [],
+							"name": "角色创建",
+							"id": 13,
+							"type": 2
+						},
+						{
+							"code": "group_update",
+							"parent": 12,
+							"is_selected": false,
+							"children": [],
+							"name": "角色编辑",
+							"id": 14,
+							"type": 2
+						},
+						{
+							"code": "group_delete",
+							"parent": 12,
+							"is_selected": false,
+							"children": [],
+							"name": "角色删除",
+							"id": 15,
+							"type": 2
+						},
+						{
+							"code": "group_list",
+							"parent": 12,
+							"is_selected": true,
+							"children": [],
+							"name": "角色查询",
+							"id": 16,
+							"type": 2
+						}
+					],
+					"name": "角色管理",
+					"id": 12,
+					"type": 1
+				}],
+				"name": "设置",
+				"id": 11,
+				"type": 1
+			},
+			{
+				"code": "menu_msg",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+						"code": "msg_delete",
+						"parent": 17,
+						"is_selected": true,
+						"name": "消息删除",
+						"id": 18,
+						"type": 2
+					},
+					{
+						"code": "msg_list",
+						"parent": 17,
+						"is_selected": true,
+						"name": "消息查询",
+						"id": 19,
+						"type": 2
+					},
+					{
+						"code": "msg_update",
+						"parent": 17,
+						"is_selected": true,
+						"name": "消息编辑",
+						"id": 20,
+						"type": 2
+					}
+				],
+				"name": "消息管理",
+				"id": 17,
+				"type": 1
+			},
+			{
+				"code": "add_new_permission",
+				"parent": null,
+				"is_selected": false,
+				"children": [],
+				"name": "新加权限",
+				"id": 21,
+				"type": 2
+			}
+		]
+	},
+	"super_admin": {
+		"user": {
+			"id": 1,
+			"code": "J00000001",
+			"nickname": "admin",
+			"username": "admin@hlchang.cn",
+			"email": "admin@hlchang.cn",
+			"avator": "https:\/\/avatars1.githubusercontent.com/u/1911623?v=4",
+			"is_superuser": true,
+			"is_active": true,
+			"phone": null,
+			"gender": 1,
+			"job_state": 1,
+			"is_all_area": true,
+			"area_code_list": [],
+			"ktv_id": null,
+			"right_id": null,
+			"group": [{
+				"id": 3,
+				"code": "g_maket",
+				"name": "市场总监",
+				"type": 1,
+				"description": "",
+				"is_active": 1,
+				"permissions": [
+					1,
+					2,
+					3,
+					4,
+					5,
+					6,
+					7,
+					8,
+					9,
+					10,
+					17,
+					18,
+					19,
+					20
+				],
+				"create_date": "2019-03-15 15:28:30",
+				"update_date": "2019-03-15 15:28:30",
+				"permission_children": [
+					2,
+					4,
+					6,
+					7,
+					8,
+					9,
+					10,
+					18,
+					19,
+					20
+				]
+			}],
+			"create_date": "2019-03-15 15:28:30",
+			"update_date": "2019-03-15 15:28:30",
+			"area_name_list": [],
+			"code_show": "PER00001"
+		},
+		"permission_list": [
+			"menu_ktv_management",
+			"ktv_update",
+			"menu_right_management",
+			"right_update",
+			"menu_user_management",
+			"user_create",
+			"user_update",
+			"user_delete",
+			"user_list",
+			"user_password_reset",
+			"menu_msg",
+			"msg_delete",
+			"msg_list",
+			"msg_update"
+		],
+		"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFkbWluQGhsY2hhbmcuY24iLCJ1c2VybmFtZSI6ImFkbWluQGhsY2hhbmcuY24iLCJ1c2VyX2lkIjoxLCJvcmlnX2lhdCI6MTU1MjYzNjI0NywiZXhwIjoxNTUzMjQxMDQ3fQ.O2KgOfUdKFeFCcQjXmcMQj61NVVLWqiL755t5urmYwI",
+		"permission_tree": [{
+				"code": "menu_ktv_management",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+					"code": "ktv_update",
+					"parent": 1,
+					"is_selected": true,
+					"name": "KTV编辑",
+					"id": 2,
+					"type": 2
+				}],
+				"name": "管理",
+				"id": 1,
+				"type": 1
+			},
+			{
+				"code": "menu_right_management",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+					"code": "right_update",
+					"parent": 3,
+					"is_selected": true,
+					"name": "权利人编辑",
+					"id": 4,
+					"type": 2
+				}],
+				"name": "权利人管理",
+				"id": 3,
+				"type": 1
+			},
+			{
+				"code": "menu_user_management",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+						"code": "user_create",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号创建",
+						"id": 6,
+						"type": 2
+					},
+					{
+						"code": "user_update",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号编辑",
+						"id": 7,
+						"type": 2
+					},
+					{
+						"code": "user_delete",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号删除",
+						"id": 8,
+						"type": 2
+					},
+					{
+						"code": "user_list",
+						"parent": 5,
+						"is_selected": true,
+						"name": "账号查询",
+						"id": 9,
+						"type": 2
+					},
+					{
+						"code": "user_password_reset",
+						"parent": 5,
+						"is_selected": true,
+						"name": "重置密码",
+						"id": 10,
+						"type": 2
+					}
+				],
+				"name": "账号（KTV商家、内容供应商和娱网管理端）管理",
+				"id": 5,
+				"type": 1
+			},
+			{
+				"code": "menu_setting",
+				"parent": null,
+				"is_selected": false,
+				"children": [{
+					"code": "menu_group_management",
+					"parent": 11,
+					"is_selected": false,
+					"children": [{
+							"code": "group_create",
+							"parent": 12,
+							"is_selected": false,
+							"children": [],
+							"name": "角色创建",
+							"id": 13,
+							"type": 2
+						},
+						{
+							"code": "group_update",
+							"parent": 12,
+							"is_selected": false,
+							"children": [],
+							"name": "角色编辑",
+							"id": 14,
+							"type": 2
+						},
+						{
+							"code": "group_delete",
+							"parent": 12,
+							"is_selected": false,
+							"children": [],
+							"name": "角色删除",
+							"id": 15,
+							"type": 2
+						},
+						{
+							"code": "group_list",
+							"parent": 12,
+							"is_selected": true,
+							"children": [],
+							"name": "角色查询",
+							"id": 16,
+							"type": 2
+						}
+					],
+					"name": "角色管理",
+					"id": 12,
+					"type": 1
+				}],
+				"name": "设置",
+				"id": 11,
+				"type": 1
+			},
+			{
+				"code": "menu_msg",
+				"parent": null,
+				"is_selected": true,
+				"children": [{
+						"code": "msg_delete",
+						"parent": 17,
+						"is_selected": true,
+						"name": "消息删除",
+						"id": 18,
+						"type": 2
+					},
+					{
+						"code": "msg_list",
+						"parent": 17,
+						"is_selected": true,
+						"name": "消息查询",
+						"id": 19,
+						"type": 2
+					},
+					{
+						"code": "msg_update",
+						"parent": 17,
+						"is_selected": true,
+						"name": "消息编辑",
+						"id": 20,
+						"type": 2
+					}
+				],
+				"name": "消息管理",
+				"id": 17,
+				"type": 1
+			},
+			{
+				"code": "add_new_permission",
+				"parent": null,
+				"is_selected": false,
+				"children": [],
+				"name": "新加权限",
+				"id": 21,
+				"type": 2
+			}
+		]
+	}
+}

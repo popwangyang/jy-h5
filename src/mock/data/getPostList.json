@@ -1,0 +1,99 @@
+{
+    "count": 5,
+    "next": null,
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "code": "G0000003",
+            "name": "KTV商家",
+            "type": 3,
+            "description": "【系统内置角色】此角色为所有KTV商家账号的权限配置",
+            "is_active": 1,
+            "permissions": [
+                7,
+                9,
+                10,
+                17,
+                18,
+                19,
+                20
+            ],
+            "create_date": "2019-03-13 10:16:12",
+            "update_date": "2019-03-13 10:16:12",
+            "permission_children": [
+                7,
+                9,
+                10,
+                18,
+                19,
+                20
+            ]
+        },
+        {
+            "id": 1,
+            "code": "G0000002",
+            "name": "权利人",
+            "type": 2,
+            "description": "【系统内置角色】此角色为所有权利人账号的权限配置",
+            "is_active": 1,
+            "permissions": [
+                7,
+                9,
+                10,
+                17,
+                18,
+                19,
+                20
+            ],
+            "create_date": "2019-03-13 10:16:11",
+            "update_date": "2019-03-13 10:16:11",
+            "permission_children": [
+                7,
+                9,
+                10,
+                18,
+                19,
+                20
+            ]
+        },
+        {
+            "id": 1,
+            "code": "G0000001",
+            "name": "鲸易管理端",
+            "type": 1,
+            "description": "",
+            "is_active": 1,
+            "permissions": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                17,
+                18,
+                19,
+                20
+            ],
+            "create_date": "2019-03-13 10:16:11",
+            "update_date": "2019-03-13 10:16:11",
+            "permission_children": [
+                2,
+                4,
+                6,
+                7,
+                8,
+                9,
+                10,
+                18,
+                19,
+                20
+            ]
+        }
+    ]
+}
