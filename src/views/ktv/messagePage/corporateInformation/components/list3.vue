@@ -4,13 +4,17 @@
 			{{title}}
 		</span>
 		<span class="content">
-			<span class="item"></span>
+			<span class="item">
+				<Upload/>
+			</span>
 		</span>
 	</div>
 </template>
 
 <script>
+	import Upload from "@/components/upload"
 	export default{
+		components:{ Upload },
 		props:{
 			title:{
 				type:String,
@@ -19,7 +23,7 @@
 		},
 		data(){
 			return{
-				
+				fileList:[]
 			}
 		}
 	}
@@ -32,10 +36,16 @@
 			display: flex;
 			padding: 0.4rem 0;
 			font-size: 0.364rem;
-			background: yellowgreen;
+			// background: yellowgreen;
+		}
+		.content{
 			.item{
-				
+				display: flex;
+				width: 2rem;
+				height: 2rem;
+				background: wheat;
 			}
 		}
+		
 	}
 </style>
