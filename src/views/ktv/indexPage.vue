@@ -15,7 +15,7 @@
 			</van-search>
 		</span>
 		<span class="content">
-			<List/>
+			<List :search="searchValue"/>
 		</span>
 	</div>
 </template>

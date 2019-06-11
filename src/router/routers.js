@@ -33,4 +33,19 @@ export default [
 		name: 'ktvDetail',
 		component: () => import('@/views/ktv/ktvDetailPage.vue')
 	},
+	{
+		path: '/ktvEdite',
+		name: 'ktvEdite',
+		component: () => import('@/views/ktv/ktvEditePage.vue')
+	},
+	{
+		path: '/CImessage',
+		name: 'CImessage',
+		component: () => import('@/views/ktv/messagePage/corporateInformation/messagePage.vue')
+	},
+	{
+		path: '/CIedite',
+		name: 'CIedite',
+		component: () => import('@/views/ktv/messagePage/corporateInformation/editePage.vue')
+	},
   ]

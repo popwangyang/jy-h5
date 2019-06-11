@@ -320,3 +320,13 @@ export const ArrToObj = (arr) => {
   return obj
 }
 
+/* 
+   地址对象中提取地名；
+ */
+export const getAddressName = (arr) => {
+	var str = "";
+	arr.map(_=>  str += _.name + "/" );
+	return str.substr(0, str.length-1);
+}
+
+

@@ -1,9 +1,10 @@
 <template>
 	<div class="box" @click="goDetailPage">
 		<span class="boxSpan1">
-			<span>杭州银乐迪西溪银泰店</span>
+			<span>{{item.name}}</span>
 			<span>
-				<van-tag type="primary" size="medium" style="margin-right: 0.26rem;color: white;">量贩</van-tag>
+				<van-tag type="primary" size="medium" style="margin-right: 0.26rem;color: white;" v-if="item.type === 1">量贩</van-tag>
+				<van-tag type="warning" size="medium" style="margin-right: 0.26rem;color: white;" v-else>夜店</van-tag>
 				5家厂商
 			</span>
 		</span>
@@ -15,6 +16,7 @@
 
 <script>
 	export default{
+		props:['item'],
 		data(){
 			return{
 				
@@ -22,7 +24,7 @@
 		},
 		methods:{
 			goDetailPage(){
-				this.$router.push({name:"ktvDetail", params:{id:'id'}})
+				this.$router.push({name:"ktvDetail", query:{item: JSON.stringify(this.item)}})
 			}
 		}
 	}

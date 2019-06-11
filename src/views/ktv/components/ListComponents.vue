@@ -2,7 +2,7 @@
 	<span>
 	  <van-pull-refresh v-model="isLoading" @refresh="onRefresh" v-if="!empty">
 	  	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-	  		<ListItem v-for="item in list" :key="item"/>
+	  		<ListItem v-for="(item, index) in list" :key="index" :item="item"/>
 	  	</van-list>
 	  </van-pull-refresh>
 	  <span v-if="empty">
@@ -16,11 +16,12 @@
 </template>
 
 <script>
+	import { getKTVlist } from '@/api/ktv'
 	import EmptyComponent from '@/components/EmptyComponent.vue'
 	import ListItem from './ListItemComponent'
 	export default {
 		components:{ ListItem, EmptyComponent },
-		props: ['data'],
+		props: ['search'],
 		data() {
 			return {
 				list: [],
@@ -38,29 +39,30 @@
 		methods: {
 			init() {
 				setTimeout(() => {
-				  this.list = [1,2,3,4,5,6,7,8,,9,10];
+				  this.list = [];
 				  this.isLoading = false;
 				}, 1000)
 			},
 			onLoad() {
 				// 异步更新数据
-				setTimeout(() => {
-					for (let i = 0; i < 10; i++) {
-						this.list.push(this.list.length + 1);
-					}
-					// 加载状态结束
+				var send_data={
+					name:this.search
+				}
+				getKTVlist(send_data).then((res) => {
+					console.log(res);
+					this.totle = res.data.count;
+					this.list = this.list.concat(res.data.results)
 					this.loading = false;
-
-					// 数据全部加载完成
-					if (this.list.length >= 40) {
+					if (this.list.length >= this.totle) {
 						this.finished = true;
 					}
-					if (this.list.length == 0) {
+					if (this.totle == 0) {
 						this.empty = true;
 					}
-				}, 2000);
+				})
 			},
 			onRefresh() {
+				console.log("ppppp")
 				this.init(); //加载数据
 			},
 			createBtn(){

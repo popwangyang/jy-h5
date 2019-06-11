@@ -4,27 +4,29 @@
 		  title="场所详情"
 		  left-text="返回"
 		  left-arrow
+		  @click-left="onClickLeft"
 		/>
 		<span class="content">
 			<span class="box1">
 				<span class="title">
-					<span class="text">杭州银乐迪西溪银泰店</span>
+					<span class="text">{{data.name}}</span>
 					<span>
-						<van-button type="info" size="mini">编辑</van-button>
+						<van-button type="info" size="mini" @click="editeBtn">编辑</van-button>
 					</span>
 				</span>
 				<span class="type">
-					<span>量贩式</span>
+					<span v-if="data.type == 1">量贩式</span>
+					<span v-else>夜店式</span>
 					<span>商户A</span>
 				</span>
 				<span class="detail">
 					<span class="item">
 						<van-icon name="manager" />
-						<span>王五</span>
+						<span>{{data.contact}}</span>
 					</span>
 					<span class="item">
 						<van-icon name="phone" />
-						<span>137 4837 2233</span>
+						<span>{{data.phone_number}}</span>
 					</span>
 				</span>
 				<span class="address">
@@ -32,32 +34,61 @@
 						<van-icon name="location"></van-icon>
 					</span>
 					<span class="address_right">
-						杭州市西湖区文一西路182号西溪银泰城F4-102
-						杭州市西湖区文一西路182号西溪银泰城F4-102
-						杭州市西湖区文一西路182号西溪银泰城F4-102
+						{{address}}
 					</span>
 				</span>
 			</span>
 			<span class="box2">
 				<span class="title">营业信息</span>
 				<span class="time">
-					<span>
+					<span class="time_title">
 						开业时间
 					</span>
-					<span>
-						2018年12月24日
+					<span class="time_content">
+						{{data.opening_hours}}
 					</span>
 				</span>
 				<span class="time">
-					<span>
+					<span class="time_title">
 						营业时间
 					</span>
-					<span>
-						7:00-22:00，周一、周二、周三、周四、周五
+					<span class="time_content">
+						{{Ytime}}
 					</span>
 				</span>
 			</span>
-			<span class="box3"></span>
+			<span class="box3">
+				<span class="item">
+					<span class="icon" @click="goPage(1)">
+						<van-icon name="browsing-history" size="3.6em"></van-icon>
+					</span>
+					<span class="text">企业信息</span>
+				</span>
+				<span class="item">
+					<span class="icon">
+						<van-icon name="browsing-history" size="3.6em"></van-icon>
+					</span>
+					<span class="text">实施信息</span>
+				</span>
+				<span class="item">
+					<span class="icon">
+						<van-icon name="browsing-history" size="3.6em"></van-icon>
+					</span>
+					<span class="text">签约信息</span>
+				</span>
+				<span class="item">
+					<span class="icon">
+						<van-icon name="browsing-history" size="3.6em"></van-icon>
+					</span>
+					<span class="text">账号信息</span>
+				</span>
+				<span class="item">
+					<span class="icon">
+						<van-icon name="browsing-history" size="3.6em"></van-icon>
+					</span>
+					<span class="text">线下充值</span>
+				</span>
+			</span>
 		</span>
 	</div>
 </template>
@@ -66,8 +97,70 @@
 	export default{
 		data(){
 			return{
-				
+				data:""
 			}
+		},
+		computed:{
+			address(){
+				var result = this.data.province+","+this.data.city+","+this.data.county+","+this.data.address;
+				return result;
+			},
+			Ytime(){
+				var obj = eval('(' + this.data.business_hours + ')')
+				console.log(obj)
+				if(!!obj){
+				  if(obj.flag == 0){
+				  	return "全部时间段";
+				  }else{
+				  	var str = obj.start +"-"+ obj.end+"  ";
+				  	obj.days.map(item => {
+				  		switch (item){
+				  			case 1:
+				  			  str += "星期一,";
+				  				break;
+				  			case 2:
+				  			  str += "星期二,";
+				  				break;
+				  			case 3:
+				  			  str += "星期三,";
+				  				break;
+				  			case 4:
+				  			  str += "星期四,";
+				  				break;
+				  			case 5:
+				  			  str += "星期五,";
+				  				break;
+				  			case 6:
+				  			  str += "星期六,";
+				  				break;
+				  			case 7:
+				  			  str += "星期日,";
+				  				break;
+				  		}
+				  	})
+				  return str.substr(0, str.length-1);;
+				  }
+				}
+			}
+		},
+		methods:{
+			onClickLeft(){
+				this.$router.go(-1)
+			},
+			editeBtn(){
+				this.$router.push({name:"ktvEdite", params:{type:"edite"}})
+			},
+			goPage(index){
+				switch(index){
+					case 1:
+					  this.$router.push({name:"CImessage"})
+					break;
+				}
+			}
+		},
+		mounted() {
+			this.data = JSON.parse(this.$route.query.item);
+			console.log(this.data)
 		}
 	}
 </script>
@@ -80,7 +173,7 @@
 		flex-direction: column;
 		.content{
 			flex: 1;
-			background: yellowgreen;
+			background: white;
 			&>span{
 				display: flex;
 				// padding-left:0.39rem;
@@ -127,6 +220,7 @@
 					margin-top: 0.26rem;
 					&>span:nth-child(2){
 						margin-left: 0.2rem;
+						font-size: 0.36rem;
 					}
 				}
 			}
@@ -136,10 +230,51 @@
 					padding: 0.12rem 0.39rem;
 					background: gainsboro;
 				}
+				& .time:nth-child(2){
+					border-bottom: 1px solid #f6f6f6;
+				}
 				.time{
 					padding: 0.12rem 0.39rem;
-					.title{
-						// font-size: 
+					display: flex;
+					flex-direction: column;
+					.time_title{
+						font-size: 0.16rem;
+						margin: 0.1rem 0;
+					}
+					.time_content{
+						font-size: 0.36rem;
+						padding: 0.1rem 0;
+					}
+				}
+			}
+			.box3{
+				padding: 0.26rem 0.39rem;
+				display: flex;
+				justify-content: flex-start;
+				flex-wrap: wrap;
+				background: white;
+				border-top: 0.16rem solid gainsboro;
+				flex-direction: row;
+				.item{
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					margin-right: 0.7rem;
+					margin-bottom: 0.26rem;
+					.icon{
+						width: 1.5rem;
+						height: 1.5rem;
+						// background: yellow;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						border-radius: 50%;
+						border: 1px solid gainsboro;
+						margin-bottom: 0.26rem;
+						&:hover{
+							background: #0a0a0a00;
+						}
 					}
 				}
 			}
