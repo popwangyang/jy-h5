@@ -121,9 +121,11 @@
 		},
 		mounted() {
 			if(this.$route.params.type == 'edite'){
-				this.title = "编辑KTV"
+				document.title= "编辑KTV";
+				// this.title = "编辑KTV"
 			}else{
-			    this.title = "新建KTV"
+				document.title= "新建KTV";
+			    // this.title = "新建KTV"
 			}
 		}
 	}

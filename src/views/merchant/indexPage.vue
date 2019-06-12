@@ -63,9 +63,9 @@
 	}
 	.content{
 		background: ghostwhite;
-		height: 14rem;
-		/* flex: 1; */
-        overflow-x: scroll;
+		/* height: 14rem; */
+		flex: 1;
+    overflow-x: scroll;
 	}
 	.van-search__content{
 		background-color:white;

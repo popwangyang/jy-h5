@@ -1,9 +1,9 @@
 <template>
 	<div style="height: 100%;">
 		<div class="box">
-			<van-nav-bar
+		<!-- 	<van-nav-bar
 			  :title="title"
-			/>
+			/> -->
 			<span class="body">
 				<merchantIndexPage v-if="!showPageFlag"/>
 				<ktvIndexPage v-if="showPageFlag"/>
@@ -52,8 +52,10 @@
 		computed:{
 			title(){
 				if(this.active == 0){
+					document.title = "商户管理";
 				  return "商户管理"
 				}else if(this.active == 1){
+					document.title = "KTV";
 				  return "KTV"
 				}
 			},
@@ -70,6 +72,9 @@
 			addBtn(){
 				this.showPopup = true;
 			}
+		},
+		mounted(){
+			document.title = "商户管理"
 		}
 	}
 </script>

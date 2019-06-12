@@ -1,11 +1,11 @@
 <template>
 	<div class="ktvDetailBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="场所详情"
 		  left-text="返回"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="content">
 			<span class="box1">
 				<span class="title">
@@ -171,6 +171,7 @@
 			}
 		},
 		mounted() {
+			document.title= "场所详情";
 			this.data = JSON.parse(this.$route.query.item);
 			console.log(this.data)
 		}

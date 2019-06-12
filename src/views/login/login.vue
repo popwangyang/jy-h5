@@ -94,6 +94,9 @@ export default{
 		rightIconBtn(){
 			this.passwordFlag = !this.passwordFlag;
 		}
+	},
+	mounted() {
+		document.title = "鲸唱结算平台"
 	}
 }
 </script>
