@@ -73,4 +73,14 @@ export default [
 		name: 'contractInformation',
 		component: () => import('@/views/ktv/messagePage/contractInformation/indexPage.vue')
 	},
+	{
+		path: '/addContract',
+		name: 'addContract',
+		component: () => import('@/views/ktv/messagePage/contractInformation/addContractPage.vue')
+	},
+	{
+		path: '/forwardContract',
+		name: 'forwardContract',
+		component: () => import('@/views/ktv/messagePage/contractInformation/forwardContractPage.vue')
+	},
   ]

@@ -1,7 +1,7 @@
 <template>
 	<div class="contractBox">
 		<van-nav-bar
-		  title="签约信息"
+		  title="合同信息"
 		  left-arrow
 		  @click-left="onClickLeft"
 		/>
@@ -43,7 +43,7 @@
 		 label1="2018-10-1 11:23"
 		 value="已到账"
 		/>
-		<span class="footer">
+		<span class="footer" v-if="showFooter">
 			<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
 			<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">补充</van-button>
 			<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">编辑</van-button>
@@ -53,17 +53,17 @@
 		position="bottom"
 		>
 			<span class="moreBox">
-				<span class="moreBoxItem">
+				<span class="moreBoxItem" @click="addBtn">
 					新增合同
 				</span>
-				<span class="moreBoxItem">
+				<span class="moreBoxItem" @click="checkBtn">
 					查看往期
 				</span>
-				<span class="moreBoxItem">
+				<span class="moreBoxItem" @click="stopBtn">
 					终止合同
 				</span>
 				<div style="height: 0.26rem;background: gainsboro;"></div>
-				<span class="moreBoxItem" style="border: none;" >
+				<span class="moreBoxItem" style="border: none;" @click="moreFlage = false">
 					取消
 				</span>
 			</span>
@@ -78,7 +78,8 @@
 		components:{ Item1, Item2 },
 		data(){
 			return{
-				moreFlage:false
+				moreFlage:false,
+				showFooter:true
 			}
 		},
 		methods:{
@@ -90,6 +91,20 @@
 			},
 			goPage(){
 				
+			},
+			addBtn(){
+				this.$router.push({name:"addContract"})
+			},
+			checkBtn(){
+				this.$router.push({name:"forwardContract"})
+			},
+			stopBtn(){
+				
+			}
+		},
+		mounted() {
+			if(this.$route.query.type && this.$route.query.type == "forwardContract" ){
+				this.showFooter = false;
 			}
 		}
 	}
