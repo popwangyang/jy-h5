@@ -65,7 +65,7 @@
 					<span class="text">企业信息</span>
 				</span>
 				<span class="item">
-					<span class="icon">
+					<span class="icon" @click="goPage(2)">
 						<van-icon name="browsing-history" size="3.6em"></van-icon>
 					</span>
 					<span class="text">实施信息</span>
@@ -154,6 +154,9 @@
 				switch(index){
 					case 1:
 					  this.$router.push({name:"CImessage"})
+					break;
+					case 2:
+					  this.$router.push({name:"Implementation"})
 					break;
 				}
 			}

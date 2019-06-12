@@ -48,4 +48,9 @@ export default [
 		name: 'CIedite',
 		component: () => import('@/views/ktv/messagePage/corporateInformation/editePage.vue')
 	},
+	{
+		path: '/Implementation',
+		name: 'Implementation',
+		component: () => import('@/views/ktv/messagePage/ImplementationInformation/ImplementationPage.vue')
+	},
   ]

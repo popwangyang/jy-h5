@@ -10,7 +10,7 @@ import 'vant/lib/index.css';
 
 Vue.use(Vant);
 Vue.prototype.axios = axios;
-if (process.env.NODE_ENV !== 'production') require('@/mock')
+// if (process.env.NODE_ENV !== 'production') require('@/mock')
 Vue.prototype.$config = config
 // import './registerServiceWorker'
 
