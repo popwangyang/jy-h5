@@ -71,19 +71,19 @@
 					<span class="text">实施信息</span>
 				</span>
 				<span class="item">
-					<span class="icon">
+					<span class="icon" @click="goPage(3)">
 						<van-icon name="browsing-history" size="3.6em"></van-icon>
 					</span>
 					<span class="text">签约信息</span>
 				</span>
 				<span class="item">
-					<span class="icon">
+					<span class="icon" @click="goPage(4)">
 						<van-icon name="browsing-history" size="3.6em"></van-icon>
 					</span>
 					<span class="text">账号信息</span>
 				</span>
 				<span class="item">
-					<span class="icon">
+					<span class="icon" @click="goPage(5)">
 						<van-icon name="browsing-history" size="3.6em"></van-icon>
 					</span>
 					<span class="text">线下充值</span>
@@ -156,6 +156,15 @@
 					  this.$router.push({name:"CImessage"})
 					break;
 					case 2:
+					  this.$router.push({name:"Implementation"})
+					break;
+					case 3:
+					  this.$router.push({name:"contractInformation"})
+					break;
+					case 4:
+					  this.$router.push({name:"Implementation"})
+					break;
+					case 5:
 					  this.$router.push({name:"Implementation"})
 					break;
 				}

@@ -53,4 +53,24 @@ export default [
 		name: 'Implementation',
 		component: () => import('@/views/ktv/messagePage/ImplementationInformation/ImplementationPage.vue')
 	},
+	{
+		path: '/UpgradeRecord',
+		name: 'UpgradeRecord',
+		component: () => import('@/views/ktv/messagePage/ImplementationInformation/UpgradeRecordPage.vue')
+	},
+	{
+		path: '/edit',
+		name: 'edit',
+		component: () => import('@/views/ktv/messagePage/ImplementationInformation/editPage.vue')
+	},
+	{
+		path: '/ImplementationRecord',
+		name: 'ImplementationRecord',
+		component: () => import('@/views/ktv/messagePage/ImplementationInformation/ImplementationRecordPage.vue')
+	},
+	{
+		path: '/contractInformation',
+		name: 'contractInformation',
+		component: () => import('@/views/ktv/messagePage/contractInformation/indexPage.vue')
+	},
   ]

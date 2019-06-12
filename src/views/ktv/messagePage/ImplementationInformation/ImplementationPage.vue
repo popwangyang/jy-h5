@@ -108,7 +108,16 @@
 					  this.UpgradeSystemBtn();
 					break;
 					case 2:
-					  
+					  this.$router.push({name: "UpgradeRecord"})
+					break;
+					case 3:
+					  this.$router.push({name: "edit"})
+					break;
+					case 4:
+					  this.$router.push({name: "edit"})
+					break;
+					case 5:
+					  this.$router.push({name: "ImplementationRecord"})
 					break;
 				}
 			},
@@ -119,10 +128,13 @@
 				this.keyboardshow = true;
 			},
 			onInput(e){
+				this.value += e;
 				console.log(e)
 			},
 			onDelete(){
-				console.log('delete')
+				if(this.value.length > 0){
+					this.value = this.value.substr(0, this.value.length - 1);
+				}
 			}
 		}
 	}
