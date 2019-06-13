@@ -5,48 +5,63 @@
 		  left-arrow
 		  @click-left="onClickLeft"
 		/> -->
-		<Item1
-		 label="合同编号"
-		 value="xxx"
-		/>
-		<Item1
-		 label="套餐名称"
-		 value="xxx"
-		/>
-		<Item1
-		 label="包厢数量"
-		 value="100"
-		/>
-		<Item1
-		 label="合同起始日期"
-		 value="2018-10-1"
-		/>
-		<Item1
-		 label="结算起始时间"
-		 value="2018-10-1"
-		/>
-		<Item1
-		 label="合同状态"
-		 value="合约中"
-		/>
-		<Item1
-		 label="到账状态"
-		 value="已到账"
-		/>
-		<Item2
-		 label="合同文件"
-		 label1="2018-10-1 11:23"
-		 value="已到账"
-		/>
-		<Item2
-		 label="补充合同"
-		 label1="2018-10-1 11:23"
-		 value="已到账"
-		/>
-		<span class="footer" v-if="showFooter">
-			<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
-			<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">补充</van-button>
-			<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">编辑</van-button>
+		<span v-if="!empty">
+			<Item1
+			 label="合同编号"
+			 value="xxx"
+			/>
+			<Item1
+			 label="套餐名称"
+			 value="xxx"
+			/>
+			<Item1
+			 label="包厢数量"
+			 value="100"
+			/>
+			<span class="line"></span>
+			<Item1
+			 label="合同起始日期"
+			 value="2018-10-1"
+			/>
+			<Item1
+			 label="结算起始时间"
+			 value="2018-10-1"
+			/>
+			<span class="line"></span>
+			<Item1
+			 label="合同状态"
+			 value="合约中"
+			 color="#01CCA3"
+			/>
+			<Item1
+			 label="到账状态"
+			 value="已到账"
+			/>
+			<span class="line"></span>
+			<Item2
+			 label="合同文件"
+			 label1="2018-10-1 11:23"
+			 value="已到账"
+			/>
+			<Item2
+			 label="补充合同"
+			 label1="2018-10-1 11:23"
+			 value="已到账"
+			/>
+			<span class="footer" v-if="showFooter">
+				<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
+				<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">补充</van-button>
+				<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">编辑</van-button>
+			</span>
+		</span>
+		<span v-if="empty" class="empty">
+			<EmptyComponent
+			  text="暂无签约合同"
+			  title="新建合同"
+			/>
+			<span @click="checkBtn">
+				查看往期
+			</span>
 		</span>
 		<van-popup 
 		v-model="moreFlage"
@@ -72,12 +87,14 @@
 </template>
 
 <script>
-	import Item1 from "./components/list1.vue"
-	import Item2 from "./components/list2.vue"
+	import Item1 from "@/components/list1.vue"
+	import Item2 from "@/components/list2.vue"
+	import EmptyComponent from "@/components/EmptyComponent.vue"
 	export default{
-		components:{ Item1, Item2 },
+		components:{ Item1, Item2, EmptyComponent },
 		data(){
 			return{
+				empty:false,
 				moreFlage:false,
 				showFooter:true
 			}
@@ -116,6 +133,20 @@
 		height: 100%;
 		position: relative;
 		background: #fafafa;
+		.empty{
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			&>span{
+				font-size:12px;
+				font-family:PingFangSC-Regular;
+				font-weight:400;
+				color:rgba(68,121,239,1);
+				margin-top: 0.26rem;
+			}
+		}
 		.moreBox{
 			display: flex;
 			background: #fafafa;

@@ -10,7 +10,7 @@
 		<div class="imgbox">
 			<van-icon name="goods-collect-o" size="2em"/>
 			<span>
-				文件名.jpg
+				文件名.pdf
 			</span>
 		</div>
 	</div>
@@ -32,7 +32,7 @@
 		data() {
 			return {
 				imageList: [{
-					url: require('../../../../../assets/logo.png'),
+					url: require('@/assets/logo.png'),
 					title: '你看我叼吗1',
 					id: 1
 				}]
@@ -45,6 +45,9 @@
 	.list2Box {
 		background: white;
         padding-bottom: 0.26rem;
+		.van-cell:not(:last-child)::after{
+			border: none;
+		}
 		.imgbox {
 			display: flex;
 			align-items: center;

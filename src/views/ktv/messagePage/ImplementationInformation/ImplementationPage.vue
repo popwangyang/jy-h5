@@ -70,9 +70,7 @@
 				@focus="onFocus"
 				/>
 		  </span>
-				
 		</span>
-		 
 		</van-dialog>
 		<van-number-keyboard
 			:show="keyboardshow"
@@ -88,7 +86,7 @@
 </template>
 
 <script>
-	import Item1 from './components/list1.vue'
+	import Item1 from '@/components/list1.vue'
 	import { Dialog } from 'vant';
 	export default{
 		components:{ Item1 },

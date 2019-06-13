@@ -11,7 +11,7 @@
 				<span class="title">
 					<span class="text">{{data.name}}</span>
 					<span>
-						<van-button type="info" size="small" @click="editeBtn">编辑</van-button>
+						<van-button  size="small" @click="editeBtn" style="background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);border-radius:16px;color: white;">编辑</van-button>
 					</span>
 				</span>
 				<span class="type">
@@ -162,10 +162,10 @@
 					  this.$router.push({name:"contractInformation"})
 					break;
 					case 4:
-					  this.$router.push({name:"Implementation"})
+					  this.$router.push({name:"accountInformation"})
 					break;
 					case 5:
-					  this.$router.push({name:"Implementation"})
+					  this.$router.push({name:"offLineRecharge"})
 					break;
 				}
 			}

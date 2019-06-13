@@ -60,7 +60,7 @@
 </template>
 
 <script>
-	import Item3 from './components/list3.vue'
+	import Item3 from '@/components/list3.vue'
 	export default{
 		components:{ Item3 },
 		data(){

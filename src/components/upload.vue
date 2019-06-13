@@ -2,7 +2,6 @@
 	<div class="uploadBox">
 		<van-uploader
 		 :after-read="afterRead"
-		 capture="camera"
 		 :max-count="1"
 		 v-model="fileList"
 		 multiple

@@ -5,8 +5,8 @@
 			  :title="title"
 			/> -->
 			<span class="body">
-				<merchantIndexPage v-show="!showPageFlag"/>
-				<ktvIndexPage v-show="showPageFlag"/>
+				<merchantIndexPage v-if="!showPageFlag"/>
+				<ktvIndexPage v-if="showPageFlag"/>
 			</span>
 		</div>
 		<van-tabbar
@@ -75,6 +75,7 @@
 		},
 		mounted(){
 			document.title = "商户管理"
+			console.log("商户管理")
 		}
 	}
 </script>

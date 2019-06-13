@@ -6,7 +6,7 @@
 		  @click-left="onClickLeft"
 		/> -->
 		<span class="content">
-			<!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
+			<van-pull-refresh v-model="isLoading" @refresh="onRefresh" v-if="!empty">
 		        <van-list
 		            v-model="loading"
 		            :finished="finished"
@@ -25,15 +25,25 @@
 						/>
 		            </div>
 		        </van-list>
-		    <!-- </van-pull-refresh> -->
+		    </van-pull-refresh>
+			 <span v-if="empty" class="empty">
+				<EmptyImageComponent 
+				 :text="text"
+				 img="empty"
+				/>
+			</span>
 		</span>
 	</div>
 </template>
 
 <script>
+	import EmptyImageComponent from "@/components/EmptyImageComponent.vue"
 	export default{
+		components:{ EmptyImageComponent },
 		data(){
 			return{
+				empty:true,
+				text:"暂无充值记录",
 				list: [],
                 loading: false,   //是否处于加载状态
                 finished: false,  //是否已加载完所有数据
@@ -67,11 +77,11 @@
 				// this.$router.push({name:"merchantEdite"})
 			},
 			goDetail(){
-			   this.$router.push({name:"contractInformation", query:{type:"forwardContract"}})
+			  
 			}
 		},
 		mounted() {
-			document.title = "往期合同";
+			document.title = "充值记录";
 		}
 	}
 </script>
@@ -87,6 +97,12 @@
 			flex: 1;
 			// background: yellow;
 			overflow: auto;
+			.empty{
+				display: flex;
+				height: 100%;
+				align-items: center;
+				justify-content: center;
+			}
 		}
 	}
 </style>

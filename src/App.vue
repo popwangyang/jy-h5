@@ -1,14 +1,9 @@
 <template>
   <div id="app">
-		<transition v-if="!$route.meta.keepAlive">
-			<router-view/>
-		</transition>
-		<transition v-if="$route.meta.keepAlive">
+			<router-view v-if="!$route.meta.keepAlive"/>
 			<keep-alive>
-				{console.log(0000)}
-				<router-view/>
+				<router-view v-if="$route.meta.keepAlive"/>
 			</keep-alive>
-		</transition>
   </div>
 </template>
 <script>
@@ -27,6 +22,12 @@ export default {
 	body, html{
 		height: 100%;
 		font-size: 14px;
+		font-family:PingFangSC-Regular;
+	}
+	.line{
+		display: block;
+		height: 0.26rem;
+		background: #F6F6F6;
 	}
 	#app{
 		height: 100%;

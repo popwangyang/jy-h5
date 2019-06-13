@@ -86,4 +86,39 @@ export default [
 		name: 'forwardContract',
 		component: () => import('@/views/ktv/messagePage/contractInformation/forwardContractPage.vue')
 	},
+	{
+		path: '/accountInformation',
+		name: 'accountInformation',
+		component: () => import('@/views/ktv/messagePage/accountInformation/accountInformationPage.vue')
+	},
+	{
+		path: '/enableAccont',
+		name: 'enableAccont',
+		component: () => import('@/views/ktv/messagePage/accountInformation/enableAccontPage.vue')
+	},
+	{
+		path: '/editAccountInformation',
+		name: 'editAccountInformation',
+		component: () => import('@/views/ktv/messagePage/accountInformation/editAccountInformationPage.vue')
+	},
+	{
+		path: '/offLineRecharge',
+		name: 'offLineRecharge',
+		component: () => import('@/views/ktv/messagePage/offLineRecharge/offLineRechargePage.vue')
+	},
+	{
+		path: '/refillFeedback',
+		name: 'refillFeedback',
+		component: () => import('@/views/ktv/messagePage/offLineRecharge/refillFeedbackPage.vue')
+	},
+	{
+		path: '/xieyi',
+		name: 'xieyi',
+		component: () => import('@/views/ktv/messagePage/offLineRecharge/xieyiPage.vue')
+	},
+	{
+		path: '/RechargeRecord',
+		name: 'RechargeRecord',
+		component: () => import('@/views/ktv/messagePage/offLineRecharge/RechargeRecordPage.vue')
+	},
   ]

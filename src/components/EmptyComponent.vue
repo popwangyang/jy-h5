@@ -27,7 +27,7 @@
 
 <style scoped="scoped" lang="less">
 	.emptyComponentBox{
-		height: 100%;
+		// height: 100%;
 		// background: yellow;
 		display: flex;
 		align-items: center;

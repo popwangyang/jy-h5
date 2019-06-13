@@ -862,3 +862,23 @@ export const getMapData = function(code){
 	foo(code, mapData)
 	return result;
 }
+
+// 设置时间天数;
+
+export const setSelectDays = function(num){
+	var result = [];
+	for(var i = 0; i < num; i++){
+		var str = i+1 + "天后";
+		result.push(str);
+	};
+	return result;
+}
+
+// 获取几天后的日期;
+export const getTime = function(num){
+	var days = num || 0;
+	var date = new Date();
+	    date.setDate(date.getDate() + days );
+	
+	return getDay(date);
+}

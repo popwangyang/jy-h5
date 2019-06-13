@@ -37,6 +37,9 @@
 			onUser(){
 				
 			}
+		},
+		mounted() {
+			console.log("ktvIndex")
 		}
 	}
 </script>

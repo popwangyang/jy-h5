@@ -42,8 +42,8 @@
 </template>
 
 <script>
-	import Item1 from './components/list1.vue'
-	import Item2 from './components/list2.vue'
+	import Item1 from '@/components/list1.vue'
+	import Item2 from '@/components/list2.vue'
 	export default{
 		components:{ Item1, Item2 },
 		data(){

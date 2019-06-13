@@ -5,22 +5,17 @@
 		</span>
 		<span class="content">
 			<span class="item">
-				<span class="box" v-if="src != '' && src.substr(0, 4) == 'http' && state == 0">
-					<img :src="src" alt="" width="100%" height="100%" >
-					<span class="delete">
-						<van-icon name="clear" size="0.4rem" color = "#565353" @click="deleteBtn"/>
-					</span>
+				<span class="box">
+
 				</span>
-				<Upload ref="upload" @upload="upload" v-else/>
 			</span>
 		</span>
 	</div>
 </template>
 
 <script>
-	import Upload from "@/components/upload"
 	export default{
-		components:{ Upload },
+		components:{  },
 		props:{
 			title:{
 				type:String,
@@ -60,7 +55,6 @@
 	.list3Box{
 		padding: 0 0.39rem;
 		background: white;
-		height: 3.9rem;
 		.title{
 			display: flex;
 			padding: 0.4rem 0;
@@ -72,8 +66,6 @@
 				.box{
 					display: flex;
 					position: relative;
-					width: 2.08rem;
-					height: 2.08rem;
 					background: white;
 					padding-bottom: 0.312rem;
 					.delete{
