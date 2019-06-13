@@ -29,6 +29,11 @@ export default {
 		height: 0.26rem;
 		background: #F6F6F6;
 	}
+	.button{
+		background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);
+		color: white !important;
+		border-radius:4px !important;
+	}
 	#app{
 		height: 100%;
 	}

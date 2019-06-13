@@ -1,10 +1,10 @@
 <template>
 	<span>
-	  <van-pull-refresh v-model="isLoading" @refresh="onRefresh" v-if="!empty">
-	  	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+	  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh" > -->
+	  	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="!empty">
 	  		<ListItem v-for="(item, index) in list" :key="index" :item="item"/>
 	  	</van-list>
-	  </van-pull-refresh>
+	  <!-- </van-pull-refresh> -->
 	  <span v-if="empty">
 	  	<EmptyComponent 
 		 :text="text"

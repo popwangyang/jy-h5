@@ -11,7 +11,6 @@
 		</span>
 		  <van-field
 			v-model="data.ktvName"
-			clearable
 			label="场所名称"
 			placeholder="请输入"
 			input-align="right"
@@ -28,21 +27,18 @@
 		</span>
 		 <van-field
 			v-model="data.personName"
-			clearable
 			label="联系人名称"
 			placeholder="请输入"
 			input-align="right"
 		/>
 		 <van-field
 			v-model="data.phone"
-			clearable
 			label="手机号"
 			placeholder="请输入"
 			input-align="right"
 		/>
 		 <van-field
 			v-model="data.tel"
-			clearable
 			label="场所电话"
 			placeholder="请输入"
 			input-align="right"
@@ -86,7 +82,7 @@
 			style="border: 1px solid #f6f6f6;"
 		 />
 		 <span class="footer">
-		   <van-button type="primary" size="large">保存</van-button>
+		   <van-button type="primary" size="large" class="button">保存</van-button>
 		 </span>
 	</div>
 </template>
@@ -143,7 +139,7 @@
 		}
 		.footer{
 			display: block;
-			margin: 0.1rem 0;
+			margin: 0.26rem 0;
 			padding: 0 0.39rem;
 			box-sizing: border-box;
 			background: #f2f2f25b;

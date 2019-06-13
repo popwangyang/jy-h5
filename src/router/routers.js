@@ -1,6 +1,6 @@
 
 import Home from '@/views/home/home.vue'
-
+import Search from '@/views/home/searchPage.vue'
 
 export default [
     {
@@ -15,6 +15,11 @@ export default [
 		meta:{
 			keepAlive: true
 		}
+	},
+	{
+		path: '/search',
+		name: 'search',
+		component: Search,
 	},
 	{
 		path: '/merchantDetail',

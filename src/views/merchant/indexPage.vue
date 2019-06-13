@@ -1,19 +1,5 @@
 <template>
 	<div class="box">
-		<span class="nav">
-			<van-search
-			  v-model="searchValue"
-			  placeholder="请输入商户名称"
-			  show-action
-			  shape="round"
-			  @search="onSearch"
-			  background="#f4f4f4"
-			>
-			<div class="navRight" slot="action">
-			   <van-icon name="user-circle-o"  @click="onUser" size="2em"/>
-			</div>
-			</van-search>
-		</span>
 		<span class="content">
 			<List/>
 		</span>

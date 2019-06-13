@@ -15,7 +15,7 @@
 		<span class="footer">
 			<van-button 
 			size="large"
-			style="background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);color: white;border-radius:4px;"
+			class="button"
 			>完成</van-button>
 		</span>
 	</div>
