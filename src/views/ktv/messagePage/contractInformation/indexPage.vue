@@ -1,10 +1,10 @@
 <template>
 	<div class="contractBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="合同信息"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<Item1
 		 label="合同编号"
 		 value="xxx"
@@ -103,6 +103,7 @@
 			}
 		},
 		mounted() {
+			document.title = "合同信息";
 			if(this.$route.query.type && this.$route.query.type == "forwardContract" ){
 				this.showFooter = false;
 			}

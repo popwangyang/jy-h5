@@ -11,7 +11,10 @@ export default [
 	{
 		path: '/home',
 		name: 'home',
-		component: Home
+		component: Home,
+		meta:{
+			keepAlive: true
+		}
 	},
 	{
 		path: '/merchantDetail',

@@ -1,10 +1,10 @@
 <template>
 	<div class="editBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="实施信息"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		 <SelectComponent 
 			label="vod品牌"
 			placeholder="请选择"
@@ -73,6 +73,9 @@
 					Toast.success('保存成功');
 				}, 2000)
 			}
+		},
+		mounted() {
+			document.title = "实施信息";
 		}
 	}
 </script>

@@ -1,10 +1,10 @@
 <template>
 	<div class="addPlaceBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="选择门店"
 		  left-text="返回"
 		  left-arrow
-		/>
+		/> -->
 		<span class="nav">
 			<van-search
 			  v-model="searchValue"
@@ -53,6 +53,9 @@
 				console.log(item)
 				this.$router.push({name:"merchantEdite"})
 			}
+		},
+		mounted() {
+			document.title = "选择门店";
 		}
 	}
 </script>

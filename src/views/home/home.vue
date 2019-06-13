@@ -5,8 +5,8 @@
 			  :title="title"
 			/> -->
 			<span class="body">
-				<merchantIndexPage v-if="!showPageFlag"/>
-				<ktvIndexPage v-if="showPageFlag"/>
+				<merchantIndexPage v-show="!showPageFlag"/>
+				<ktvIndexPage v-show="showPageFlag"/>
 			</span>
 		</div>
 		<van-tabbar

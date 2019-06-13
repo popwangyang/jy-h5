@@ -1,10 +1,10 @@
 <template>
 	<div class="ICmessageBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="企业信息"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="nav">
 		  	企业信息
 		</span>
@@ -58,6 +58,9 @@
 			goPage(){
 				this.$router.push({name:"CIedite"})
 			}
+		},
+		mounted() {
+			document.title = "企业信息";
 		}
 	}
 </script>

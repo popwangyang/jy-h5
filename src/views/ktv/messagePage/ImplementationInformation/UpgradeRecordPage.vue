@@ -1,10 +1,10 @@
 <template>
 	<div class="UpgradeRecordBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="升级记录"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="content">
 			<van-pull-refresh v-model="isLoading" @refresh="onRefresh">
                 <van-list
@@ -61,6 +61,9 @@
 			createBtn(){
 				// this.$router.push({name:"merchantEdite"})
 			}
+		},
+		mounted() {
+			document.title = "升级记录";
 		}
 	}
 </script>

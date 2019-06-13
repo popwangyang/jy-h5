@@ -11,7 +11,7 @@
 				<span class="title">
 					<span class="text">{{data.name}}</span>
 					<span>
-						<van-button type="info" size="mini" @click="editeBtn">编辑</van-button>
+						<van-button type="info" size="small" @click="editeBtn">编辑</van-button>
 					</span>
 				</span>
 				<span class="type">
@@ -208,7 +208,7 @@
 					align-items: center;
 					justify-content: space-between;
 					.text{
-						font-size: 0.42rem;
+						font-size: 16px;
 					}
 				}
 				.type{
@@ -233,7 +233,7 @@
 					margin-top: 0.26rem;
 					&>span:nth-child(2){
 						margin-left: 0.2rem;
-						font-size: 0.36rem;
+						font-size: 12px;
 					}
 				}
 			}
@@ -251,17 +251,17 @@
 					display: flex;
 					flex-direction: column;
 					.time_title{
-						font-size: 0.16rem;
+						font-size: 12px;
 						margin: 0.1rem 0;
 					}
 					.time_content{
-						font-size: 0.36rem;
+						font-size: 12px;
 						padding: 0.1rem 0;
 					}
 				}
 			}
 			.box3{
-				padding: 0.26rem 0.39rem;
+				padding: 0.26rem 0rem;
 				display: flex;
 				justify-content: flex-start;
 				flex-wrap: wrap;
@@ -269,11 +269,12 @@
 				border-top: 0.16rem solid gainsboro;
 				flex-direction: row;
 				.item{
+					width: 25%;
 					display: flex;
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
-					margin-right: 0.7rem;
+					font-size: 14px;
 					margin-bottom: 0.26rem;
 					.icon{
 						width: 1.5rem;

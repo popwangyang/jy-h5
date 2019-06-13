@@ -1,11 +1,11 @@
 <template>
 	<div>
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="商户名称A"
 		  left-text="返回"
 		  right-text="按钮"
 		  left-arrow
-		/>
+		/> -->
 		<span class="box">
 			<span class="boxItem1">
 				<span>商户名称A</span>
@@ -42,6 +42,9 @@
 			goEditePage(){
 				this.$router.push({name:"merchantEdite", params:{type:'edite'}})
 			}
+		},
+		mounted() {
+			document.title = "商户名称A";
 		}
 	}
 </script>

@@ -1,10 +1,10 @@
 <template>
 	<div class="ICediteBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="企业信息"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="nav">
 		  	企业信息
 		</span>
@@ -69,7 +69,7 @@
 				data:{
 					QName:"杭州银乐迪西溪银泰店",
 					BLN: "HZ827389193",
-					BLP:"https://testsettlementcdn.bjywkd.com/453a42fc-7df1-11e9-baf7-00163e0e12f4.jpg?e=1560323799&token=2rQOHCtd0arWFy6PWwOLWrIGpf9fN06dAz_IxVZd:OdesRgSlU2wwPONY_u29k-J5BMM=",
+					BLP:"",
 					LegalPersonName:"王亚伟",
 					IDnumber:"33027382827838133",
 					ICP:""
@@ -90,6 +90,9 @@
 					  })
 				}, 2000)
 			}
+		},
+		mounted() {
+			document.title = "企业信息";
 		}
 	}
 </script>

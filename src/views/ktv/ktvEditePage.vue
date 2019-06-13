@@ -1,11 +1,11 @@
 <template>
 	<div class="ktvEditeBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  :title="title"
 		  left-text="返回"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="nav">
 			KTV信息
 		</span>

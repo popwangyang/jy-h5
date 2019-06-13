@@ -1,10 +1,10 @@
 <template>
 	<div class="box">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  :title="title"
 		  left-text="返回"
 		  left-arrow
-		/>
+		/> -->
 		<van-cell-group>
 			<van-field 
 			v-model="data.name" 
@@ -89,8 +89,10 @@
 		computed:{
 			title(){
 				if(this.$route.params.type == "edite"){
+					document.title = "编辑商户"
 					return "编辑商户"
 				}else{
+					document.title = "新建商户"
 					return "新建商户"
 				}
 			},

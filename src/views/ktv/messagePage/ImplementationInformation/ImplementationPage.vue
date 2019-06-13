@@ -1,10 +1,10 @@
 <template>
 	<div class="ImplementationBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="实施信息"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="nav">
 		  	企业信息
 		</span>
@@ -69,19 +69,20 @@
 				placeholder="请输入升级版本号"
 				@focus="onFocus"
 				/>
-		  </span>	
+		  </span>
+				
 		</span>
-		  
+		 
 		</van-dialog>
 		<van-number-keyboard
-		  :show="keyboardshow"
-		  theme="custom"
-		  extra-key="."
-		  close-button-text="完成"
-		  @blur="keyboardshow = false"
-		  @input="onInput"
-		  @delete="onDelete"
-		  :z-index="100000"
+			:show="keyboardshow"
+			theme="custom"
+			extra-key="."
+			close-button-text="完成"
+			@blur="keyboardshow = false"
+			@input="onInput"
+			@delete="onDelete"
+			:z-index="10000"
 		/>
 	</div>
 </template>
@@ -126,6 +127,8 @@
 			},
 			onFocus(){
 				this.keyboardshow = true;
+				// evt.preventDefault(); 
+				 document.activeElement.blur();
 			},
 			onInput(e){
 				this.value += e;
@@ -136,6 +139,9 @@
 					this.value = this.value.substr(0, this.value.length - 1);
 				}
 			}
+		},
+		mounted() {
+			document.title = "实施信息";
 		}
 	}
 </script>
@@ -152,7 +158,7 @@
 			color: #979797;
 		}
 		.box3{
-			padding: 0.26rem 0.39rem;
+			padding: 0.26rem 0;
 			display: flex;
 			justify-content: flex-start;
 			flex-wrap: wrap;
@@ -160,12 +166,13 @@
 			border-top: 0.16rem solid gainsboro;
 			flex-direction: row;
 			.item{
+				width: 25%;
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
 				align-items: center;
-				margin-right: 0.7rem;
 				margin-bottom: 0.26rem;
+				font-size: 14px;
 				.icon{
 					width: 1.5rem;
 					height: 1.5rem;

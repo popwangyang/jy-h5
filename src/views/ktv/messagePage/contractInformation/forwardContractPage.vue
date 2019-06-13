@@ -1,10 +1,10 @@
 <template>
 	<div class="forwardContractBox">
-		<van-nav-bar
+		<!-- <van-nav-bar
 		  title="往期合同"
 		  left-arrow
 		  @click-left="onClickLeft"
-		/>
+		/> -->
 		<span class="content">
 			<van-pull-refresh v-model="isLoading" @refresh="onRefresh">
 		        <van-list
@@ -69,6 +69,9 @@
 			goDetail(){
 			   this.$router.push({name:"contractInformation", query:{type:"forwardContract"}})
 			}
+		},
+		mounted() {
+			document.title = "往期合同";
 		}
 	}
 </script>
