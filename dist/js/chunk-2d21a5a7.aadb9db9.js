@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d21a5a7"],{bac5:function(n,t,e){"use strict";e.r(t);var u=function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",[n._v("\n\t协议\n")])},c=[],a={data:function(){return{}},methods:{},mounted:function(){document.title="协议"}},o=a,i=e("2877"),l=Object(i["a"])(o,u,c,!1,null,null,null);t["default"]=l.exports}}]);
+//# sourceMappingURL=chunk-2d21a5a7.aadb9db9.js.map
