@@ -1,7 +1,7 @@
 <template>
 	<div class="searchBox">
 		<span class="nav" @click="goSearch">
-			<van-search :placeholder="placeholder" show-action shape="round" background="#f4f4f4" :readonly="true">
+			<van-search v-model="inputValue" :placeholder="placeholder" show-action shape="round" background="#f4f4f4" :readonly="true">
 				<div class="navRight" slot="action">
 					<van-icon name="user-circle-o" size="2em" />
 				</div>
@@ -16,6 +16,15 @@
 			placeholder:{
 				type:String,
 				default:"请输入"
+			},
+			searchValue:{
+				type:String,
+				default:""
+			}
+		},
+		data(){
+			return{
+				inputValue:this.searchValue
 			}
 		},
 		methods:{

@@ -1,12 +1,10 @@
 <template>
 	<div style="height: 100%;">
 		<div class="box">
-           <searchComponent
-		   :placeholder="placeholder"
-		   />
+			<searchComponent :placeholder="placeholder" :value="searchValue" />
 			<span class="body">
-				<merchantIndexPage v-if="!showPageFlag"/>
-				<ktvIndexPage v-if="showPageFlag"/>
+				<merchantIndexPage v-if="!showPageFlag" />
+				<ktvIndexPage v-if="showPageFlag" />
 			</span>
 			<span class="tabbar">
 				<van-tabbar v-model="active" active-color="#07c160" inactive-color="#000" :fixed="false">
@@ -23,13 +21,11 @@
 		</van-popup>
 	</div>
 </template>
-
 <script>
 	import merchantIndexPage from '@/views/merchant/indexPage.vue'
 	import ktvIndexPage from '@/views/ktv/indexPage.vue'
 	import addComponent from './components/addComponent.vue'
 	import searchComponent from './components/searchComponent.vue'
-	
 	export default {
 		components: {
 			merchantIndexPage,
@@ -40,8 +36,7 @@
 		data() {
 			return {
 				active: 0,
-				showPopup: false,
-				searchValue: ""
+				showPopup: false
 			}
 		},
 		computed: {
@@ -62,11 +57,19 @@
 					return 1;
 				}
 			},
-			placeholder(){
+			placeholder() {
 				if (this.active == 0) {
 					return "请输入商户名称"
 				} else if (this.active == 1) {
 					return "请输入KTV名称"
+				}
+			},
+			searchValue() {
+				console.log("pppp")
+				if (!!this.$route.params.searchValue) {
+					return this.$route.params.searchValue
+				} else {
+					return "";
 				}
 			}
 		},
