@@ -1,11 +1,5 @@
 <template>
 	<div class="ktvDetailBox">
-		<!-- <van-nav-bar
-		  title="场所详情"
-		  left-text="返回"
-		  left-arrow
-		  @click-left="onClickLeft"
-		/> -->
 		<span class="content">
 			<span class="box1">
 				<span class="title">
@@ -57,6 +51,7 @@
 					</span>
 				</span>
 			</span>
+			<span class="line"></span>
 			<span class="box3">
 				<span class="item">
 					<span class="icon" @click="goPage(1)">
@@ -144,11 +139,8 @@
 			}
 		},
 		methods:{
-			onClickLeft(){
-				this.$router.go(-1)
-			},
 			editeBtn(){
-				this.$router.push({name:"ktvEdite", params:{type:"edite"}})
+				this.$router.push({name:"ktvEdite", query:{type:"edite", data:JSON.stringify(this.data)}})
 			},
 			goPage(index){
 				switch(index){
@@ -213,6 +205,7 @@
 				}
 				.type{
 					margin: 0.2rem 0;
+					font-size: 12px;
 					color: gainsboro;
 					& span:nth-child(1){
 						margin-right: 0.26rem;
@@ -224,6 +217,7 @@
 						margin-right: 0.5rem;
 						display: flex;
 						align-items: center;
+						font-size: 14px;
 						&>span{
 							margin-left: 0.2rem;
 						}
@@ -232,8 +226,9 @@
 				.address{
 					margin-top: 0.26rem;
 					&>span:nth-child(2){
+						line-height: 100%;
 						margin-left: 0.2rem;
-						font-size: 12px;
+						font-size: 14px;
 					}
 				}
 			}
@@ -241,7 +236,8 @@
 				background: white;
 				.title{
 					padding: 0.12rem 0.39rem;
-					background: gainsboro;
+					background: #F6F6F6;
+					font-size: 12px;
 				}
 				& .time:nth-child(2){
 					border-bottom: 1px solid #f6f6f6;
@@ -266,7 +262,6 @@
 				justify-content: flex-start;
 				flex-wrap: wrap;
 				background: white;
-				border-top: 0.16rem solid gainsboro;
 				flex-direction: row;
 				.item{
 					width: 25%;

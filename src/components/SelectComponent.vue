@@ -1,15 +1,15 @@
 <template>
-	<div>
-		<div class="van-cell van-field" @click="clickBtn">
+	<div class="van-cell" style="border-bottom: 1px solid #ebedf0">
+		<div  class="van-cell van-field" @click="clickBtn" style="padding: 0;">
 			<div class="van-cell__title van-field__label">{{label}}</div>
 			<div class="van-cell__value" style="display: flex;align-items: center;justify-content: flex-end;">
 						<span v-if="value == ''">
 							{{placeholder}}
 						</span>
-						<span v-else>
+						<span v-else style="color: #000000;">
 							{{value}}
 						</span>
-				<van-icon name="arrow" size="1em"/>
+				<van-icon name="arrow" size="16px" style="margin-left: 4px;"/>
 			</div>
 		</div>
 		<van-popup
@@ -24,6 +24,7 @@
             @confirm="onConfirm"
 		  />
 		   <van-area
+		   :value="value"
 		   v-if="type=='map'"
 		   @cancel="onCancel"
 		   @confirm="onConfirm"
@@ -35,6 +36,13 @@
 			  type="date"
 			  :min-date="minDate"
 			  :formatter="formatter"
+			  @cancel="onCancel"
+			  @confirm="onConfirm"
+			/>
+			 <van-datetime-picker
+			  v-if="type=='time'"
+			  v-model="currentTime"
+			  type="time"
 			  @cancel="onCancel"
 			  @confirm="onConfirm"
 			/>
@@ -63,7 +71,9 @@
 			},
 			columns:{
 				type:Array,
-				default:[]
+				default:() => {
+					return []
+				}
 			},
 			value:{
 				type:String,
@@ -79,7 +89,8 @@
 				show:false,
 				areaList:data,
 				minDate: new Date(2000, 1, 1),
-				currentDate: new Date()
+				currentDate: new Date(),
+				currentTime: "12:00"
 			}
 		},
 		methods:{
@@ -112,6 +123,9 @@
 				  case "date":
 				    result = getDay(value);
 				  break;
+				  case "time":
+				    result = value;
+				  break;
 			    }
 			    this.$emit('returnBack', result);
 				this.show = false;
@@ -123,5 +137,7 @@
 </script>
 
 <style scoped="scoped" lang="less">
-	
+	.van-cell:not(:last-child)::after{
+		    border-bottom: 0;
+	}
 </style>

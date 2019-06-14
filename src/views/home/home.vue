@@ -1,13 +1,13 @@
 <template>
 	<div style="height: 100%;">
 		<div class="box">
-			<searchComponent :placeholder="placeholder" :value="searchValue" />
+			<searchComponent :placeholder="placeholder" :value="searchValue"  @input="searchChaneg" ref="search"/>
 			<span class="body">
-				<merchantIndexPage v-if="!showPageFlag" />
-				<ktvIndexPage v-if="showPageFlag" />
+				<merchantIndexPage :searchValue="searchMerchant"  v-if="!showPageFlag" />
+				<ktvIndexPage :searchValue="searchKTV" v-if="showPageFlag" />
 			</span>
 			<span class="tabbar">
-				<van-tabbar v-model="active" active-color="#07c160" inactive-color="#000" :fixed="false">
+				<van-tabbar v-model="active" active-color="#07c160" inactive-color="#000" :fixed="false" @change="tabbarBtn">
 					<van-tabbar-item icon="home-o">商户管理</van-tabbar-item>
 					<div class="add">
 						<van-icon class="icon" name="add-o" slot="icon" size="3em" style="background: white;border-radius: 50%;" @click="addBtn" />
@@ -36,7 +36,11 @@
 		data() {
 			return {
 				active: 0,
-				showPopup: false
+				showPopup: false,
+				searchKTV:"",
+				searchMerchant:"",
+				searchValue:"",
+				
 			}
 		},
 		computed: {
@@ -63,19 +67,23 @@
 				} else if (this.active == 1) {
 					return "请输入KTV名称"
 				}
-			},
-			searchValue() {
-				console.log("pppp")
-				if (!!this.$route.params.searchValue) {
-					return this.$route.params.searchValue
-				} else {
-					return "";
-				}
 			}
 		},
 		methods: {
 			addBtn() {
 				this.showPopup = true;
+			},
+			searchChaneg(value) {
+				console.log(value);
+				if (this.active == 0) {
+					this.searchMerchant = value;
+				} else if (this.active == 1) {
+					this.searchKTV = value;
+				}
+			},
+			tabbarBtn(value){
+				this.$refs.search.inputValue = "";
+				this.searchChaneg("");
 			}
 		},
 		mounted() {

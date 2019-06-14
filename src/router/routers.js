@@ -42,6 +42,11 @@ export default [
 		component: () => import('@/views/ktv/ktvDetailPage.vue')
 	},
 	{
+		path: '/businessHours',
+		name: 'businessHours',
+		component: () => import('@/views/ktv/businessHoursPage.vue')
+	},
+	{
 		path: '/ktvEdite',
 		name: 'ktvEdite',
 		component: () => import('@/views/ktv/ktvEditePage.vue')

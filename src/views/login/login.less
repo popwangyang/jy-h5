@@ -1,5 +1,12 @@
 .loginBox{
 	height: 100%;
+	background-image: url("../../assets/login6.png");
+	background-size:100% auto;
+	background-repeat: no-repeat;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	.title{
 		display: flex;
 		height: 5rem;
@@ -10,16 +17,106 @@
 	}
 	.body{
 		display: flex;
-		height: 8rem;
-		background: white;
+		height: 8.6rem;
 		flex-direction: column;
-		.bodyItem{
-			display: flex;
-			background: #f0f0f0;
-			margin: 0rem 1rem;
-			border-radius: 0.572rem;
-			padding: 0rem 0.78rem;
-			margin-bottom: 1rem;
+		background: white;
+		width: 8.372rem;
+		position: relative;
+		border-bottom-right-radius: 6px;
+		border-bottom-left-radius: 6px;
+		// overflow: hidden;
+		text-align: center;
+		align-items: center;
+		.input{
+			background: yellow;
+			margin-bottom: 0.6rem;
+			width:7.3rem;
+			height:1.2rem;
+			background:rgba(255,255,255,1);
+			border-radius:4px;
+			border:1px solid rgba(204,204,204,1);
 		}
+		.loginBtn{
+			
+		}
+		.top{
+			display: block;
+			background: white;
+			position: absolute;
+			top: -0.5rem;
+			left: 0;
+			width: 100%;
+			height: 0.7rem;
+			.topLeft{
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				display: flex;
+				width: 50%;
+				height: 0.8rem;
+				background: #2350C1;
+				border-bottom-right-radius: 6px;
+				border-top-left-radius: 6px; 
+				align-items: center;
+				justify-content: center;
+				.img{
+					display: block;
+					width: 16px;
+					height: 16px;
+					background-image: url("../../assets/login2.png");
+					background-size: cover;
+					background-repeat: no-repeat;
+					margin-right: 0.26rem;
+				}
+				.text{
+					color: white;
+				}
+			}
+			.topRight{
+				position: absolute;
+				right: 0;
+				bottom: 0;
+				display: block;
+				width: 50%;
+				height: 0.96rem;
+				background: white;
+				border-top-right-radius: 6px;
+				border-top-left-radius: 6px; 
+			}
+		}
+		.left{
+			display: block;
+			position: absolute;
+			left: 0;
+			bottom: 0;
+			// background: wheat;
+			width: 4.16rem;
+			height: 2.522rem;
+			background-image: url("../../assets/login1.png");
+			background-size:100% auto;
+			background-repeat: no-repeat;
+		}
+		.right{
+			display: block;
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			width: 2.08rem;
+			height: 2.522rem;
+			background-image: url("../../assets/login4.png");
+			background-size:100% auto;
+			background-repeat: no-repeat;
+		} 
+		
+	}
+	.loginFooter{
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 1.487rem;
+		background-image: url("../../assets/login3.png");
+		background-size:100% auto;
+		background-repeat: no-repeat;
 	}
 }

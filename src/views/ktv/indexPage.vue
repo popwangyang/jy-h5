@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<span class="content">
-			<List :search="searchValue"/>
+			<List :searchValue="searchValue"/>
 		</span>
 	</div>
 </template>
@@ -10,23 +10,7 @@
 	import List from './components/ListComponents.vue'
 	export default{
 		components:{ List },
-		data(){
-			return{
-				searchValue:"",
-				data:[]
-			}
-		},
-		methods:{
-			onSearch(){
-				
-			},
-			onUser(){
-				
-			}
-		},
-		mounted() {
-			console.log("ktvIndex")
-		}
+		props:['searchValue']
 	}
 </script>
 

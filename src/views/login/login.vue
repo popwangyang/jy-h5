@@ -1,31 +1,40 @@
 <template>
   <div class="loginBox">
     <span class="title">
-		XXXXXXXX
+		
 	</span>
     <span class="body">
-		<span class="bodyItem">
+		<span class="top">
+			<span class="topLeft">
+				<span class="img"></span>
+				<span class="text">
+					账号登录
+				</span>
+			</span>
+			<span class="topRight"></span>
+		</span>
+		<span class="left"></span>
+		<span class="right"></span>
+		<span class="input" style="margin-top: 1.4rem;">
 			<van-field
 				v-model="username"
-				clearable
 				placeholder="请输入邮箱号"
 				input-align="left"
-				style="background: #f0f0f0;"
+				style="background: none;"
 			  />
 		</span>
-		<span class="bodyItem">
+		<span class="input">
 			<van-field
 				v-model="password"
-				clearable
 				:type="inputType"
 				placeholder="请输入密码"
 				input-align="left"
 				:right-icon="rightIcon"
 				@click-right-icon="rightIconBtn"
-				style="background: #f0f0f0;"
-			  />
+				style="background: none;"
+			  /> 
 		</span>
-		<span class="bodyItem" style="background: white;padding-left: 0;padding-right: 0;">
+		<span class="input" style="border: none;">
 			<van-button 
 			round 
 			type="info" 
@@ -34,9 +43,12 @@
 			loading-type="spinner"
 			:loading="loading"
 			:disabled="disabled"
-			style="background: #666666;border:1px solid #666666;"
+			class="button"
 			@click="loginBtn">登录</van-button>
 		</span>
+	</span>
+	<span class="loginFooter">
+		
 	</span>
   </div>
 </template>

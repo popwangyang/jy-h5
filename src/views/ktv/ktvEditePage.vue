@@ -1,20 +1,14 @@
 <template>
 	<div class="ktvEditeBox">
-		<!-- <van-nav-bar
-		  :title="title"
-		  left-text="返回"
-		  left-arrow
-		  @click-left="onClickLeft"
-		/> -->
 		<span class="nav">
 			KTV信息
 		</span>
-		  <van-field
-			v-model="data.ktvName"
-			label="场所名称"
-			placeholder="请输入"
-			input-align="right"
-		  />
+		<van-field
+		v-model="data.ktvName"
+		label="场所名称"
+		placeholder="请输入"
+		input-align="right"
+		/>
        <SelectComponent 
 		label="场所类型"
 		placeholder="请选择"
@@ -60,13 +54,7 @@
 			:columns="columns"
 			v-model="data.state"
 		/>
-		<SelectComponent 
-			label="营业时间"
-			placeholder="请选择"
-			type="date"
-			:columns="[]"
-			v-model="data.Ytime"
-		/>
+		<van-cell title="营业时间" value="请选择" is-link @click="goBusinessHours"/>
 		<SelectComponent 
 			label="地址"
 			placeholder="请选择"
@@ -111,9 +99,23 @@
 			}
 		},
 		methods:{
-			onClickLeft(){
-				this.$router.go(-1)
+			init(){
+				if(this.$route.query.type==="edite"){
+					var data = JSON.parse(this.$route.query.data);
+					console.log(data)
+					this.data.ktvName = data.name;
+					this.data.ktvType = data.type === 1 ? "量贩式":"夜总会";
+					this.data.personName = data.contact;
+					this.data.phone = data.phone_number;
+					this.data.tel = data.place_contact;
+					this.data.Ktime = data.opening_hours;
+					this.data.Ytime = data.business_hours;
+					this.data.address = data.province +"/"+ data.city +"/"+ data.county;
+				}
 			},
+			goBusinessHours(){
+				this.$router.push({name:"businessHours"})
+			}
 		},
 		mounted() {
 			if(this.$route.params.type == 'edite'){
@@ -123,6 +125,7 @@
 				document.title= "新建KTV";
 			    // this.title = "新建KTV"
 			}
+			// this.init()
 		}
 	}
 </script>

@@ -1,7 +1,7 @@
 <template>
 	<div class="searchBox">
-		<span class="nav" @click="goSearch">
-			<van-search v-model="inputValue" :placeholder="placeholder" show-action shape="round" background="#f4f4f4" :readonly="true">
+		<span class="nav">
+			<van-search v-model="inputValue" :placeholder="placeholder" show-action shape="round" background="#f4f4f4">
 				<div class="navRight" slot="action">
 					<van-icon name="user-circle-o" size="2em" />
 				</div>
@@ -17,20 +17,23 @@
 				type:String,
 				default:"请输入"
 			},
-			searchValue:{
+			value:{
 				type:String,
 				default:""
 			}
 		},
 		data(){
 			return{
-				inputValue:this.searchValue
+				inputValue: this.value
+			}
+		},
+		watch: {
+			inputValue(newValue, oldValue) {
+				this.$emit("input", this.inputValue);
 			}
 		},
 		methods:{
-			goSearch(){
-				this.$router.push({name:"search", query:{placeholder: this.placeholder}})
-			}
+			
 		}
 		
 	}
