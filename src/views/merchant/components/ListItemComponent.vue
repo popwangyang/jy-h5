@@ -1,8 +1,8 @@
 <template>
 	<div class="box" @click="goDetailPage">
 		<span class="boxSpan1">
-			<span>商户名称A (已停用)</span>
-			<span>5家厂商</span>
+			<span>{{item.name}} (已停用)</span>
+			<span>{{item.merchant_amount}}家厂商</span>
 		</span>
 		<span class="boxSpan2">
 			<van-icon name="arrow" size="1.6em" color="#83828c"/>
@@ -12,6 +12,14 @@
 
 <script>
 	export default{
+		props:{
+			item:{
+				type:Object,
+				default: () => {
+					return {};
+				}
+			}
+		},
 		data(){
 			return{
 				
@@ -19,7 +27,8 @@
 		},
 		methods:{
 			goDetailPage(){
-				this.$router.push({name:"merchantDetail", params:{id:'id'}})
+				console.log(this.item);
+				this.$router.push({name:"merchantDetail", query:{ id: this.item.id }})
 			}
 		}
 	}

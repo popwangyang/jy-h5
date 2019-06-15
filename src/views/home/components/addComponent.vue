@@ -27,7 +27,7 @@
 				console.log(e)
 				switch(e){
 				  case 'merchant':
-					  this.$router.push({name:'merchantEdite'})
+					  this.$router.push({ name: "merchantEdite", params: { type:"create" } })
 				}
 			}
 		}

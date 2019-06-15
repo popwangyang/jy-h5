@@ -882,3 +882,25 @@ export const getTime = function(num){
 	
 	return getDay(date);
 }
+
+// 设置是否选中;
+export const setSelected = function(arr, srr){
+	for(var i = 0; i < srr.length; i++){
+			var flage = false;
+			for(var j = 0; j < arr.length; j++){
+				 if(arr[j].id == srr[i].id){
+					 flage = true;
+					 break;
+				 }
+			}
+			srr[i].isSelected = flage;
+	}
+}
+// 组合地址;
+export const setAddress = function(data){
+	var result = [];
+	result.push({name:data.province, code:data.province_code});
+	result.push({name:data.city , code: data.city_code});
+	result.push({name:data.county, code: data.county_code});
+	return result;
+}

@@ -5,7 +5,7 @@
 			<span>
 				<van-tag type="primary" size="medium" style="margin-right: 0.26rem;color: white;" v-if="item.type === 1">量贩</van-tag>
 				<van-tag type="warning" size="medium" style="margin-right: 0.26rem;color: white;" v-else>夜店</van-tag>
-				5家厂商
+				{{item.merchant_name}}
 			</span>
 		</span>
 		<span class="boxSpan2">

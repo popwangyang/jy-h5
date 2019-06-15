@@ -7,7 +7,12 @@
 							{{placeholder}}
 						</span>
 						<span v-else style="color: #000000;">
-							{{value}}
+							<span v-if="type == 'map'">
+							  {{value | MapFilter}}
+							</span>
+							<span v-else>
+								{{value}}
+							</span>
 						</span>
 				<van-icon name="arrow" size="16px" style="margin-left: 4px;"/>
 			</div>
@@ -21,17 +26,16 @@
 		    show-toolbar
 		    :columns="columns"
 		    @cancel="onCancel"
-            @confirm="onConfirm"
+        @confirm="onConfirm"
 		  />
 		   <van-area
-		   :value="value"
 		   v-if="type=='map'"
 		   @cancel="onCancel"
 		   @confirm="onConfirm"
 		   :area-list="areaList"
 		  />
 		   <van-datetime-picker
-		      v-if="type=='date'"
+		    v-if="type=='date'"
 			  v-model="currentDate"
 			  type="date"
 			  :min-date="minDate"
@@ -43,6 +47,11 @@
 			  v-if="type=='time'"
 			  v-model="currentTime"
 			  type="time"
+				:disabled="disabled"
+				:min-hour="minHour"
+				:max-hour="maxHour"
+				:min-minute="minMinute"
+				:max-minute="maxMinute"
 			  @cancel="onCancel"
 			  @confirm="onConfirm"
 			/>
@@ -75,14 +84,46 @@
 					return []
 				}
 			},
-			value:{
-				type:String,
-				default:""
-			}
+			minHour:{
+				type:Number,
+				default:0
+			},
+			maxHour:{
+				type:Number,
+				default:23
+			},
+			minMinute:{
+				type:Number,
+				default:0
+			},
+			maxMinute:{
+				type:Number,
+				default:59
+			},
+			disabled:{
+				type:Boolean,
+				default: false
+			},
+			value:[String, Array]
 		},
 		model: {
 			prop: 'value',
 			event: 'returnBack'
+		},
+		filters:{
+			MapFilter(value){
+				console.log(value)
+				return getAddressName(value);
+			}
+		},
+		computed:{
+			mapValue(){
+				if(this.type == "map"){
+					return this.value[2].code;
+				}else{
+					return ""
+				}
+			}
 		},
 		data(){
 			return{
@@ -105,7 +146,9 @@
 			  return value;
 			},
 			clickBtn(){
-				this.show = true;
+				if(!this.disabled){
+				  this.show = true;
+				}
 			},
 			onCancel(){
 				this.defaultIndex = 0;
@@ -118,13 +161,14 @@
 					result = value;
 				  break;
 				  case "map":
-					result = getAddressName(value);
+					result = value;
 				  break;
 				  case "date":
 				    result = getDay(value);
 				  break;
 				  case "time":
 				    result = value;
+						this.$emit("change", value);
 				  break;
 			    }
 			    this.$emit('returnBack', result);

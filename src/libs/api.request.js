@@ -21,7 +21,7 @@ if (url.indexOf('info') > -1) {
 } else if (url.indexOf('test') > -1) {
   baseUrl = config.baseUrl.test
 } else {
-  baseUrl = config.baseUrl.test
+  baseUrl = config.baseUrl.dev
 }
 export const URL = baseUrl
 const Ajax = new HttpRequest(baseUrl)

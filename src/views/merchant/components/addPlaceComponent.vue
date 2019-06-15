@@ -1,10 +1,5 @@
 <template>
 	<div class="addPlaceBox">
-		<!-- <van-nav-bar
-		  title="选择门店"
-		  left-text="返回"
-		  left-arrow
-		/> -->
 		<span class="nav">
 			<van-search
 			  v-model="searchValue"
@@ -14,7 +9,6 @@
 			  background="#f4f4f4"
 			>
 			<div class="navRight" slot="action">
-			   <!-- 取消 -->
 			</div>
 			</van-search>
 		</span>
@@ -28,6 +22,7 @@
 	export default{
 		data(){
 			return{
+				data:{},
 				searchValue:'',
 				list:[
 					{
@@ -55,6 +50,8 @@
 			}
 		},
 		mounted() {
+			this.data = this.$route.params.data;
+			console.log(this.data);
 			document.title = "选择门店";
 		}
 	}

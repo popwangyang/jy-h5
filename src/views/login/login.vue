@@ -59,8 +59,8 @@ import { mapActions } from 'vuex'
 export default{
 	data(){
 		return{
-			username:'',
-			password:'',
+			username:'admin@hlchang.cn',
+			password:'abc12345',
 			passwordFlag:false,
 			loading:false,
 			
@@ -95,6 +95,7 @@ export default{
 		  this.handleLogin({ userName, password }).then(res => {	
 			  this.loading = false;
 			  console.log(res)
+				 localStorage.setItem("active", 0);
 		      this.$router.push({
 		        name: this.$config.homeName
 		      })
@@ -108,6 +109,7 @@ export default{
 		}
 	},
 	mounted() {
+		
 		document.title = "鲸唱结算平台"
 	}
 }

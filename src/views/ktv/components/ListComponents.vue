@@ -88,6 +88,7 @@
 					this.count = res.data.count;
 					this.page++;
 					this.loading = false;
+					this.isLoading = false;
 					if (this.list.length >= this.count) {
 						this.finished = true;
 					}
@@ -96,9 +97,10 @@
 					}
 				})
 			},
-			onRefresh() {
-				this.init(); //加载数据
-			},
+// 			onRefresh() {
+// 				this.init()
+// 				this.onLoad();
+// 			},
 			createBtn(){
 				// this.$router.push({name:"merchantEdite"})
 			}

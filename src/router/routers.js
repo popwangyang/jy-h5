@@ -13,7 +13,7 @@ export default [
 		name: 'home',
 		component: Home,
 		meta:{
-			keepAlive: true
+			keepAlive: false
 		}
 	},
 	{
@@ -30,11 +30,6 @@ export default [
 		path: '/merchantEdite',
 		name: 'merchantEdite',
 		component: () => import('@/views/merchant/merchantEditePage.vue')
-	},
-	{
-		path: '/addPlace',
-		name: 'addPlace',
-		component: () => import('@/views/merchant/addPlacePage.vue')
 	},
 	{
 		path: '/ktvDetail',

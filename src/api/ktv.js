@@ -8,3 +8,14 @@ export const getKTVlist = (params) => {
     method: 'get'
   })
 }
+
+// ktv编辑提交接口;
+export const setKtvDetail = (data) => {
+	var id = data.id;
+	delete data.id;
+	return axios.request({
+		url: `/copyright/ktv/ktv/${id}`,
+		data,
+		method: 'put'
+	})
+}

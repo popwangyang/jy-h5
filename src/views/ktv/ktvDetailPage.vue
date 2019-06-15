@@ -102,7 +102,6 @@
 			},
 			Ytime(){
 				var obj = eval('(' + this.data.business_hours + ')')
-				console.log(obj)
 				if(!!obj){
 				  if(obj.flag == 0){
 				  	return "全部时间段";

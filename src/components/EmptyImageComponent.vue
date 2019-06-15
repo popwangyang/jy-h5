@@ -1,6 +1,6 @@
 <template>
 	<div class="EmptyImageComponentBox">
-		<img :src="imgUrl">
+		<img :src="imgUrl" :style="{width: size+'rem'}">
 		<span>
 			{{text}}
 		</span>
@@ -18,11 +18,19 @@
 			img:{
 				type:String,
 				default:"empty"
+			},
+			type:{
+				type:String,
+				default:'png'
+			},
+			size:{
+				type:Number,
+				default:2
 			}
 		},
 		data(){
 			return{
-				 imgUrl:require("@/assets/"+this.img+".png")
+				 imgUrl:require("@/assets/"+this.img+"."+ this.type)
 			}
 		}
 	}

@@ -1,7 +1,7 @@
 <template>
 	<div class="box">
 		<span class="content">
-			<List/>
+			<List :searchValue="searchValue"/>
 		</span>
 	</div>
 </template>
@@ -9,21 +9,8 @@
 <script>
 	import List from './components/ListComponents.vue'
 	export default{
-		components:{ List },
-		data(){
-			return{
-				searchValue:"",
-				data:[]
-			}
-		},
-		methods:{
-			onSearch(){
-				
-			},
-			onUser(){
-				
-			}
-		}
+		props:['searchValue'],
+		components:{ List }
 	}
 </script>
 

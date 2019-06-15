@@ -1,74 +1,123 @@
 <template>
 	<span>
-	  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh" > -->
-	  	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="!empty">
-	  		<ListItem v-for="item in list" :key="item"/>
-	  	</van-list>
-	  <!-- </van-pull-refresh> -->
-	  <span v-if="empty">
-	  	<EmptyComponent 
-		 :text="text"
-		 :title="title"
-		 @eventBtn="createBtn"
-		/>
-	  </span>
+		<!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh" > -->
+		<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="!empty">
+			<ListItem v-for="item in list" :key="item.id" :item="item"/>
+		</van-list>
+		<!-- </van-pull-refresh> -->
+		<span class="empty" v-if="empty">
+			<EmptyComponent :text="text" :title="title" @eventBtn="createBtn" v-if="flage" />
+			<EmptyImageComponent text="暂无数据" v-else />
+		</span>
 	</span>
 </template>
 
 <script>
+	import {
+		getMerchantList
+	} from '@/api/merchant'
 	import EmptyComponent from '@/components/EmptyComponent.vue'
+	import EmptyImageComponent from '@/components/EmptyImageComponent.vue'
 	import ListItem from './ListItemComponent'
 	export default {
-		components:{ ListItem, EmptyComponent },
-		props: ['data'],
+		components: {
+			ListItem,
+			EmptyComponent,
+			EmptyImageComponent
+		},
+		props: ["searchValue"],
 		data() {
 			return {
 				list: [],
+				count: 0,
 				loading: false,
 				finished: false,
 				isLoading: false, //控制下拉刷新的加载动画
-				totle:"",
-				pageIndex:"",
-				pageSize:"",
-				empty:false,
-				text:"暂未创建账号",
-				title:"新建商户"
+				page: 1,
+				page_size: 30,
+				empty: false,
+				text: "暂未创建账号",
+				title: "新建商户"
+			}
+		},
+		watch: {
+			searchValue(newValue, oldValue) {
+				this.init();
+				this.onLoad();
+			}
+		},
+		computed: {
+			flage() {
+				if (this.searchValue == "" && this.list.length == 0) {
+					return true;
+				} else {
+					return false;
+				}
 			}
 		},
 		methods: {
 			init() {
-				setTimeout(() => {
-				  this.list = [1,2,3,4,5,6,7,8,,9,10];
-				  this.isLoading = false;
-				}, 1000)
+				this.list = [];
+				this.count = 0;
+				this.loading = false;
+				this.finished = false;
+				this.page = 1;
+				this.page_size = 30;
+				this.empty = false;
 			},
 			onLoad() {
-				// 异步更新数据
-				setTimeout(() => {
-					for (let i = 0; i < 10; i++) {
-						this.list.push(this.list.length + 1);
-					}
-					// 加载状态结束
+				var send_data = {
+					name: this.searchValue,
+					page: this.page,
+					page_size: this.page_size
+				}
+				getMerchantList(send_data).then(res => {
+					var arr = this.list.concat(res.data.results);
+					var obj = {};
+					this.list = arr.reduce((cur, next) => {
+						obj[next.id] ? "" : obj[next.id] = true && cur.push(next);
+						return cur;
+					}, []);
+					this.count = res.data.count;
+					this.page++;
 					this.loading = false;
-
-					// 数据全部加载完成
-					if (this.list.length >= 40) {
+					if (this.list.length >= this.count) {
 						this.finished = true;
 					}
-					if (this.list.length == 0) {
+					if (this.count == 0) {
 						this.empty = true;
 					}
-				}, 2000);
+				})
 			},
 			onRefresh() {
 				this.init(); //加载数据
 			},
-			createBtn(){
-				this.$router.push({name:"merchantEdite"})
+			createBtn() {
+				this.$router.push({
+					name: "merchantEdite",
+					params: {
+						type:"create",
+						data: {
+							name: "",
+							account: "",
+							password: "",
+							phone: "",
+							checked: true,
+							ktvList: []
+						}
+					}
+				})
 			}
 		}
 	}
 </script>
 
-<style>
+<style scoped="scoped" lang="less">
+	.empty {
+		display: flex;
+		height: 100%;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+	}
 </style>

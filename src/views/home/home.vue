@@ -82,13 +82,22 @@
 				}
 			},
 			tabbarBtn(value){
+				localStorage.setItem("active", value);
 				this.$refs.search.inputValue = "";
 				this.searchChaneg("");
+				this.setTitle();
+			},
+			setTitle(){
+				if(this.active == 0){
+				document.title = "商户管理"
+				}else{
+				document.title = "KTV管理"
+				}
 			}
 		},
 		mounted() {
-			document.title = "商户管理"
-			console.log("商户管理")
+			this.active = parseInt(localStorage.getItem('active'));
+			this.setTitle();
 		}
 	}
 </script>
