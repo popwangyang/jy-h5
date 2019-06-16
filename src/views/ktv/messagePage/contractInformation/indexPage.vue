@@ -1,11 +1,6 @@
 <template>
 	<div class="contractBox">
-		<!-- <van-nav-bar
-		  title="合同信息"
-		  left-arrow
-		  @click-left="onClickLeft"
-		/> -->
-		<span v-if="!empty">
+		<span v-if="pageState == 1">
 			<Item1
 			 label="合同编号"
 			 value="xxx"
@@ -54,14 +49,18 @@
 				<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">编辑</van-button>
 			</span>
 		</span>
-		<span v-if="empty" class="empty">
+		<span v-if="pageState == 2" class="box">
 			<EmptyComponent
 			  text="暂无签约合同"
 			  title="新建合同"
+				@eventBtn="addBtn"
 			/>
 			<span @click="checkBtn">
 				查看往期
 			</span>
+		</span>
+		<span class="box" v-if="pageState == 0">
+			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
 		</span>
 		<van-popup 
 		v-model="moreFlage"
@@ -87,6 +86,7 @@
 </template>
 
 <script>
+	import {ktvContractList} from "@/api/ktv.js"
 	import Item1 from "@/components/list1.vue"
 	import Item2 from "@/components/list2.vue"
 	import EmptyComponent from "@/components/EmptyComponent.vue"
@@ -94,6 +94,7 @@
 		components:{ Item1, Item2, EmptyComponent },
 		data(){
 			return{
+				pageState:0,
 				empty:false,
 				moreFlage:false,
 				showFooter:true
@@ -110,17 +111,33 @@
 				
 			},
 			addBtn(){
-				this.$router.push({name:"addContract"})
+				this.$router.push({name:"addContract", query:{type:"create", ktvID: this.$route.query.ktvID}})
 			},
 			checkBtn(){
 				this.$router.push({name:"forwardContract"})
 			},
 			stopBtn(){
 				
+			},
+			getDate(){
+				var send_data ={
+					ktv: this.$route.query.ktvID,
+					state: 1
+				}
+				this.pageState = 0;
+				ktvContractList(send_data).then(res => {
+					console.log(res)
+					if(res.data.results.length > 0){
+						this.pageState = 1;
+					}else{
+						this.pageState = 2;
+					}
+				})
 			}
 		},
 		mounted() {
 			document.title = "合同信息";
+			this.getDate();
 			if(this.$route.query.type && this.$route.query.type == "forwardContract" ){
 				this.showFooter = false;
 			}
@@ -133,7 +150,7 @@
 		height: 100%;
 		position: relative;
 		background: #fafafa;
-		.empty{
+		.box{
 			display: flex;
 			flex-direction: column;
 			align-items: center;

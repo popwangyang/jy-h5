@@ -54,9 +54,8 @@
 			:columns="ktvState"
 			v-model="data.state"
 		/>
-		<van-cell title="营业时间" :value="data.Ytime | YtimeFilter" @click="goBusinessHours"/>
-		  <van-icon slot="right-icon" name="is-link" v-show="data.Ytime == '请选择'"></van-icon>
-		</van-cell>
+		<van-cell title="营业时间" :value="data.Ytime | YtimeFilter" is-link  @click="goBusinessHours" v-show="data.Ytime == ''"/>
+		<van-cell title="营业时间" :value="data.Ytime | YtimeFilter"   @click="goBusinessHours" v-show="data.Ytime != ''"/>
 		<SelectComponent 
 			label="地址"
 			placeholder="请选择"
@@ -75,13 +74,15 @@
 			 <YTimePage v-model="data.Ytime" @btn="goBusinessHours"/>
 		 </span>
 		 <span class="footer">
-		   <van-button  size="large" class="button" @click="handlerFrom('edite')">保存</van-button>
+		   <van-button :loading="loading" loading-type="spinner"  loading-text="加载中..."  size="large" class="button" @click="handlerFrom('edite')" v-if="isEdite">保存</van-button>
+		   <van-button :loading="loading" loading-type="spinner"  loading-text="加载中..."  size="large" class="button" @click="handlerFrom('create')" v-else>创建</van-button>
 		 </span>
 	</div>
 </template>
 
 <script>
-	import { setKtvDetail } from '@/api/ktv.js'
+	import { Toast } from "vant"
+	import { setKtvDetail, creatKtvDetail } from '@/api/ktv.js'
 	import { setAddress } from '@/libs/util.js'
 	import SelectComponent from '@/components/SelectComponent.vue'
 	import YTimePage from "./businessHoursPage.vue"
@@ -89,11 +90,11 @@
 		components:{ SelectComponent, YTimePage },
 		data(){
 			return{
-				title:"新建KTV",
-				show2:false,
+				isEdite:false,
 				YtimeFlage:false,
 				columns: [ "量贩式", "夜场" ],
 				ktvState: ["营业", "倒闭"],
+				loading:false,
 				data:{
 					ktvName:"",
 					ktvType:"",
@@ -180,11 +181,32 @@
 					city_code: this.data.address[1].code,
 					county_code: this.data.address[2].code
 				}
+				this.loading = true;
+				console.log(send_data);
 				if(type == "edite"){
 					send_data.id = JSON.parse(this.$route.query.data).id
-				console.log(send_data);
 					setKtvDetail(send_data).then(res => {
-						 console.log(res)
+						this.loading = false;
+						Toast.success('保存成功');
+						console.log(res)
+						setTimeout(() => {
+							this.$router.go(-1);
+						}, 500)
+					}).catch(err => {
+						this.loading = false;
+						Toast.fail('保存失败');
+					})
+				}else{
+					creatKtvDetail(send_data).then(res => {
+						this.loading = false;
+						Toast.success('创建成功');
+						console.log(res)
+						setTimeout(() => {
+							this.$router.go(-1);
+						}, 500)
+					}).catch(err => {
+						this.loading = false;
+						Toast.fail('创建失败');
 					})
 				}
 			}
@@ -192,8 +214,10 @@
 		mounted() {
 			console.log(this.$route.query.type)
 			if(this.$route.query.type == 'edite'){
+				this.isEdite = true;
 				document.title= "编辑KTV";
 			}else{
+				this.isEdite = false;
 				document.title= "新建KTV";
 			}
 			this.init()

@@ -33,7 +33,7 @@
 		</span>
 		<span class="box">
 			<span v-show="radio == '2'" >
-				<van-cell :title="item.name"  v-for="item in time" clickable @click="selectBtn(item)">
+				<van-cell :title="item.name" :key="item.code" v-for="item in time" clickable @click="selectBtn(item)">
 					<van-icon name="checked" v-if="item.isSelect" color="#1989fa"></van-icon>
 				</van-cell>
 			</span>
@@ -49,10 +49,7 @@
 	export default{
 		components:{ SelectComponent },
 		props:{
-			value:{
-				type:Object,
-				default:() => {}
-			}
+			value:[Object, String]
 		},
 		model:{
 			prop: 'value',
@@ -64,9 +61,9 @@
 				time:[],
 				minHour:0,
 				minMinute:0,
-				startTime:"",
-				endTime:"",
-				InputDisabled:false
+				startTime:"00:00",
+				endTime:"23:00",
+				InputDisabled:true
 			}
 		},
 		computed:{
@@ -122,7 +119,8 @@
 				this.minHour = parseInt(startTime[0]);
 				this.minMinute = parseInt(startTime[1]);
 			},
-			init(){
+			editeInit(){
+			
 				var data = this.value;
 				if(data.flag == '0'){
 					this.radio = "1";
@@ -135,57 +133,71 @@
 					this.endTime = data.end;
 					this.InputDisabled = false;
 				}
+				this.markTime(data);
+			},
+			createInit(){
+				this.radio = "1";
+				this.InputDisabled = true;
+				this.startTime = "00:00";
+				this.endTime = "23:59";
+				this.markTime("");
+			},
+			selectBtn(item){
+				item.isSelect = !item.isSelect;
+				
+			},
+			markTime(data){
 				var arr = []
 				for(var i = 1; i < 8; i++){
 					var str = ""
 					var code = ""
 					switch (i){
 						case 1:
-						  str = "星期一";
-						  code = 1;
+						str = "星期一";
+						code = 1;
 							break;
 						case 2:
-						  str = "星期二";
-						  code = 2;
+						str = "星期二";
+						code = 2;
 							break;
 						case 3:
-						  str = "星期三";
-						  code = 3;
+						str = "星期三";
+						code = 3;
 							break;
 						case 4:
-						  str = "星期四";
-						  code = 4;
+						str = "星期四";
+						code = 4;
 							break;
 						case 5:
-						  str = "星期五";
-						  code = 5;
+						str = "星期五";
+						code = 5;
 							break;
 						case 6:
-						  str = "星期六";
-						  code = 6;
+						str = "星期六";
+						code = 6;
 							break;
 						case 7:
-						  str = "星期日";
-						  code = 7;
+						str = "星期日";
+						code = 7;
 							break;
 					}
 					var obj = {
 						name: str,
 						code: code,
-						isSelect: data.days.indexOf(i) == -1 ? false:true
+						isSelect: data == "" ? false : data.days.indexOf(i) == -1 ? false:true
 					}
 					arr.push(obj);
 				}
 				this.time = arr;
 				console.log(this.time);
-			},
-			selectBtn(item){
-				item.isSelect = !item.isSelect;
-				
 			}
 		},
 		mounted() {
-			this.init();
+			if(this.$route.query.type == "edite"){
+			    this.editeInit();
+			}else{
+				this.createInit()
+			}
 		}
 	}
 </script>

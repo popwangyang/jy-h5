@@ -1,36 +1,13 @@
 <template>
 	<div class="forwardContractBox">
-		<!-- <van-nav-bar
-		  title="往期合同"
-		  left-arrow
-		  @click-left="onClickLeft"
-		/> -->
 		<span class="content">
-			<van-pull-refresh v-model="isLoading" @refresh="onRefresh" v-if="!empty">
-		        <van-list
-		            v-model="loading"
-		            :finished="finished"
-		            @load="onLoad"
-		            :offset="0"
-					finished-text="没有更多了"
-		        >
-		            <div class="list-item">
-						<van-cell 
-						v-for="item in list" :key="item" 
-						title="合同编号" 
-						label="2019-6-3"
-						value="已终止"
-						is-link
-						@click="goDetail"
-						/>
-		            </div>
-		        </van-list>
-		    </van-pull-refresh>
-			 <span v-if="empty" class="empty">
-				<EmptyImageComponent 
-				 :text="text"
-				 img="empty"
-				/>
+			<van-list v-model="loading" :finished="finished" @load="onLoad" :offset="0" finished-text="没有更多了" v-if="!empty">
+				<div class="list-item">
+					<van-cell v-for="item in list" :key="item" title="合同编号" label="2019-6-3" value="已终止" is-link @click="goDetail" />
+				</div>
+			</van-list>
+			<span v-if="empty" class="empty">
+				<EmptyImageComponent :text="text" img="empty" />
 			</span>
 		</span>
 	</div>
@@ -38,46 +15,48 @@
 
 <script>
 	import EmptyImageComponent from "@/components/EmptyImageComponent.vue"
-	export default{
-		components:{ EmptyImageComponent },
-		data(){
-			return{
-				empty:true,
-				text:"暂无充值记录",
+	export default {
+		components: {
+			EmptyImageComponent
+		},
+		data() {
+			return {
+				empty: true,
+				text: "暂无充值记录",
 				list: [],
-                loading: false,   //是否处于加载状态
-                finished: false,  //是否已加载完所有数据
-                isLoading: false,   //是否处于下拉刷新状态
+				loading: false, //是否处于加载状态
+				finished: false, //是否已加载完所有数据
+				isLoading: false, //是否处于下拉刷新状态
 			}
 		},
-		methods:{
-			onClickLeft(){
+		methods: {
+			onClickLeft() {
 				this.$router.go(-1)
 			},
-			onLoad() {      //上拉加载
-                setTimeout(() => {
-                    for (let i = 0; i < 15; i++) {
-                        this.list.push(this.list.length + 1);
-                    }
-                    this.loading = false;
-                    if (this.list.length >= 60) {
-                        this.finished = true;
-                    }
-                }, 1000);
-            },
-            onRefresh() {       //下拉刷新
-                setTimeout(() => {
-                    this.finished = false;
-                    this.isLoading = false;
-                    this.list = []
-                    this.onLoad()
-                }, 500);
-            },
-			createBtn(){
+			onLoad() { //上拉加载
+				setTimeout(() => {
+					for (let i = 0; i < 15; i++) {
+						this.list.push(this.list.length + 1);
+					}
+					this.loading = false;
+					if (this.list.length >= 60) {
+						this.finished = true;
+					}
+				}, 1000);
+			},
+			onRefresh() { //下拉刷新
+				setTimeout(() => {
+					this.finished = false;
+					this.isLoading = false;
+					this.list = []
+					this.onLoad()
+				}, 500);
+			},
+			createBtn() {
 				// this.$router.push({name:"merchantEdite"})
 			},
-			goDetail(){
-			  
+			goDetail() {
+
 			}
 		},
 		mounted() {
@@ -87,17 +66,19 @@
 </script>
 
 <style scoped="scoped" lang="less">
-	.forwardContractBox{
+	.forwardContractBox {
 		height: 100%;
 		position: relative;
 		background: #fafafa;
 		display: flex;
 		flex-direction: column;
-		.content{
+
+		.content {
 			flex: 1;
 			// background: yellow;
 			overflow: auto;
-			.empty{
+
+			.empty {
 				display: flex;
 				height: 100%;
 				align-items: center;

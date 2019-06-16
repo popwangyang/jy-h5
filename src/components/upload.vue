@@ -5,24 +5,30 @@
 		 :max-count="1"
 		 v-model="fileList"
 		 multiple
-		 preview-size="80px"
+		
+		 v-show="state == 0"
 		/>
 		<span class="box1" v-show="state == 1">
+				<van-image width="3.2rem" fit="contain" :src="src"  @click="foo">
+					<template v-slot:loading>
+						<van-loading type="spinner" size="20"/>
+					</template>
+					<template v-slot:error>加载失败</template>
+				</van-image>
+				<van-icon class="van-uploader__preview-delete" name="delete" size="0.4rem" color = "#fff" v-show="closeState == 1" @click="deleteBtn"/>
 			<van-circle
 			  v-model="currentRate"
 			  :rate="rate"
 			  :speed="100"
 			  size="60px"
 			  :stroke-width="80"
+				class="circle"
+				v-show="showCircle == 1"
 			>
 			  <span class="van-circle__text" style="color: white;font-weight: bold;">
 				  {{text}}
 			  </span>
 			</van-circle>
-		</span>
-		<span class="box2" v-show="state == 2" @click="imagePreview"></span>
-		<span class="delete" v-show="closeState == 1">
-			<van-icon name="clear" size="0.4rem" color = "#565353" @click="deleteBtn"/>
 		</span>
 	</div>
 </template>
@@ -38,8 +44,10 @@
 		},
 		data(){
 			return{
+				src:"",
 				state:0,
 				closeState:0,
+				showCircle:0,
 				currentRate:0,
 				rate:0,
 				fileList:[],
@@ -52,22 +60,25 @@
 			}
 		},
 		methods:{
-			imagePreview(){
-				console.log(this.fileList)
-				var result = [];
-				this.fileList.map((item) => {
-					result.push(item.content)
-				})
-				ImagePreview(result);
+			foo(){
+				console.log('ppppp')
+				ImagePreview([
+					this.src
+				])
+			},
+			deleteBtn(){
+				
 			},
 			afterRead(data) {
-			  // 此时可以自行将文件上传至服务器
 			  console.log(data);
+				this.state = 1;
+				this.showCircle = 1;
+				this.closeState = 0;
+				this.src = data.content
 			  let obj = {
-			    name: data.file.name, // 文件名字
-			    mime: data.file.type, // 文件类型限制参数格式为标准mime对应格式字符串
-			    // 文件大小限制单位byte
-			    size: data.file.size * 1024 // 文件大小this.size单位是kb转为byte
+			    name: data.file.name, 
+			    mime: data.file.type, 
+			    size: data.file.size * 1024 
 			  }
 			var P = new Promise((resolve, reject) => {
 				get('/copyright/upload/upload', obj).then(res => {
@@ -86,10 +97,9 @@
 			  })
 			},
 			upload(send_data){
-				this.state = 1;
-				this.closeState = 1;
+				
 				var formData = new FormData();
-				    formData.append("file", send_data.file);
+				  formData.append("file", send_data.file);
 					formData.append("token", send_data.token);
 					formData.append("file", send_data.name);
 					formData.append("key", send_data.key);
@@ -106,7 +116,7 @@
 						let body = JSON.parse(xhr.responseText);
 						let data= body.data;
 						// console.log(body)
-						this.$emit("upload", body)
+						this.$emit("upload", body.id)
 						// self.setState({'to_user_arr':data})
 					}else{
 					   try{
@@ -123,8 +133,10 @@
 				console.log(evt);
 			},
 			uploadCom(e){
+				  
 				setTimeout(() => {
-				  this.state = 2;
+					this.closeState = 1;
+					this.showCircle = 0;
 				}, 200)
 				// console.log("uploadCom", e)
 			},
@@ -150,7 +162,6 @@
 <style scoped="scoped" lang="less">
 	.uploadBox{
 		position: relative;
-		// background: yellow;
 		width: 2.5rem;
 		height: 2.5rem;
 		display: flex;
@@ -160,18 +171,18 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			width: 2.1rem;
-			height: 2.1rem;
 			margin: 0.06rem;
-			// background: #0c0c0b3b;
 			position: absolute;
 			left: 0;
 			top: 0;
 			z-index: 1;
+			.circle{
+				position: absolute;
+				left: 50%;
+				margin-left: -30px;
+			}
 		}
 		.box2{
-			width: 2.1rem;
-			height: 2.1rem;
 			margin: 0.06rem;
 			position: absolute;
 			left: 0;

@@ -9,12 +9,10 @@
 	export default{
 		props:{
 			label:{
-				type:String,
-				default:"13"
+				type:[String, Number]
 			},
 			value:{
-				type:String,
-				default: "2"
+				type:[String, Number]
 			},
 			isSelected:{
 				type:Boolean,

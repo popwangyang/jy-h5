@@ -28,6 +28,10 @@
 				switch(e){
 				  case 'merchant':
 					  this.$router.push({ name: "merchantEdite", params: { type:"create" } })
+					break;
+				  case 'ktv':
+					  this.$router.push({name: "ktvEdite", query: {type: "create"}});
+					break;
 				}
 			}
 		}

@@ -21,15 +21,11 @@
 			</span>
 			<van-index-bar :index-list="[]">
 				<van-index-anchor index="关联场所:3" :sticky="false"/>
-				<van-cell :title="item.name" v-for="item in data.ktv_list"/>
+				<van-cell :title="item.name" v-for="item in data.ktv_list" :key="item.id"/>
 			</van-index-bar>
 		</span>
 		<span class="load" v-show="loading">
-			<EmptyImageComponent
-			text=""
-			img="loading"
-			type="gif"
-			/>
+			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
 		</span>
 	</div>
 </template>

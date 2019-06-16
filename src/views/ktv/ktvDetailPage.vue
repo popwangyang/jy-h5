@@ -144,13 +144,13 @@
 			goPage(index){
 				switch(index){
 					case 1:
-					  this.$router.push({name:"CImessage"})
+					  this.$router.push({name:"CImessage", query:{id: this.data.id}})
 					break;
 					case 2:
-					  this.$router.push({name:"Implementation"})
+					  this.$router.push({name:"Implementation", query:{id: this.data.id}})
 					break;
 					case 3:
-					  this.$router.push({name:"contractInformation"})
+					  this.$router.push({name:"contractInformation", query:{ktvID: this.data.id}})
 					break;
 					case 4:
 					  this.$router.push({name:"accountInformation"})

@@ -6,10 +6,13 @@
 		<span class="content">
 			<span class="item">
 				<span class="box" v-if="src != '' && src.substr(0, 4) == 'http' && state == 0">
-					<img :src="src" alt="" width="100%" height="100%" >
-					<span class="delete">
-						<van-icon name="clear" size="0.4rem" color = "#565353" @click="deleteBtn"/>
-					</span>
+					<van-image width="3.2rem" fit="contain" :src="src" @click="ImagePreviewBtn">
+						<template v-slot:loading>
+							<van-loading type="spinner" size="20"/>
+						</template>
+						<template v-slot:error>加载失败</template>
+					</van-image>
+					<van-icon class="van-uploader__preview-delete" name="delete" size="0.4rem" color = "#fff" @click="deleteBtn"/>
 				</span>
 				<Upload ref="upload" @upload="upload" v-else/>
 			</span>
@@ -18,6 +21,9 @@
 </template>
 
 <script>
+	import { Toast } from 'vant';
+	import { deleteMaterial } from "@/api/ktv.js"
+	import { ImagePreview } from 'vant'
 	import Upload from "@/components/upload"
 	export default{
 		components:{ Upload },
@@ -46,11 +52,18 @@
 		},
 		methods:{
 			upload(result){
-				this.$emit("returnBack", result.key)
+				console.log(result);
+				this.$emit("returnBack", result.id+"");
+			},
+			ImagePreviewBtn(){
+				ImagePreview([
+					this.src
+				])
 			},
 			deleteBtn(){
 				console.log('d')
 				this.state = 1;
+				this.$emit("returnBack", "")
 			}
 		}
 	}
@@ -72,14 +85,11 @@
 				.box{
 					display: flex;
 					position: relative;
-					width: 2.08rem;
-					height: 2.08rem;
 					background: white;
-					padding-bottom: 0.312rem;
 					.delete{
 						position: absolute;
-						top: -0.22rem;
-						right: -0.22rem;
+						bottom: 0rem;
+						right: 0rem;
 						z-index: 2;
 					}
 				}

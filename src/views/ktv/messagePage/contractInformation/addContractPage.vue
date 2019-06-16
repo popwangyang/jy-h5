@@ -64,6 +64,7 @@
 </template>
 
 <script>
+	import { addKtvContract } from "@/api/ktv.js"
 	import SelectComponent from "@/components/SelectComponent.vue"
 	import Item4 from "@/components/list4.vue"
 	export default{
@@ -71,11 +72,11 @@
 		data(){
 			return{
 				data:{
-					contractName:"",
+					number:"", //"合同编号
 					packageName:"",
 					BalconyNumber:"",
-					startTime:"",
-					endTime:"",
+					begin_date:"",  //开始日期
+					end_date:"",  // 结束日期
 					contractState:"",
 					arrivalAccountState:"",
 					contractAdress1:"",
