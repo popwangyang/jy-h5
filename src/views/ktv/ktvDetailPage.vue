@@ -72,7 +72,7 @@
 						</span>
 						<span class="text">签约信息</span>
 					</span>
-					<span class="item">
+					<span class="item" v-if="data.isShowAccount">
 						<span class="icon" @click="goPage(4)">
 							<van-icon name="browsing-history" size="3.6em"></van-icon>
 						</span>
@@ -100,7 +100,7 @@
 </template>
 
 <script>
-	import { getKTVDetail } from '@/api/ktv.js'
+	import { getKTVDetail, getKTVDetail1 } from '@/api/ktv.js'
 	import Error from "@/components/EmptyImageComponent.vue"
 	export default{
 		components: { Error },
@@ -178,7 +178,7 @@
 			},
 			getKtvDetail(){
 				this.pageState = 0;
-				getKTVDetail(this.ktvID).then(res => {
+				getKTVDetail1(this.ktvID).then(res => {
 					this.pageState = 1;
 					this.data = res.data;
 				}).catch(err => {

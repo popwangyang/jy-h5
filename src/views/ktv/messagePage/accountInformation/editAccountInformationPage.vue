@@ -35,7 +35,7 @@
 			:loading="loading"
 			loading-type="spinner"
 			loading-text="加载中..."
-			type="primary" 
+			class="button"
 			size="large" 
 			@click="onClickBtn">{{buttonText}}</van-button>	
 		</span>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-	import { createTrialAccount } from "@/api/ktv.js"
+	import { setTrialAccount, getAccountDetail } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	export default{
 		data(){
@@ -55,11 +55,12 @@
 					"username": "",
 					"password": "",
 					"is_active": true,
-					"group": [3],
+					"group": [],
 					"ktv_id": this.$route.query.ktvID
 				},
 				buttonText:"",
-				ToastText:""
+				ToastText:"",
+				ktvID:""
 			}
 		},
 		computed:{
@@ -80,13 +81,17 @@
 				    send_data.is_active = send_data.is_active ? 1:0;
 					console.log(send_data)
 					if(this.$route.query.type == "create"){
-					  createTrialAccount(send_data).then(res => {
+					  setTrialAccount(send_data).then(res => {
 					  	console.log(res)
 					  	this.loading = false;
 					  	Toast.success("账号创建成功")
 					  }).catch(err => {
 					  	this.loading = false;
-					  	Toast.fail("账号创建失败")
+						if(err.data){
+					  	  Toast.fail(err.data.non_field_errors[0])
+						}else{
+						  Toast.fail("账号创建异常");
+						}
 					  })	
 					}else{
 				      createTrialAccount(send_data).then(res => {
@@ -98,15 +103,30 @@
 				      	Toast.fail("账号创建失败")
 				      })
 					}
-					
+			},
+			getDetail(){
+				var send_data = {
+					code: "K",
+					ktv_id: this.ktvID
+				}
+				Toast.loading({
+				  duration: 0,       // 持续展示 toast
+				  forbidClick: true, // 禁用背景点击
+				  loadingType: 'circular',
+				});
+				getAccountDetail(send_data).then(res => {
+					Toast.clear();
+					this.data = res.data.results[0]
+				})
 			}
-			
 		},
 		mounted() {
 			if(this.$route.query.type == "edit"){
 				document.title = "编辑账号"
 				this.buttonText = "保存"
 				this.ToastText = "保存成功"
+				this.ktvID = this.$route.query.ktvID;
+				this.getDetail();
 			}else{
 				document.title = "新建账号"
 				this.buttonText = "新建试用账号"

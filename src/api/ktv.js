@@ -34,13 +34,7 @@ export const getKTVlist = (params) => {
   })
 }
 
-// ktv详情接口；
-export const getKTVDetail = (id) => {
-	return axios.request({
-	  url: `/copyright/ktv/ktv/${id}`,
-	  method: 'get'
-    })
-}
+
 // KTV】基本信息创建
 
 export const creatKtvDetail = (data) => {
@@ -167,6 +161,35 @@ export const startAccount = (id) => {
 		 method:'get'
 	 })
  }
+  // ktv详情接口；
+ export const getKTVDetail = (id) => {
+ 	return axios.request({
+ 	  url: `/copyright/ktv/ktv/${id}`,
+ 	  method: 'get'
+     })
+ }
+ 
+ // ktv详情接口；
+ export const getKTVDetail1 = (id) => {
+	 var send_data = {
+			 ktv: id,
+			 state: 1
+	    } 
+ 	return new Promise((resolve, reject) => {
+		ktvContractList(send_data).then(res => {
+			getKTVDetail(id).then(res1 => {
+				var obj = {
+					data: res1.data
+				};
+				    obj.data.isShowAccount = res.data.results.length > 0 ? true:false;
+				resolve(obj)
+			})
+		}).catch(err => {
+			reject(err);
+		})
+	})
+ }
+ 
  //【KTV】新增签约信息
  export const addKtvContract = (data) => {
 	 return axios.request({
@@ -187,7 +210,7 @@ export const startAccount = (id) => {
  
  // ktv创建试用账号
  
- export const createTrialAccount = (data) => {
+const createTrialAccount = (data) => {
 	 return axios.request({
 		 url:`/copyright/rbac/user`,
 		 data,
@@ -195,11 +218,70 @@ export const startAccount = (id) => {
 	 })
  }
  
- // 获取ktv账号信息；
- export const getAccountDetail = (params) => {
+ // 获取ktv账号信息前的id
+const getAccountDetailID = () => {
 	 return axios.request({
-		url:`/copyright/rbac/user`,
-		params,
-		method:'get'
+		 url:"/copyright/rbac/group?code=ktv",
+		 method:"get"
 	 })
  }
+ 
+// 获取ktv账号信息
+export const getAccountDetail = (params) => {
+	 return axios.request({
+			url:`/copyright/rbac/user`,
+			params,
+			method:'get'
+	}) 
+ }
+
+export const getAccountMessage = (params) => {
+	var id = params.ktv_id;
+	return new Promise((resolve, reject) => {
+		getKTVDetail(id).then(res => {
+			getAccountDetail(params).then(result => {
+				if(result.data.results.length > 0){
+					var obj = result.data.results[0];
+					    obj.account_status = res.data.account_status;
+						obj.balance = res.data.balance;
+						resolve([obj])
+				}else{
+					resolve([])
+				}
+				
+			})
+		}).catch(err => {
+			reject(err)
+		})
+	})
+}
+
+//创建测试账号；
+export const setTrialAccount = (params) => {
+	return getAccountDetailID().then(res => {
+		params.group = [res.data.results[0].id];
+		return createTrialAccount(params)
+	}) 
+ }
+
+// 账号正式启用
+export const AccountOfficiallOpened = (data) => {
+	var id = data.ktvID;
+	delete data.ktvID;
+	return axios.request({
+			url:`/copyright/ktv/ktv-place/${id}`,
+			data,
+			method:'put'
+	}) 
+}
+// 禁用账号
+export const stopAccount = (data) => {
+	var id = data.id;
+	console.log(data)
+	delete data.id;
+	return axios.request({
+			url:`/copyright/rbac/user/${id}`,
+			data,
+			method:'patch'
+	}) 
+}
