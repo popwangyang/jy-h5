@@ -78,7 +78,8 @@
 					identity_card_photo:{
 						id:"",
 						src:""
-					}
+					},
+					id:""
 				}
 			}
 		},
@@ -117,6 +118,7 @@
 						}
 					})
 				}else{
+					send_data.id = this.data.id;
 					putKtvCorporateDetail(send_data).then(res => {
 						this.loading = false;
 						Toast.success("修改成功")
@@ -146,6 +148,7 @@
 						id: data.identity_card_photo.id+"",
 						src: data.identity_card_photo.download_url
 					};
+					this.data.id = data.id
 						console.log(this.data)
 				}
 			}

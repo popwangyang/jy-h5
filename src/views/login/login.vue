@@ -101,7 +101,12 @@ export default{
 		      })
 		  }).catch((err) => {
 			    this.loading = false;
-				this.$toast.fail(err.data.non_field_errors[0]);
+				console.log(err)
+				if(err.data.non_field_errors){
+					this.$toast.fail(err.data.non_field_errors[0]);
+				}else{
+					this.$toast.fail("登录异常,请联系管理员")
+				}
 			})
 		},
 		rightIconBtn(){

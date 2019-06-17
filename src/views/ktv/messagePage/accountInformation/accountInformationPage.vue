@@ -1,6 +1,6 @@
 <template>
 	<div class="accountInformationBox">
-		<div class="box1" v-if="hasDetail">
+		<div class="box1" v-if="statePage == 1">
 			<span class="line"></span>
 			<Item1
 			 label="登录账号"
@@ -29,27 +29,39 @@
 				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="editBtn">编辑</van-button>
 			</span>
 		</div>
-		<div class="box2" v-else>
+		<div class="box2" v-if="statePage == 2">
 			<EmptyComponent 
 			 :text="text"
 			 :title="title"
 			 @eventBtn="createBtn"
 			/>
 		</div>
+		<div class="box2" v-if="statePage == 0">
+			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
+		</div>
+		<div class="box2" v-if="statePage == 3">
+			<Error
+			text="数据请求异常"
+			img="fail"
+			/>
+		</div>
 	</div>
 </template>
 
 <script>
+	import { getAccountDetail } from '@/api/ktv.js'
 	import EmptyComponent from '@/components/EmptyComponent.vue'
+	import Error from '@/components/EmptyImageComponent.vue'
 	import Item1 from '@/components/list1.vue'
 	import { Dialog, Toast } from 'vant';
 	export default{
-		components:{ Item1, EmptyComponent },
+		components:{ Item1, EmptyComponent, Error },
 		data(){
 			return{
-				hasDetail:false,
+				statePage:0,
 				text:"暂未创建账号",
-				title:"新建试用账号"
+				title:"新建试用账号",
+				ktvID:""
 			}
 		},
 		methods:{
@@ -68,14 +80,35 @@
 				this.$router.push({name:"enableAccont"})
 			},
 			editBtn(){
-				this.$router.push({name:"editAccountInformation", query:{type:"edit"}})
+				this.$router.push({name:"editAccountInformation", query:{type:"edit", ktvID: this.$route.query.ktvID}})
 			},
 			createBtn(){
-			    this.$router.push({name:"editAccountInformation", query:{type:"create"}})
+			    this.$router.push({name:"editAccountInformation", query:{type:"create", ktvID: this.$route.query.ktvID}})
+			},
+			getData(){
+				var send_data = {
+					code: "K",
+					ktv_id: this.ktvID
+				}
+				this.statePage = 0;
+				console.log(this.ktvID)
+				getAccountDetail(send_data).then(res => {
+					console.log(res)
+					if(res.data.results.length > 0){
+						this.statePage = 1;
+						this.data.res.data.results[0];
+					}else{
+						this.statePage = 2;
+					}
+				}).catch(err => {
+					this.statePage = 3;
+				})
 			}
 		},
 		mounted() {
-			document.title = "账号信息"
+			document.title = "账号信息";
+			this.ktvID = this.$route.query.ktvID;
+			this.getData();
 		}
 	}
 </script>

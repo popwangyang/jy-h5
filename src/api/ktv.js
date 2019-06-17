@@ -34,6 +34,13 @@ export const getKTVlist = (params) => {
   })
 }
 
+// ktv详情接口；
+export const getKTVDetail = (id) => {
+	return axios.request({
+	  url: `/copyright/ktv/ktv/${id}`,
+	  method: 'get'
+    })
+}
 // KTV】基本信息创建
 
 export const creatKtvDetail = (data) => {
@@ -73,7 +80,7 @@ export const addKtvCorporateDetail = (data) => {
 }
 // 企业信息修改
 export const putKtvCorporateDetail = (data) => {
-	var id = data.ktv;
+	var id = data.id;
 	delete data.id;
 	return axios.request({
 		url: `/copyright/ktv/enterprise/${id}`,
@@ -152,7 +159,7 @@ export const startAccount = (id) => {
 	 })
  }
  
- //KTV】签约信息列表
+ //KTV签约信息列表
  export const ktvContractList = (params) => {
 	 return axios.request({
 		 url:`/copyright/ktv/contract`,
@@ -177,3 +184,22 @@ export const startAccount = (id) => {
  }
  
  //【KTV】首次充值到账管理列表
+ 
+ // ktv创建试用账号
+ 
+ export const createTrialAccount = (data) => {
+	 return axios.request({
+		 url:`/copyright/rbac/user`,
+		 data,
+		 method:'post'
+	 })
+ }
+ 
+ // 获取ktv账号信息；
+ export const getAccountDetail = (params) => {
+	 return axios.request({
+		url:`/copyright/rbac/user`,
+		params,
+		method:'get'
+	 })
+ }

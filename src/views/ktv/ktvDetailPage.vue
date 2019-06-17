@@ -1,98 +1,114 @@
 <template>
 	<div class="ktvDetailBox">
-		<span class="content">
-			<span class="box1">
-				<span class="title">
-					<span class="text">{{data.name}}</span>
-					<span>
-						<van-button  size="small" @click="editeBtn" style="background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);border-radius:16px;color: white;">编辑</van-button>
+		<span v-if="pageState == 1">
+			<span class="content">
+				<span class="box1">
+					<span class="title">
+						<span class="text">{{data.name}}</span>
+						<span>
+							<van-button  size="small" @click="editeBtn" style="background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);border-radius:16px;color: white;">编辑</van-button>
+						</span>
+					</span>
+					<span class="type">
+						<span v-if="data.type == 1">量贩式</span>
+						<span v-else>夜店式</span>
+						<span>商户A</span>
+					</span>
+					<span class="detail">
+						<span class="item">
+							<van-icon name="manager" />
+							<span>{{data.contact}}</span>
+						</span>
+						<span class="item">
+							<van-icon name="phone" />
+							<span>{{data.phone_number}}</span>
+						</span>
+					</span>
+					<span class="address">
+						<span class="address_left">
+							<van-icon name="location"></van-icon>
+						</span>
+						<span class="address_right">
+							{{address}}
+						</span>
 					</span>
 				</span>
-				<span class="type">
-					<span v-if="data.type == 1">量贩式</span>
-					<span v-else>夜店式</span>
-					<span>商户A</span>
+				<span class="box2">
+					<span class="title">营业信息</span>
+					<span class="time">
+						<span class="time_title">
+							开业时间
+						</span>
+						<span class="time_content">
+							{{data.opening_hours}}
+						</span>
+					</span>
+					<span class="time">
+						<span class="time_title">
+							营业时间
+						</span>
+						<span class="time_content">
+							{{Ytime}}
+						</span>
+					</span>
 				</span>
-				<span class="detail">
+				<span class="line"></span>
+				<span class="box3">
 					<span class="item">
-						<van-icon name="manager" />
-						<span>{{data.contact}}</span>
+						<span class="icon" @click="goPage(1)">
+							<van-icon name="browsing-history" size="3.6em"></van-icon>
+						</span>
+						<span class="text">企业信息</span>
 					</span>
 					<span class="item">
-						<van-icon name="phone" />
-						<span>{{data.phone_number}}</span>
+						<span class="icon" @click="goPage(2)">
+							<van-icon name="browsing-history" size="3.6em"></van-icon>
+						</span>
+						<span class="text">实施信息</span>
 					</span>
-				</span>
-				<span class="address">
-					<span class="address_left">
-						<van-icon name="location"></van-icon>
+					<span class="item">
+						<span class="icon" @click="goPage(3)">
+							<van-icon name="browsing-history" size="3.6em"></van-icon>
+						</span>
+						<span class="text">签约信息</span>
 					</span>
-					<span class="address_right">
-						{{address}}
+					<span class="item">
+						<span class="icon" @click="goPage(4)">
+							<van-icon name="browsing-history" size="3.6em"></van-icon>
+						</span>
+						<span class="text">账号信息</span>
 					</span>
-				</span>
-			</span>
-			<span class="box2">
-				<span class="title">营业信息</span>
-				<span class="time">
-					<span class="time_title">
-						开业时间
-					</span>
-					<span class="time_content">
-						{{data.opening_hours}}
-					</span>
-				</span>
-				<span class="time">
-					<span class="time_title">
-						营业时间
-					</span>
-					<span class="time_content">
-						{{Ytime}}
+					<span class="item">
+						<span class="icon" @click="goPage(5)">
+							<van-icon name="browsing-history" size="3.6em"></van-icon>
+						</span>
+						<span class="text">线下充值</span>
 					</span>
 				</span>
 			</span>
-			<span class="line"></span>
-			<span class="box3">
-				<span class="item">
-					<span class="icon" @click="goPage(1)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">企业信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(2)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">实施信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(3)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">签约信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(4)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">账号信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(5)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">线下充值</span>
-				</span>
-			</span>
+		</span>
+		<span class="box" v-if="pageState == 0">
+			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
+		</span>
+		<span class="box" v-if="pageState == 2">
+			<Error
+			text="数据请求异常"
+			img="fail"
+			/>
 		</span>
 	</div>
 </template>
 
 <script>
+	import { getKTVDetail } from '@/api/ktv.js'
+	import Error from "@/components/EmptyImageComponent.vue"
 	export default{
+		components: { Error },
 		data(){
 			return{
-				data:""
+				pageState:0,
+				data:"",
+				ktvID:""
 			}
 		},
 		computed:{
@@ -153,18 +169,27 @@
 					  this.$router.push({name:"contractInformation", query:{ktvID: this.data.id}})
 					break;
 					case 4:
-					  this.$router.push({name:"accountInformation"})
+					  this.$router.push({name:"accountInformation", query:{ktvID: this.data.id}})
 					break;
 					case 5:
 					  this.$router.push({name:"offLineRecharge"})
 					break;
 				}
+			},
+			getKtvDetail(){
+				this.pageState = 0;
+				getKTVDetail(this.ktvID).then(res => {
+					this.pageState = 1;
+					this.data = res.data;
+				}).catch(err => {
+					this.pageState = 2;
+				})
 			}
 		},
 		mounted() {
 			document.title= "场所详情";
-			this.data = JSON.parse(this.$route.query.item);
-			console.log(this.data)
+			this.ktvID = this.$route.query.ktvID;
+			this.getKtvDetail();
 		}
 	}
 </script>
@@ -172,16 +197,20 @@
 <style scoped="scoped" lang="less">
 	.ktvDetailBox{
 		height: 100%;
-		background: yellow;
 		display: flex;
 		flex-direction: column;
+		.box{
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
 		.content{
 			flex: 1;
 			background: white;
 			&>span{
 				display: flex;
-				// padding-left:0.39rem;
-				// padding-right: 0.39rem;
 				flex-direction: column;
 			}
 			.box1{

@@ -1,12 +1,6 @@
 <template>
 	<div class="forwardContractBox">
-		<!-- <van-nav-bar
-		  title="往期合同"
-		  left-arrow
-		  @click-left="onClickLeft"
-		/> -->
 		<span class="content">
-			<!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh"> -->
 		        <van-list
 		            v-model="loading"
 		            :finished="finished"
@@ -25,7 +19,6 @@
 						/>
 		            </div>
 		        </van-list>
-		    <!-- </van-pull-refresh> -->
 		</span>
 	</div>
 </template>

@@ -1,7 +1,12 @@
 <template>
 	<div class="editAccountInformationBox">
 		<van-field 
-		v-model="data.account" 
+		v-model="data.nickname" 
+		label="昵称"
+		input-align="right"
+		placeholder="请输入昵称" />
+		<van-field 
+		v-model="data.username" 
 		label="账号"
 		input-align="right"
 		placeholder="请输入邮箱地址" />
@@ -22,7 +27,7 @@
 		<div class="van-cell van-field">
 			<div class="van-cell__title van-field__label">是否启用</div>
 			<div class="van-cell__value">
-				<van-switch v-model="data.checked" size="22px"/>
+				<van-switch v-model="data.is_active" size="22px"/>
 			</div>
 		</div>
 		<span class="footer">
@@ -38,6 +43,7 @@
 </template>
 
 <script>
+	import { createTrialAccount } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	export default{
 		data(){
@@ -45,10 +51,12 @@
 				loading:false,
 				inputTypeFlag:true,
 				data:{
-					account:"",
-					password:"",
-					phone:"",
-					checked:true
+					"nickname": "",
+					"username": "",
+					"password": "",
+					"is_active": true,
+					"group": [3],
+					"ktv_id": this.$route.query.ktvID
 				},
 				buttonText:"",
 				ToastText:""
@@ -68,11 +76,31 @@
 			},
 			onClickBtn(){
 				this.loading = true;
-				setTimeout(() => {
-					this.loading = false;
-					Toast.success(this.ToastText)
-				}, 1000)
+				var send_data = this.data;
+				    send_data.is_active = send_data.is_active ? 1:0;
+					console.log(send_data)
+					if(this.$route.query.type == "create"){
+					  createTrialAccount(send_data).then(res => {
+					  	console.log(res)
+					  	this.loading = false;
+					  	Toast.success("账号创建成功")
+					  }).catch(err => {
+					  	this.loading = false;
+					  	Toast.fail("账号创建失败")
+					  })	
+					}else{
+				      createTrialAccount(send_data).then(res => {
+				      	console.log(res)
+				      	this.loading = false;
+				      	Toast.success("账号创建成功")
+				      }).catch(err => {
+				      	this.loading = false;
+				      	Toast.fail("账号创建失败")
+				      })
+					}
+					
 			}
+			
 		},
 		mounted() {
 			if(this.$route.query.type == "edit"){
