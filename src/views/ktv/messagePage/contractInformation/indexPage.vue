@@ -3,50 +3,49 @@
 		<span v-if="pageState == 1">
 			<Item1
 			 label="合同编号"
-			 value="xxx"
+			 :value="data.number"
 			/>
 			<Item1
 			 label="套餐名称"
-			 value="xxx"
+			 :value="data.package_name"
 			/>
 			<Item1
 			 label="包厢数量"
-			 value="100"
+			 :value="data.box_count.toString()"
 			/>
 			<span class="line"></span>
 			<Item1
 			 label="合同起始日期"
-			 value="2018-10-1"
-			/>
-			<Item1
-			 label="结算起始时间"
-			 value="2018-10-1"
+			 :value="data.begin_date"
 			/>
 			<span class="line"></span>
 			<Item1
 			 label="合同状态"
-			 value="合约中"
+			 :value="data.state | stateFilter"
 			 color="#01CCA3"
 			/>
 			<Item1
 			 label="到账状态"
-			 value="已到账"
+			 :value="data.charge_manage.state | charge_manageStateFilter"
 			/>
 			<span class="line"></span>
 			<Item2
 			 label="合同文件"
-			 label1="2018-10-1 11:23"
-			 value="已到账"
+			 :name="data.annex.name"
+			 :src="data.annex.download_url"
 			/>
 			<Item2
-			 label="补充合同"
-			 label1="2018-10-1 11:23"
-			 value="已到账"
+			v-for="item in data.accessory_contract"
+			:key="item.id"
+			label="补充合同"
+			:name="item.annex.name"
+			:src="item.annex.download_url"
 			/>
+			
 			<span class="footer" v-if="showFooter">
 				<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
-				<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">补充</van-button>
-				<van-button plain hairline round type="default" size="small" @click="goPage" style="margin-left: 0.26rem;">编辑</van-button>
+				<van-button plain hairline round type="default" size="small" @click="goPage(1)" style="margin-left: 0.26rem;">补充</van-button>
+				<van-button plain hairline round type="default" size="small" @click="goPage(2)" style="margin-left: 0.26rem;">编辑</van-button>
 			</span>
 		</span>
 		<span v-if="pageState == 2" class="box">
@@ -67,7 +66,7 @@
 		position="bottom"
 		>
 			<span class="moreBox">
-				<span class="moreBoxItem" @click="addBtn">
+				<span class="moreBoxItem" @click="addBtn" v-if="canAddContract">
 					新增合同
 				</span>
 				<span class="moreBoxItem" @click="checkBtn">
@@ -86,7 +85,8 @@
 </template>
 
 <script>
-	import {ktvContractList} from "@/api/ktv.js"
+	import { Toast, Dialog } from "vant"
+	import {ktvContractList, stopContract} from "@/api/ktv.js"
 	import Item1 from "@/components/list1.vue"
 	import Item2 from "@/components/list2.vue"
 	import EmptyComponent from "@/components/EmptyComponent.vue"
@@ -97,7 +97,34 @@
 				pageState:0,
 				empty:false,
 				moreFlage:false,
-				showFooter:true
+				showFooter:true,
+				data:""
+			}
+		},
+		computed: {
+			canAddContract() {
+				return this.data.state == 1 ? false:true 
+			}
+		},
+		filters: {
+			stateFilter: function(value) {
+				var result = ""
+				switch(parseInt(value)){
+				  case 1:
+					 result = "合同中";
+					break;
+				  case 2:
+					 result = "已过期";
+					break;
+				  case 3:
+					 result = "合同终止";
+					break;
+				}
+				return result;
+			},
+			charge_manageStateFilter: function(value){
+				var result = "";
+				return value == 1 ? "未到账":"已到账";
 			}
 		},
 		methods:{
@@ -107,17 +134,47 @@
 			moreBtn(){
 				this.moreFlage = true;
 			},
-			goPage(){
-				
+			goPage(index){
+				if(index == 1){
+					this.$router.push({name:"addContract", query:{type:"supplement", ktvID: this.$route.query.ktvID, contractID: this.data.id}})
+				}else{
+					this.$router.push({name:"addContract", query:{type:"edite", ktvID: this.$route.query.ktvID}})
+				}
 			},
-			addBtn(){
-				this.$router.push({name:"addContract", query:{type:"create", ktvID: this.$route.query.ktvID}})
+			addBtn(index){
+				  this.$router.push({name:"addContract", query:{type:"create", ktvID: this.$route.query.ktvID}})
 			},
 			checkBtn(){
 				this.$router.push({name:"forwardContract"})
 			},
 			stopBtn(){
-				
+				this.moreFlage = false;
+				Dialog.confirm({
+				  title: '提示',
+				  message: '确定要终止该合同？'
+				}).then(() => {
+				  this.stopContract();
+				}).catch(() => {
+				  // on cancel
+				});
+			},
+			stopContract(){
+				Toast.loading({
+					duration: 0, // 持续展示 toast
+                    forbidClick: true, // 禁用背景点击
+				})
+				var send_data ={
+					state: 3,
+					id: this.data.id
+				}
+				stopContract(send_data).then(res => {
+					Toast.clear();
+					Toast.success("合同已终止");
+					this.data.state = 3;
+				}).catch(err => {
+					Toast.clear();
+					Toast.fail("操作失败");
+				})
 			},
 			getDate(){
 				var send_data ={
@@ -129,6 +186,7 @@
 					console.log(res)
 					if(res.data.results.length > 0){
 						this.pageState = 1;
+						this.data = res.data.results[0]
 					}else{
 						this.pageState = 2;
 					}

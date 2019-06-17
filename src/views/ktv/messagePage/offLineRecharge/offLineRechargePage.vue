@@ -4,7 +4,7 @@
 			<span class="title">
 				<span class="titleLeft">
 					<span>账户余额</span>
-					<span>￥7,188.00</span>
+					<span>￥{{ktvData.balance}}</span>
 				</span>
 				<span class="titleRight">
 					<span @click="goRechargeRecord" style="color: #4479EF;">
@@ -17,7 +17,7 @@
 			<span class="content">
 				<span class="title">包厢充值单价</span>
 				<span class="body">
-					<span class="item" v-for="item in rechargeList" @click="select(item.id)">
+					<span class="item" :key="item.id" v-for="item in rechargeList" @click="select(item.id)">
 						<PriceComponent
 						:label="item.recharge_amount"
 						:value="item.present_amount"
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-	import { ktvRechargeList } from "@/api/ktv.js"
+	import { ktvRechargeList, getKTVDetail, ktvContractList } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	import PriceComponent from "./components/priceComponent.vue"
 	export default{
@@ -67,7 +67,9 @@
 				loading:false,
 				rechargeList:[],
 				setSeal:"",
-				number:100
+				number:100,
+				ktvID:"",
+				ktvData:""
 			}
 		},
 		computed:{
@@ -119,16 +121,35 @@
 						reject(false)
 					})
 				})
-// 				var P2 = new Promise((resolve, reject) => {
-// 					ktvDetail
-// 				})
-				Promise.all([P1]).then(res => {
+				var P2 = new Promise((resolve, reject) => {
+					getKTVDetail(this.ktvID).then(res => {
+						this.ktvData = res.data;
+						resolve(true);
+					}).catch(err => {
+						reject(false)
+					})
+				})
+				var P3 = new Promise((resolve, reject) => {
+					var send_data = {
+						ktv: this.ktvID,
+						state: 1
+					}
+					ktvContractList(send_data).then(res => {
+						this.number = res.data.results.length > 0 ? res.data.results[0].box_count:0;
+						resolve(true);
+					}).catch(err => {
+						reject(false)
+					})
+				})
+				Promise.all([P1, P2, P3]).then(res => {
 					this.pageState = 1;
+					console.log(this.ktvData);
 				})
 			}
 		},
 		mounted() {
 			document.title = "线下充值";
+			this.ktvID = this.$route.query.ktvID;
 			this.init()
 		}
 	}

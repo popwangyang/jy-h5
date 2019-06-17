@@ -143,6 +143,7 @@
 				}
 				this.statePage = 0;
 				getAccountMessage(send_data).then(res => {
+					console.log(res)
 					if(res.length > 0){
 						this.statePage = 1;
 						this.data = res[0];
@@ -150,7 +151,7 @@
 						this.data.balance = this.data.balance+"元";
 						this.account_status = this.data.account_status == 1 ? "试用账号":"正式账号"
 					}else{
-						this.statePage = 1;
+						this.statePage = 2;
 					}
 				}).catch(err => {
 					this.statePage = 3;

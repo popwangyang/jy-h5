@@ -78,7 +78,7 @@
 						</span>
 						<span class="text">账号信息</span>
 					</span>
-					<span class="item">
+					<span class="item" v-if="data.isShowAccount">
 						<span class="icon" @click="goPage(5)">
 							<van-icon name="browsing-history" size="3.6em"></van-icon>
 						</span>
@@ -172,7 +172,7 @@
 					  this.$router.push({name:"accountInformation", query:{ktvID: this.data.id}})
 					break;
 					case 5:
-					  this.$router.push({name:"offLineRecharge"})
+					  this.$router.push({name:"offLineRecharge", query:{ktvID: this.data.id}})
 					break;
 				}
 			},

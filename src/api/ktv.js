@@ -198,6 +198,36 @@ export const startAccount = (id) => {
 	 	method:'post'
 	 })
  }
+ 
+ // 
+ export const editeKtvContract = (data) => {
+	 var id = data.id;
+	 delete data.id;
+	  return axios.request({
+	 	url:`/copyright/ktv/contract/${id}`,
+	 	data,
+	 	method:'put'
+	 })
+ }
+ // 
+ export const supplementKtvContract = (data) => {
+	 return axios.request({
+		url:`/copyright/ktv/accessory`,
+		data,
+		method:'post'
+	}) 
+ }
+ 
+ //【KTV】终止合同
+ export const stopContract = (data) => {
+	 var id = data.id;
+	 delete data.id;
+	 return axios.request({
+		url:`copyright/ktv/contract-terminal/${id}`,
+		data,
+		method:'patch' 
+	 })
+ }
  //【KTV】充值套餐列表
  export const ktvRechargeList = () => {
 	 return axios.request({

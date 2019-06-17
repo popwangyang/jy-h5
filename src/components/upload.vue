@@ -5,7 +5,6 @@
 		 :max-count="1"
 		 v-model="fileList"
 		 multiple
-		
 		 v-show="state == 0"
 		/>
 		<span class="box1" v-show="state == 1">
@@ -15,7 +14,7 @@
 					</template>
 					<template v-slot:error>加载失败</template>
 				</van-image>
-				<van-icon class="van-uploader__preview-delete" name="delete" size="0.4rem" color = "#fff" v-show="closeState == 1" @click="deleteBtn"/>
+				<van-icon class="delete" name="delete" size="0.6rem" color = "#fff" v-show="closeState == 1" @click="deleteBtn"/>
 			<van-circle
 			  v-model="currentRate"
 			  :rate="rate"
@@ -29,6 +28,9 @@
 				  {{text}}
 			  </span>
 			</van-circle>
+		</span>
+		<span style="align-self: flex-end;font-size: 14px;margin-left: 10px;">
+			{{fileName}}
 		</span>
 	</div>
 </template>
@@ -51,7 +53,8 @@
 				currentRate:0,
 				rate:0,
 				fileList:[],
-				fromData:{}
+				fromData:{},
+				fileName:""
 			}
 		},
 		computed: {
@@ -66,11 +69,9 @@
 					this.src
 				])
 			},
-			deleteBtn(){
-				
-			},
 			afterRead(data) {
 			  console.log(data);
+			    this.fileName = data.file.name
 				this.state = 1;
 				this.showCircle = 1;
 				this.closeState = 0;
@@ -145,6 +146,7 @@
 			},
 			deleteBtn(){
 				console.log('deleteBtn')
+				this.fileName = "";
 				this.fileList = []
 				this.state = 0;
 				this.closeState = 0;
@@ -161,9 +163,7 @@
 
 <style scoped="scoped" lang="less">
 	.uploadBox{
-		position: relative;
-		width: 2.5rem;
-		height: 2.5rem;
+		// position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -172,7 +172,7 @@
 			justify-content: center;
 			align-items: center;
 			margin: 0.06rem;
-			position: absolute;
+			position: relative;
 			left: 0;
 			top: 0;
 			z-index: 1;
@@ -180,6 +180,12 @@
 				position: absolute;
 				left: 50%;
 				margin-left: -30px;
+			}
+			.delete{
+				position: absolute;
+				bottom: 4px;
+				right: 2px;
+				color: white;
 			}
 		}
 		.box2{
@@ -189,11 +195,8 @@
 			top: 0;
 			z-index: 1;
 		}
-		.delete{
-			position: absolute;
-			top: -0.104rem;
-			right: 0.156rem;
-			z-index: 2;
+		.name{
+			align-items: flex-end;
 		}
 	}
 	
