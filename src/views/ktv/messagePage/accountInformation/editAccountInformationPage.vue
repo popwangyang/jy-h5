@@ -11,6 +11,7 @@
 		input-align="right"
 		placeholder="请输入邮箱地址" />
 		<van-field 
+		v-if="$route.query.type != 'edit'"
 		v-model="data.password" 
 		label="初始密码"
 		:type="inputType"
@@ -43,7 +44,7 @@
 </template>
 
 <script>
-	import { setTrialAccount, getAccountDetail } from "@/api/ktv.js"
+	import { setTrialAccount, getAccountDetail, editAccount } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	export default{
 		data(){
@@ -51,12 +52,14 @@
 				loading:false,
 				inputTypeFlag:true,
 				data:{
-					"nickname": "",
-					"username": "",
-					"password": "",
-					"is_active": true,
-					"group": [],
-					"ktv_id": this.$route.query.ktvID
+					nickname: "",
+					username: "",
+					password: "",
+					is_active: true,
+					group: [],
+					ktv_id: this.$route.query.ktvID,
+					phone:"",
+					id:""
 				},
 				buttonText:"",
 				ToastText:"",
@@ -77,14 +80,17 @@
 			},
 			onClickBtn(){
 				this.loading = true;
-				var send_data = this.data;
+				var send_data = Object.assign({}, this.data);
 				    send_data.is_active = send_data.is_active ? 1:0;
 					console.log(send_data)
 					if(this.$route.query.type == "create"){
 					  setTrialAccount(send_data).then(res => {
 					  	console.log(res)
 					  	this.loading = false;
-					  	Toast.success("账号创建成功")
+					  	Toast.success("账号创建成功");
+						setTimeout(() => {
+							this.$router.go(-1)
+						}, 500)
 					  }).catch(err => {
 					  	this.loading = false;
 						if(err.data){
@@ -94,13 +100,17 @@
 						}
 					  })	
 					}else{
-				      createTrialAccount(send_data).then(res => {
+						delete send_data.password;
+				      editAccount(send_data).then(res => {
 				      	console.log(res)
 				      	this.loading = false;
-				      	Toast.success("账号创建成功")
+				      	Toast.success("账号修改成功")
+						setTimeout(() => {
+							this.$router.go(-1)
+						}, 500)
 				      }).catch(err => {
 				      	this.loading = false;
-				      	Toast.fail("账号创建失败")
+				      	Toast.fail("账号修改失败")
 				      })
 					}
 			},
@@ -116,7 +126,8 @@
 				});
 				getAccountDetail(send_data).then(res => {
 					Toast.clear();
-					this.data = res.data.results[0]
+					Object.keys(this.data).map(item => this.data[item] = item == "group" ? [res.data.results[0].group[0].id]:res.data.results[0][item])
+					console.log(this.data)
 				})
 			}
 		},

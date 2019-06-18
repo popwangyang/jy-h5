@@ -1,11 +1,11 @@
 <template>
 	<div class="box" @click="goDetailPage">
 		<span class="boxSpan1">
-			<span>{{item.name}} (已停用)</span>
+			<span>{{item.name}}</span>
 			<span>{{item.merchant_amount}}家厂商</span>
 		</span>
 		<span class="boxSpan2">
-			<van-icon name="arrow" size="1.6em" color="#83828c"/>
+			<van-icon name="arrow" size="1.2em" color="#999999"/>
 		</span>
 	</div>
 </template>
@@ -56,7 +56,7 @@
 	}
 	.boxSpan1 span:nth-child(1){
 		font-size: 0.36rem;
-		color: #333333;
+		color: #444444;
 	}
 	.boxSpan1 span:nth-child(2){
 		color: #999999;

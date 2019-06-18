@@ -1,47 +1,48 @@
 <template>
 	<div class="contractBox">
-		<span v-if="pageState == 1">
-			<Item1
-			 label="合同编号"
-			 :value="data.number"
-			/>
-			<Item1
-			 label="套餐名称"
-			 :value="data.package_name"
-			/>
-			<Item1
-			 label="包厢数量"
-			 :value="data.box_count.toString()"
-			/>
-			<span class="line"></span>
-			<Item1
-			 label="合同起始日期"
-			 :value="data.begin_date"
-			/>
-			<span class="line"></span>
-			<Item1
-			 label="合同状态"
-			 :value="data.state | stateFilter"
-			 color="#01CCA3"
-			/>
-			<Item1
-			 label="到账状态"
-			 :value="data.charge_manage.state | charge_manageStateFilter"
-			/>
-			<span class="line"></span>
-			<Item2
-			 label="合同文件"
-			 :name="data.annex.name"
-			 :src="data.annex.download_url"
-			/>
-			<Item2
-			v-for="item in data.accessory_contract"
-			:key="item.id"
-			label="补充合同"
-			:name="item.annex.name"
-			:src="item.annex.download_url"
-			/>
-			
+		<span class="content" v-if="pageState == 1">
+			<span class="body">
+				<Item1
+				 label="合同编号"
+				 :value="data.number"
+				/>
+				<Item1
+				 label="套餐名称"
+				 :value="data.package_name"
+				/>
+				<Item1
+				 label="包厢数量"
+				 :value="data.box_count.toString()"
+				/>
+				<span class="line"></span>
+				<Item1
+				 label="合同起始日期"
+				 :value="data.begin_date"
+				/>
+				<span class="line"></span>
+				<Item1
+				 label="合同状态"
+				 :value="data.state | stateFilter"
+				 color="#01CCA3"
+				/>
+				<Item1
+				 label="到账状态"
+				 :value="data.charge_manage.state | charge_manageStateFilter"
+				/>
+				<span class="line"></span>
+				<Item2
+				 label="合同文件"
+				 :name="data.annex.name"
+				 :src="data.annex.download_url"
+				/>
+				<Item2
+				v-for="item in data.accessory_contract"
+				:key="item.id"
+				label="补充合同"
+				:name="item.annex.name"
+				:src="item.annex.download_url"
+				/>
+			</span>
 			<span class="footer" v-if="showFooter">
 				<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
 				<van-button plain hairline round type="default" size="small" @click="goPage(1)" style="margin-left: 0.26rem;">补充</van-button>
@@ -145,7 +146,7 @@
 				  this.$router.push({name:"addContract", query:{type:"create", ktvID: this.$route.query.ktvID}})
 			},
 			checkBtn(){
-				this.$router.push({name:"forwardContract"})
+				this.$router.push({name:"forwardContract", query:{ ktvID: this.$route.query.ktvID }})
 			},
 			stopBtn(){
 				this.moreFlage = false;
@@ -208,6 +209,27 @@
 		height: 100%;
 		position: relative;
 		background: #fafafa;
+		.content{
+			height: 100%;
+			position: relative;
+			background: #fafafa;
+			display: flex;
+			flex-direction: column;
+			.body{
+				flex: 1;
+				overflow: auto;
+			}
+			.footer{
+				display: flex;
+				height: 50px;
+				padding: 0.16rem 0.39rem;
+				width: 100%;
+				background: white;
+				box-sizing: border-box;
+				justify-content: flex-end;
+				align-items: center;
+			}
+		}
 		.box{
 			display: flex;
 			flex-direction: column;
@@ -238,18 +260,6 @@
 			  }
 			}
 		}
-		.footer{
-			display: flex;
-			height: 50px;
-			padding: 0.16rem 0.39rem;
-			width: 100%;
-			position: absolute;
-			bottom: 0;
-			left: 0;
-			background: white;
-			box-sizing: border-box;
-			justify-content: flex-end;
-			align-items: center;
-		}
+		
 	}
 </style>

@@ -153,7 +153,7 @@ export const startAccount = (id) => {
 	 })
  }
  
- //KTV签约信息列表
+ //KTV合同信息列表
  export const ktvContractList = (params) => {
 	 return axios.request({
 		 url:`/copyright/ktv/contract`,
@@ -199,7 +199,7 @@ export const startAccount = (id) => {
 	 })
  }
  
- // 
+ // 编辑ktv合同
  export const editeKtvContract = (data) => {
 	 var id = data.id;
 	 delete data.id;
@@ -209,7 +209,7 @@ export const startAccount = (id) => {
 	 	method:'put'
 	 })
  }
- // 
+ // 创建补充合同
  export const supplementKtvContract = (data) => {
 	 return axios.request({
 		url:`/copyright/ktv/accessory`,
@@ -237,7 +237,22 @@ export const startAccount = (id) => {
  }
  
  //【KTV】首次充值到账管理列表
- 
+ export const ktvRechargeRecord = (params) => {
+	 return axios.request({
+		 url:`copyright/settlement/order`,
+		 params,
+		 method:'get'
+	 })
+ }
+ // ktv线下充值；
+export const rechargeOffLine = (data) => {
+	 return axios.request({
+		 url: 'copyright/ktv/charge',
+		 data,
+		 method: 'post'
+	 })
+ }
+
  // ktv创建试用账号
  
 const createTrialAccount = (data) => {
@@ -265,6 +280,7 @@ export const getAccountDetail = (params) => {
 	}) 
  }
 
+//获取当前账号信息
 export const getAccountMessage = (params) => {
 	var id = params.ktv_id;
 	return new Promise((resolve, reject) => {
@@ -292,6 +308,17 @@ export const setTrialAccount = (params) => {
 		params.group = [res.data.results[0].id];
 		return createTrialAccount(params)
 	}) 
+ }
+ 
+ // 编辑测试账号；
+ export const editAccount = (data) => {
+	 var id = data.id;
+	 delete data.id;
+	 return axios.request({
+		 url:`/copyright/rbac/user/${id}`,
+		 data,
+		 method:'put'
+	 })
  }
 
 // 账号正式启用

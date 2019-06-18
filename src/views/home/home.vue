@@ -7,17 +7,37 @@
 				<ktvIndexPage :searchValue="searchKTV" v-if="showPageFlag" />
 			</span>
 			<span class="tabbar">
-				<van-tabbar v-model="active" active-color="#07c160" inactive-color="#000" :fixed="false" @change="tabbarBtn">
-					<van-tabbar-item icon="home-o">商户管理</van-tabbar-item>
+				<van-tabbar v-model="active" active-color="#2a77f9" inactive-color="#D8D8D8" :fixed="false" @change="tabbarBtn" style="box-shadow:0px -1px 5px -1px rgba(0,0,0,0.16);">
+					<van-tabbar-item icon="home-o">
+						<span>商户管理</span>
+						<img
+						  slot="icon"
+						  slot-scope="props"
+						  :src="props.active ? icnMerchant.active : icnMerchant.normal"
+						>
+					</van-tabbar-item>
 					<div class="add">
-						<van-icon class="icon" name="add-o" slot="icon" size="3em" style="background: white;border-radius: 50%;" @click="addBtn" />
+					    <div class="addBody">
+							<div class="circle"></div>
+							<div class="square">
+								<img :src="addImg" alt="" @click="addBtn">
+							</div>
+						</div>
+					
 					</div>
-					<van-tabbar-item icon="search">KTV信息</van-tabbar-item>
+					<van-tabbar-item icon="search">
+						<span>KTV信息</span>
+						<img
+						  slot="icon"
+						  slot-scope="props"
+						  :src="props.active ? icnKTV.active : icnKTV.normal"
+						>
+				    </van-tabbar-item>
 				</van-tabbar>
 			</span>
 		</div>
 		<van-popup v-model="showPopup" position="bottom">
-			<addComponent />
+			<addComponent @close="addBtn"/>
 		</van-popup>
 	</div>
 </template>
@@ -40,6 +60,15 @@
 				searchKTV:"",
 				searchMerchant:"",
 				searchValue:"",
+				icnMerchant:{
+					active:require("@/assets/img/tabbar/tabbarMerchant1.png"),
+					normal:require("@/assets/img/tabbar/tabbarMerchant2.png")
+				},
+				icnKTV:{
+					active:require("@/assets/img/tabbar/tabbarKTV1.png"),
+					normal:require("@/assets/img/tabbar/tabbarKTV2.png")
+				},
+				addImg: require("@/assets/img/tabbar/tabbarAdd.png"),
 				
 			}
 		},
@@ -71,8 +100,10 @@
 		},
 		methods: {
 			addBtn() {
-				this.showPopup = true;
+				console.log(this.showPopup)
+				this.showPopup = !this.showPopup;
 			},
+		
 			searchChaneg(value) {
 				console.log(value);
 				if (this.active == 0) {
@@ -126,15 +157,42 @@
 	}
 
 	.add {
-		/* background: yellow; */
+		
 		width: 30%;
 		display: flex;
 		justify-content: center;
 		position: relative;
 	}
-
-	.add .icon {
+    
+	.add .addBody{
+		width:1.04rem;
+		height: 1.04rem;
+		position: relative;
+	}
+	.add .addBody .circle{
+		background: white;
+		border-radius: 50%;
+		width: 120%;
+		height: 120%;
 		position: absolute;
-		top: -8px;
+		left: -10%;
+		top: -30%;
+		z-index: 3;
+		box-shadow:0px -1px 5px -1px rgba(0,0,0,0.16);
+	}
+	.add .addBody .square{
+		background: white;
+		width: 150%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: -25%;
+		z-index: 4;
+		text-align: center;
+	}
+	.add .addBody .square img{
+		margin-top: -0.1rem;
+		width: 0.836rem;
+		height: 0.836rem;
 	}
 </style>

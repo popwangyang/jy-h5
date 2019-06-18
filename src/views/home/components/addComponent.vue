@@ -2,16 +2,17 @@
 	<div class="addComponentBox">
 		<span class="item">
 			<span class="cricle" @click="create('merchant')">
-				<van-icon name="fire" size="4em"></van-icon>
+				<van-icon :name="addMerchantImg" size="6em"></van-icon>
 			</span>
 			<span>新建商户</span>
 		</span>
 		<span class="item">
 			<span class="cricle" @click="create('ktv')">
-				<van-icon name="gem" size="4em"></van-icon>
+				<van-icon :name="addKTVImg" size="6em"></van-icon>
 			</span>
 			<span>新建KTV</span>
 		</span>
+		<van-icon name="cross" class="close" color="#999999" size="0.6rem" @click="closeBtn"/>
 	</div>
 </template>
 
@@ -19,7 +20,8 @@
 	export default{
 		data(){
 			return{
-				
+				addMerchantImg: require("@/assets/img/tabbar/newCreateMerchant.png"),
+				addKTVImg: require("@/assets/img/tabbar/newCreateKTV.png")
 			}
 		},
 		methods:{
@@ -33,6 +35,9 @@
 					  this.$router.push({name: "ktvEdite", query: {type: "create"}});
 					break;
 				}
+			},
+			closeBtn(){
+				this.$emit("close")
 			}
 		}
 	}
@@ -40,8 +45,9 @@
 
 <style scoped="scoped" lang="less">
 	.addComponentBox{
-		height: 6rem;
+		height: 4.94rem;
 		display: flex;
+		position: relative;
 		.item{
 			width: 50%;
 			display: flex;
@@ -52,16 +58,22 @@
 				width: 2rem;
 				height: 2rem;
 				border-radius: 50%;
-				border: 1px solid gainsboro;
-				margin-bottom: 0.26rem;
+
 				display: flex;
 				align-items: center;
 				justify-content: center;
+				color: #444444;
 				&:active{
 					background: #0a0a0a00;
 				}
 			}
 			
+		}
+		.close{
+			position: absolute;
+			left: 50%;
+			margin-left: -0.3rem;
+			bottom: 0.6rem;
 		}
 	}
 </style>

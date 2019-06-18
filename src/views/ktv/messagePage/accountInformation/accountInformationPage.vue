@@ -11,6 +11,10 @@
 			 :value="data.email"
 			/>
 			<Item1
+			label="手机号"
+			:value="data.phone"
+			/>
+			<Item1
 			 label="余额"
 			 :value="data.balance"
 			/>

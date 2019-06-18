@@ -4,37 +4,32 @@
 			<span class="content">
 				<span class="box1">
 					<span class="title">
-						<span class="text">{{data.name}}</span>
-						<span>
-							<van-button  size="small" @click="editeBtn" style="background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);border-radius:16px;color: white;">编辑</van-button>
-						</span>
+						<div>
+							<span class="text">{{data.name}}</span>
+							<span>
+								<van-button class="button-small"  size="mini" @click="editeBtn">编辑</van-button>
+							</span>
+						</div>
+						<div>
+							<span class="type">
+								<span v-if="data.type == 1" class="lingfan">量贩</span>
+								<span v-else class="yedian">夜店</span>
+								<span>商户A</span>
+							</span>
+						</div>
 					</span>
-					<span class="type">
-						<span v-if="data.type == 1">量贩式</span>
-						<span v-else>夜店式</span>
-						<span>商户A</span>
-					</span>
-					<span class="detail">
-						<span class="item">
-							<van-icon name="manager" />
-							<span>{{data.contact}}</span>
+					<van-cell title="店主姓名" :value="data.contact"></van-cell>
+					<van-cell title="手机号" :value="data.phone_number"></van-cell>
+					<van-cell title="商户地址" :value="address"></van-cell>
+					<div class="phone">
+						<van-icon :name="Phone" size="0.46rem"></van-icon>
+						<span class="text">
+							联系商家
 						</span>
-						<span class="item">
-							<van-icon name="phone" />
-							<span>{{data.phone_number}}</span>
-						</span>
-					</span>
-					<span class="address">
-						<span class="address_left">
-							<van-icon name="location"></van-icon>
-						</span>
-						<span class="address_right">
-							{{address}}
-						</span>
-					</span>
+					</div>
 				</span>
+				<span class="nav">营业信息</span>
 				<span class="box2">
-					<span class="title">营业信息</span>
 					<span class="time">
 						<span class="time_title">
 							开业时间
@@ -106,6 +101,7 @@
 		components: { Error },
 		data(){
 			return{
+				Phone: require("@/assets/img/ktv/phone.png"),
 				pageState:0,
 				data:"",
 				ktvID:""
@@ -199,6 +195,11 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
+		padding-left:0.39rem;
+		padding-right: 0.39rem;
+		padding-top: 0.26rem;
+		box-sizing: border-box;
+		background: #F6F6F6;
 		.box{
 			height: 100%;
 			display: flex;
@@ -214,49 +215,62 @@
 				flex-direction: column;
 			}
 			.box1{
-				padding-left:0.39rem;
-				padding-right: 0.39rem;
 				background: white;
-				padding-top: 0.5rem;
-				padding-bottom: 0.4rem;
 				&>span{
 					width: 100%;
 					display: flex;
 				}
 				.title{
-					
-					align-items: center;
-					justify-content: space-between;
-					.text{
-						font-size: 16px;
-					}
-				}
-				.type{
-					margin: 0.2rem 0;
-					font-size: 12px;
-					color: gainsboro;
-					& span:nth-child(1){
-						margin-right: 0.26rem;
-					}
-				}
-				.detail{
-					align-items: center;
-					.item{
-						margin-right: 0.5rem;
+					background: url("../../assets/img/ktv/navImg.png") no-repeat;
+					background-size: cover;
+					width: 100%;
+					height: 1.43rem;
+					display: block;
+					padding: 0.26rem;
+					box-sizing: border-box;
+					&>div{
 						display: flex;
-						align-items: center;
-						font-size: 14px;
-						&>span{
-							margin-left: 0.2rem;
+					    justify-content: space-between;
+					}
+					.text{
+						font-size:15px;
+						font-family:PingFangSC-Semibold;
+						font-weight:600;
+						color:rgba(255,255,255,1);
+					}
+					.type{
+						font-size: 12px;
+						span{
+							color: white;
+							font-size: 12px;
+						}
+						& span:nth-child(1){
+							margin-right: 0.26rem;
+						}
+						.lingfan{
+							background:linear-gradient(90deg,rgba(241,194,135,1) 0%,rgba(204,152,88,1) 100%);
+							border-radius:3px;
+							padding: 0px 4px;
+						}
+						.yedian{
+							background:linear-gradient(90deg,rgba(41,241,245,1) 0%,rgba(43,196,211,1) 100%);
+							border-radius:3px;
+							padding: 0px 4px;
 						}
 					}
 				}
-				.address{
-					margin-top: 0.26rem;
-					&>span:nth-child(2){
-						line-height: 100%;
-						margin-left: 0.2rem;
-						font-size: 14px;
+				.phone{
+					display: flex;
+					background:#EFEEF3;
+					height: 1.22rem;
+					align-items: center;
+					justify-content: center;
+					font-size:14px;
+					font-family:PingFangSC-Semibold;
+					font-weight:600;
+					color:rgba(68,68,68,1);
+					&>span{
+						margin-left: 0.1rem;
 					}
 				}
 			}
@@ -274,12 +288,19 @@
 					padding: 0.12rem 0.39rem;
 					display: flex;
 					flex-direction: column;
+					
 					.time_title{
-						font-size: 12px;
+						font-size:10px;
+						font-family:PingFangSC-Regular;
+						font-weight:400;
+						color:rgba(153,153,153,1);
 						margin: 0.1rem 0;
 					}
 					.time_content{
-						font-size: 12px;
+						font-size:14px;
+						font-family:PingFangSC-Regular;
+						font-weight:400;
+						color:rgba(68,68,68,1);
 						padding: 0.1rem 0;
 					}
 				}
@@ -316,5 +337,10 @@
 				}
 			}
 		}
+	}
+</style>
+<style>
+	.time:not(:last-child)::after{
+	  border-bottom: 1px solid #ebedf0;
 	}
 </style>

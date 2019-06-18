@@ -21,7 +21,6 @@
 				label="包厢数量"
 				placeholder="请输入"
 				input-align="right"
-				:readonly="readOnly"
 			/>
 			<span class="line"></span>
 			<SelectComponent 
@@ -115,9 +114,10 @@
 					duration: 0,       // 持续展示 toast
 					forbidClick: true, // 禁用背景点击
 				})
-				this.data.annex = this.data.annex.id;
+				var send_data = Object.assign({}, this.data);
+				    send_data.annex = send_data.annex.id;
 				if(this.$route.query.type == "create"){
-					addKtvContract(this.data).then(res => {
+					addKtvContract(send_data).then(res => {
 						Toast.clear();
 						Toast.success("创建成功")
 						setTimeout(() => {
@@ -128,8 +128,8 @@
 						Toast.fail("创建失败")
 					})
 				}else if(this.$route.query.type == "edite"){
-					this.data.id = this.id;
-					editeKtvContract(this.data).then(res => {
+					send_data.id = this.id;
+					editeKtvContract(send_data).then(res => {
 						Toast.clear();
 						Toast.success("修改成功")
 						setTimeout(() => {
@@ -140,12 +140,13 @@
 						Toast.fail("修改失败")
 					})
 				}else{
-					var send_data = {
+					var data = {
 						contract : this.$route.query.contractID,
-						annex: this.data.annex,
-						category: 1
+						annex: send_data.annex,
+						category: 1,
+						box_count: send_data.box_count
 					}
-					supplementKtvContract(send_data).then(res => {
+					supplementKtvContract(data).then(res => {
 						Toast.clear();
 						Toast.success("补充成功");
 						setTimeout(() => {

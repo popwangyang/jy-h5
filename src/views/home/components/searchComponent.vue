@@ -1,9 +1,9 @@
 <template>
 	<div class="searchBox">
 		<span class="nav">
-			<van-search v-model="inputValue" :placeholder="placeholder" show-action shape="round" background="#f4f4f4">
+			<van-search v-model="inputValue" :placeholder="placeholder" show-action shape="round">
 				<div class="navRight" slot="action">
-					<van-icon name="user-circle-o" size="2em" />
+					<van-icon :name="imgUrl" size="2em" />
 				</div>
 			</van-search>
 		</span>
@@ -24,7 +24,8 @@
 		},
 		data(){
 			return{
-				inputValue: this.value
+				inputValue: this.value,
+				imgUrl: require("../../../assets/wode.png")
 			}
 		},
 		watch: {
@@ -34,8 +35,10 @@
 		},
 		methods:{
 			
+		},
+		mounted(){
+	
 		}
-		
 	}
 </script>
 
@@ -43,17 +46,29 @@
 	.searchBox{
 		.nav {
 			display: block;
-			border-bottom: 1px solid gainsboro;
-			border-top: 1px solid gainsboro;
+			border-bottom: 1px solid #F6F6F6;
+			// border-top: 1px solid gainsboro;
+			.van-search__content{
+				background-color:#EFEEF3;
+				.van-cell{
+					.van-cell__value{
+						.van-field__body{
+							.van-field__control{
+									font-size: 10px !import;
+								}
+							}
+					}
+				}
+			}
 		}
 		.navRight {
 			height: 100%;
-			/* background: yellow; */
-			margin-top: 0.1rem;
 			line-height: 100%;
+			background:rgba(255,255,255,1);
+            box-shadow:0px 0px 6px 2px rgba(0,0,0,0.05);
+			border-radius: 50%;
 		}
-		.van-search__content{
-			background-color:white;
-		}
+		
+			
 	}
 </style>

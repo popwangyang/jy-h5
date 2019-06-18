@@ -56,7 +56,7 @@
 </template>
 
 <script>
-	import { ktvRechargeList, getKTVDetail, ktvContractList } from "@/api/ktv.js"
+	import { ktvRechargeList, getKTVDetail, ktvContractList, rechargeOffLine } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	import PriceComponent from "./components/priceComponent.vue"
 	export default{
@@ -69,20 +69,24 @@
 				setSeal:"",
 				number:100,
 				ktvID:"",
-				ktvData:""
+				ktvData:"",
+				packageID:"",
+				contractID:""
 			}
 		},
 		computed:{
 			paymentAmount(){
-				return this.setSeal == "" ? "" : this.setSeal.recharge_amount * this.number +"元";
+				console.log("ppppp")
+				return this.setSeal == "" ? "0元" : this.$dealNumber(this.setSeal.recharge_amount * this.number) +"元";
 			},
 			realAmount(){
-				return this.setSeal == "" ? "" : (this.setSeal.recharge_amount + this.setSeal.present_amount) * this.number+"元";
+				return this.setSeal == "" ? "0元" : this.$dealNumber((this.setSeal.recharge_amount + this.setSeal.present_amount) * this.number)+"元";
 			}
 		},
 		methods:{
 			select(id){
 				console.log(id)
+				this.packageID = id;
 				this.rechargeList.map((item, index) => {
 					if(item.id == id){
 						item.isSelected = !item.isSelected;
@@ -94,18 +98,30 @@
 			},
 			rechargeBtn(){
 				this.loading = true;
-				setTimeout(() => {
+				var send_data ={
+					contract: this.contractID.toString(),  //合同PK
+					package: this.packageID.toString(),  //套餐PK
+					ktv: this.ktvID  //场所PK
+				}
+				console.log(send_data);
+				rechargeOffLine(send_data).then(res => {
+					console.log(res);
 					this.loading = false;
-					// Toast.success('充值成功');
+					Toast.success("充值成功")
+					setTimeout(() => {
+						this.$router.push({name:"refillFeedback", query:{paymentAmount: this.paymentAmount, realAmount: this.realAmount}});
+					}, 500)
+					
+				}).catch(err => {
+					this.loading = false;
 					Toast("系统繁忙，请稍后重试")
-					this.$router.push({name:"refillFeedback"})
-				}, 1000)
+				})
 			},
 			goXieyi(){
 				this.$router.push({name:"xieyi"})
 			},
 			goRechargeRecord(){
-				this.$router.push({name:"RechargeRecord"})
+				this.$router.push({name:"RechargeRecord", query:{ktvID: this.ktvID}})
 			},
 			init(){
 				this.pageState = 0;
@@ -136,6 +152,7 @@
 					}
 					ktvContractList(send_data).then(res => {
 						this.number = res.data.results.length > 0 ? res.data.results[0].box_count:0;
+						this.contractID = res.data.results.length > 0 ? res.data.results[0].id:"";
 						resolve(true);
 					}).catch(err => {
 						reject(false)
