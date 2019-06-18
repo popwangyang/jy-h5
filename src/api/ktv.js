@@ -34,6 +34,7 @@ export const getKTVlist = (params) => {
   })
 }
 
+
 // KTV】基本信息创建
 
 export const creatKtvDetail = (data) => {
@@ -73,7 +74,7 @@ export const addKtvCorporateDetail = (data) => {
 }
 // 企业信息修改
 export const putKtvCorporateDetail = (data) => {
-	var id = data.ktv;
+	var id = data.id;
 	delete data.id;
 	return axios.request({
 		url: `/copyright/ktv/enterprise/${id}`,
@@ -152,7 +153,7 @@ export const startAccount = (id) => {
 	 })
  }
  
- //KTV】签约信息列表
+ //KTV合同信息列表
  export const ktvContractList = (params) => {
 	 return axios.request({
 		 url:`/copyright/ktv/contract`,
@@ -160,12 +161,71 @@ export const startAccount = (id) => {
 		 method:'get'
 	 })
  }
+  // ktv详情接口；
+ export const getKTVDetail = (id) => {
+ 	return axios.request({
+ 	  url: `/copyright/ktv/ktv/${id}`,
+ 	  method: 'get'
+     })
+ }
+ 
+ // ktv详情接口；
+ export const getKTVDetail1 = (id) => {
+	 var send_data = {
+			 ktv: id,
+			 state: 1
+	    } 
+ 	return new Promise((resolve, reject) => {
+		ktvContractList(send_data).then(res => {
+			getKTVDetail(id).then(res1 => {
+				var obj = {
+					data: res1.data
+				};
+				    obj.data.isShowAccount = res.data.results.length > 0 ? true:false;
+				resolve(obj)
+			})
+		}).catch(err => {
+			reject(err);
+		})
+	})
+ }
+ 
  //【KTV】新增签约信息
  export const addKtvContract = (data) => {
 	 return axios.request({
 	 	url:`/copyright/ktv/contract`,
 	 	data,
 	 	method:'post'
+	 })
+ }
+ 
+ // 编辑ktv合同
+ export const editeKtvContract = (data) => {
+	 var id = data.id;
+	 delete data.id;
+	  return axios.request({
+	 	url:`/copyright/ktv/contract/${id}`,
+	 	data,
+	 	method:'put'
+	 })
+ }
+ // 创建补充合同
+ export const supplementKtvContract = (data) => {
+	 return axios.request({
+		url:`/copyright/ktv/accessory`,
+		data,
+		method:'post'
+	}) 
+ }
+ 
+ //【KTV】终止合同
+ export const stopContract = (data) => {
+	 var id = data.id;
+	 delete data.id;
+	 return axios.request({
+		url:`copyright/ktv/contract-terminal/${id}`,
+		data,
+		method:'patch' 
 	 })
  }
  //【KTV】充值套餐列表
@@ -177,3 +237,108 @@ export const startAccount = (id) => {
  }
  
  //【KTV】首次充值到账管理列表
+ export const ktvRechargeRecord = (params) => {
+	 return axios.request({
+		 url:`copyright/settlement/order`,
+		 params,
+		 method:'get'
+	 })
+ }
+ // ktv线下充值；
+export const rechargeOffLine = (data) => {
+	 return axios.request({
+		 url: 'copyright/ktv/charge',
+		 data,
+		 method: 'post'
+	 })
+ }
+
+ // ktv创建试用账号
+ 
+const createTrialAccount = (data) => {
+	 return axios.request({
+		 url:`/copyright/rbac/user`,
+		 data,
+		 method:'post'
+	 })
+ }
+ 
+ // 获取ktv账号信息前的id
+const getAccountDetailID = () => {
+	 return axios.request({
+		 url:"/copyright/rbac/group?code=ktv",
+		 method:"get"
+	 })
+ }
+ 
+// 获取ktv账号信息
+export const getAccountDetail = (params) => {
+	 return axios.request({
+			url:`/copyright/rbac/user`,
+			params,
+			method:'get'
+	}) 
+ }
+
+//获取当前账号信息
+export const getAccountMessage = (params) => {
+	var id = params.ktv_id;
+	return new Promise((resolve, reject) => {
+		getKTVDetail(id).then(res => {
+			getAccountDetail(params).then(result => {
+				if(result.data.results.length > 0){
+					var obj = result.data.results[0];
+					    obj.account_status = res.data.account_status;
+						obj.balance = res.data.balance;
+						resolve([obj])
+				}else{
+					resolve([])
+				}
+				
+			})
+		}).catch(err => {
+			reject(err)
+		})
+	})
+}
+
+//创建测试账号；
+export const setTrialAccount = (params) => {
+	return getAccountDetailID().then(res => {
+		params.group = [res.data.results[0].id];
+		return createTrialAccount(params)
+	}) 
+ }
+ 
+ // 编辑测试账号；
+ export const editAccount = (data) => {
+	 var id = data.id;
+	 delete data.id;
+	 return axios.request({
+		 url:`/copyright/rbac/user/${id}`,
+		 data,
+		 method:'put'
+	 })
+ }
+
+// 账号正式启用
+export const AccountOfficiallOpened = (data) => {
+	var id = data.ktvID;
+	delete data.ktvID;
+	return axios.request({
+			url:`/copyright/ktv/ktv-place/${id}`,
+			data,
+			method:'put'
+	}) 
+}
+// 禁用账号
+export const stopAccount = (data) => {
+	var id = data.id;
+	console.log(data)
+	delete data.id;
+	return axios.request({
+			url:`/copyright/rbac/user/${id}`,
+			data,
+			method:'patch'
+	}) 
+}

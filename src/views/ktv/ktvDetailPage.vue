@@ -1,98 +1,115 @@
 <template>
 	<div class="ktvDetailBox">
-		<span class="content">
-			<span class="box1">
-				<span class="title">
-					<span class="text">{{data.name}}</span>
-					<span>
-						<van-button  size="small" @click="editeBtn" style="background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);border-radius:16px;color: white;">编辑</van-button>
+		<span v-if="pageState == 1">
+			<span class="content">
+				<span class="box1">
+					<span class="title">
+						<div>
+							<span class="text">{{data.name}}</span>
+							<span>
+								<van-button class="button-small"  size="mini" @click="editeBtn">编辑</van-button>
+							</span>
+						</div>
+						<div>
+							<span class="type">
+								<span v-if="data.type == 1" class="lingfan">量贩</span>
+								<span v-else class="yedian">夜店</span>
+								<span>商户A</span>
+							</span>
+						</div>
+					</span>
+					<van-cell title="店主姓名" :value="data.contact"></van-cell>
+					<van-cell title="手机号" :value="data.phone_number"></van-cell>
+					<van-cell title="商户地址" :value="address"></van-cell>
+					<div class="phone">
+						<van-icon :name="Phone" size="0.46rem"></van-icon>
+						<span class="text">
+							联系商家
+						</span>
+					</div>
+				</span>
+				<span class="nav">营业信息</span>
+				<span class="box2">
+					<span class="time">
+						<span class="time_title">
+							开业时间
+						</span>
+						<span class="time_content">
+							{{data.opening_hours}}
+						</span>
+					</span>
+					<span class="time">
+						<span class="time_title">
+							营业时间
+						</span>
+						<span class="time_content">
+							{{Ytime}}
+						</span>
 					</span>
 				</span>
-				<span class="type">
-					<span v-if="data.type == 1">量贩式</span>
-					<span v-else>夜店式</span>
-					<span>商户A</span>
-				</span>
-				<span class="detail">
+				<span class="line"></span>
+				<span class="box3">
 					<span class="item">
-						<van-icon name="manager" />
-						<span>{{data.contact}}</span>
+						<span class="icon" @click="goPage(1)">
+							<van-icon :name="merchart" size="1.352rem"></van-icon>
+						</span>
+						<span class="text">企业信息</span>
 					</span>
 					<span class="item">
-						<van-icon name="phone" />
-						<span>{{data.phone_number}}</span>
+						<span class="icon" @click="goPage(2)">
+							<van-icon :name="implementation" size="1.352rem"></van-icon>
+						</span>
+						<span class="text">实施信息</span>
 					</span>
-				</span>
-				<span class="address">
-					<span class="address_left">
-						<van-icon name="location"></van-icon>
+					<span class="item">
+						<span class="icon" @click="goPage(3)">
+							<van-icon :name="contract" size="1.352rem"></van-icon>
+						</span>
+						<span class="text">签约信息</span>
 					</span>
-					<span class="address_right">
-						{{address}}
+					<span class="item" v-if="data.isShowAccount">
+						<span class="icon" @click="goPage(4)">
+							<van-icon :name="account" size="1.352rem"></van-icon>
+						</span>
+						<span class="text">账号信息</span>
 					</span>
-				</span>
-			</span>
-			<span class="box2">
-				<span class="title">营业信息</span>
-				<span class="time">
-					<span class="time_title">
-						开业时间
-					</span>
-					<span class="time_content">
-						{{data.opening_hours}}
-					</span>
-				</span>
-				<span class="time">
-					<span class="time_title">
-						营业时间
-					</span>
-					<span class="time_content">
-						{{Ytime}}
+					<span class="item" v-if="data.isShowAccount">
+						<span class="icon" @click="goPage(5)">
+							<van-icon :name="offLine" size="1.352rem"></van-icon>
+						</span>
+						<span class="text">线下充值</span>
 					</span>
 				</span>
 			</span>
-			<span class="line"></span>
-			<span class="box3">
-				<span class="item">
-					<span class="icon" @click="goPage(1)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">企业信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(2)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">实施信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(3)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">签约信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(4)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">账号信息</span>
-				</span>
-				<span class="item">
-					<span class="icon" @click="goPage(5)">
-						<van-icon name="browsing-history" size="3.6em"></van-icon>
-					</span>
-					<span class="text">线下充值</span>
-				</span>
-			</span>
+		</span>
+		<span class="box" v-if="pageState == 0">
+			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
+		</span>
+		<span class="box" v-if="pageState == 2">
+			<Error
+			text="数据请求异常"
+			img="fail"
+			/>
 		</span>
 	</div>
 </template>
 
 <script>
+	import { getKTVDetail, getKTVDetail1 } from '@/api/ktv.js'
+	import Error from "@/components/EmptyImageComponent.vue"
 	export default{
+		components: { Error },
 		data(){
 			return{
-				data:""
+				Phone: require("@/assets/img/ktv/phone.png"),
+				account:require("@/assets/img/ktv/account.png"),
+				contract:require("@/assets/img/ktv/contract.png"),
+				implementation:require("@/assets/img/ktv/implementation.png"),
+				merchart:require("@/assets/img/ktv/merchart.png"),
+				offLine:require("@/assets/img/ktv/offLine.png"),
+				pageState:0,
+				data:"",
+				ktvID:""
 			}
 		},
 		computed:{
@@ -153,18 +170,27 @@
 					  this.$router.push({name:"contractInformation", query:{ktvID: this.data.id}})
 					break;
 					case 4:
-					  this.$router.push({name:"accountInformation"})
+					  this.$router.push({name:"accountInformation", query:{ktvID: this.data.id}})
 					break;
 					case 5:
-					  this.$router.push({name:"offLineRecharge"})
+					  this.$router.push({name:"offLineRecharge", query:{ktvID: this.data.id}})
 					break;
 				}
+			},
+			getKtvDetail(){
+				this.pageState = 0;
+				getKTVDetail1(this.ktvID).then(res => {
+					this.pageState = 1;
+					this.data = res.data;
+				}).catch(err => {
+					this.pageState = 2;
+				})
 			}
 		},
 		mounted() {
 			document.title= "场所详情";
-			this.data = JSON.parse(this.$route.query.item);
-			console.log(this.data)
+			this.ktvID = this.$route.query.ktvID;
+			this.getKtvDetail();
 		}
 	}
 </script>
@@ -172,62 +198,84 @@
 <style scoped="scoped" lang="less">
 	.ktvDetailBox{
 		height: 100%;
-		background: yellow;
 		display: flex;
 		flex-direction: column;
+		padding-left:0.39rem;
+		padding-right: 0.39rem;
+		padding-top: 0.26rem;
+		box-sizing: border-box;
+		background: #F6F6F6;
+		.box{
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
 		.content{
 			flex: 1;
 			background: white;
 			&>span{
 				display: flex;
-				// padding-left:0.39rem;
-				// padding-right: 0.39rem;
 				flex-direction: column;
 			}
 			.box1{
-				padding-left:0.39rem;
-				padding-right: 0.39rem;
 				background: white;
-				padding-top: 0.5rem;
-				padding-bottom: 0.4rem;
 				&>span{
 					width: 100%;
 					display: flex;
 				}
 				.title{
-					
-					align-items: center;
-					justify-content: space-between;
-					.text{
-						font-size: 16px;
-					}
-				}
-				.type{
-					margin: 0.2rem 0;
-					font-size: 12px;
-					color: gainsboro;
-					& span:nth-child(1){
-						margin-right: 0.26rem;
-					}
-				}
-				.detail{
-					align-items: center;
-					.item{
-						margin-right: 0.5rem;
+					background: url("../../assets/img/ktv/navImg.png") no-repeat;
+					background-size: cover;
+					width: 100%;
+					height: 1.43rem;
+					display: block;
+					padding: 0.26rem;
+					box-sizing: border-box;
+					&>div{
 						display: flex;
-						align-items: center;
-						font-size: 14px;
-						&>span{
-							margin-left: 0.2rem;
+					    justify-content: space-between;
+					}
+					.text{
+						font-size:15px;
+						font-family:PingFangSC-Semibold;
+						font-weight:600;
+						color:rgba(255,255,255,1);
+					}
+					.type{
+						font-size: 12px;
+						span{
+							color: white;
+							font-size: 12px;
+						}
+						& span:nth-child(1){
+							margin-right: 0.26rem;
+						}
+						.lingfan{
+							background:linear-gradient(90deg,rgba(241,194,135,1) 0%,rgba(204,152,88,1) 100%);
+							border-radius:3px;
+							padding: 0px 4px;
+						}
+						.yedian{
+							background:linear-gradient(90deg,rgba(41,241,245,1) 0%,rgba(43,196,211,1) 100%);
+							border-radius:3px;
+							padding: 0px 4px;
 						}
 					}
 				}
-				.address{
-					margin-top: 0.26rem;
-					&>span:nth-child(2){
-						line-height: 100%;
-						margin-left: 0.2rem;
-						font-size: 14px;
+				.phone{
+					display: flex;
+					background:#EFEEF3;
+					height: 1.22rem;
+					align-items: center;
+					justify-content: center;
+					font-size:14px;
+					font-family:PingFangSC-Semibold;
+					font-weight:600;
+					color:rgba(68,68,68,1);
+					&>span{
+						margin-left: 0.1rem;
 					}
 				}
 			}
@@ -238,19 +286,26 @@
 					background: #F6F6F6;
 					font-size: 12px;
 				}
-				& .time:nth-child(2){
+				& .time:nth-child(1){
 					border-bottom: 1px solid #f6f6f6;
 				}
 				.time{
 					padding: 0.12rem 0.39rem;
 					display: flex;
 					flex-direction: column;
+					
 					.time_title{
-						font-size: 12px;
+						font-size:10px;
+						font-family:PingFangSC-Regular;
+						font-weight:400;
+						color:rgba(153,153,153,1);
 						margin: 0.1rem 0;
 					}
 					.time_content{
-						font-size: 12px;
+						font-size:14px;
+						font-family:PingFangSC-Regular;
+						font-weight:400;
+						color:rgba(68,68,68,1);
 						padding: 0.1rem 0;
 					}
 				}
@@ -263,12 +318,15 @@
 				background: white;
 				flex-direction: row;
 				.item{
-					width: 25%;
+					width: 20%;
 					display: flex;
 					flex-direction: column;
 					justify-content: center;
 					align-items: center;
-					font-size: 14px;
+					font-size:12px;
+					font-family:PingFangSC-Semibold;
+					font-weight:600;
+					color:rgba(68,68,68,1);
 					margin-bottom: 0.26rem;
 					.icon{
 						width: 1.5rem;
@@ -277,9 +335,6 @@
 						display: flex;
 						align-items: center;
 						justify-content: center;
-						border-radius: 50%;
-						border: 1px solid gainsboro;
-						margin-bottom: 0.26rem;
 						&:hover{
 							background: #0a0a0a00;
 						}
@@ -287,5 +342,10 @@
 				}
 			}
 		}
+	}
+</style>
+<style>
+	.time:not(:last-child)::after{
+	  border-bottom: 1px solid #ebedf0;
 	}
 </style>

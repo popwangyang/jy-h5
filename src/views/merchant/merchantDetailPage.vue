@@ -3,26 +3,18 @@
 		<span class="content"  v-show="!loading">
 			<span class="box">
 				<span class="boxItem1">
-					<span>{{data.name}}</span>
+					<span class="txt">{{data.name}}</span>
 					<span>
-						<van-button class="button-round" size="small" @click="goEditePage">编辑</van-button>
+						<van-button class="button-small" size="mini" @click="goEditePage">编辑</van-button>
 					</span>
 				</span>
-				<span class="boxItem2">
-					<span>账号 : </span>
-					<span v-if="data.acc == null"> 无 </span>
-					<span v-else> {{data.acc.account}}</span>
-				</span>
-				<span class="boxItem2">
-					<span>手机号 : </span>
-					<span v-if="data.acc == null"> 暂无</span>
-					<span v-else> {{data.acc.phone}}</span>
-				</span>
+				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.account"/>
+				<van-cell title="手机号" :value="data.acc == null ? '无': data.acc.phone"/>
 			</span>
-			<van-index-bar :index-list="[]">
-				<van-index-anchor index="关联场所:3" :sticky="false"/>
+			<span class="nav">关联场所：2</span>
+			<span class="merchantDetailBody">
 				<van-cell :title="item.name" v-for="item in data.ktv_list" :key="item.id"/>
-			</van-index-bar>
+			</span>
 		</span>
 		<span class="load" v-show="loading">
 			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
@@ -39,6 +31,11 @@
 			return{
 				data:"",
 				loading: false
+			}
+		},
+		computed:{
+			text(){
+				return this.data == "" ?  "关联场所: 0" : "关联场所:"+this.data.ktv_list.length;
 			}
 		},
 		methods:{
@@ -72,11 +69,18 @@
 <style scoped="scoped">
 	.merchantDetailBox{
 		height: 100%;
+		background: #f6f6f6;
+		padding: 0.26rem 0.26rem 0 0.26rem;
+		box-sizing: border-box;
 	}
 	.box{
 		display: flex;
-		background: wheat;
-		padding: 0.26rem 0.3rem;
+		background: #F6F6F6;
+		flex-direction: column;
+	}
+	.content{
+		height: 100%;
+		display: flex;
 		flex-direction: column;
 	}
 	.boxItem1{
@@ -84,6 +88,17 @@
 		width: 100%;
 		justify-content: space-between;
 		align-items: center;
+		background: url("../../assets/img/merchant/navImg.png") no-repeat;
+		height: 1.118rem;
+		background-size: cover;
+		padding: 0 0.26rem;
+		box-sizing: border-box;
+		
+	}
+	.boxItem1 .txt{
+		font-size:15px;
+		font-weight:600;
+		color:rgba(255,255,255,1);
 	}
 	.load{
 		height: 100%;
@@ -94,9 +109,16 @@
 	.boxItem1>span:nth-child(1){
 		font-size: 0.46rem;
 	}
-	.boxItem2{
-		display: flex;
-		align-items: center;
-		padding: 0.16rem 0;
+	.merchantDetailBody{
+		flex: 1;
+		overflow: auto;
+	}
+</style>
+<style>
+	.merchantDetailBox .van-index-bar .van-index-anchor{
+		font-size:12px;
+		font-weight:400;
+		color:rgba(153,153,153,1);
+		padding-left: 0;
 	}
 </style>

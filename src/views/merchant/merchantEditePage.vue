@@ -1,5 +1,5 @@
 <template>
-	<div class="box">
+	<div class="merchantEditbox">
 		<van-cell-group>
 			<van-field 
 			v-model="data.name" 
@@ -28,24 +28,28 @@
 			<div class="van-cell van-field">
 				<div class="van-cell__title van-field__label">是否启用</div>
 				<div class="van-cell__value">
-					<van-switch v-model="data.checked" size="22px"/>
+					<van-switch v-model="data.checked" active-color="#2BC8D6" inactive-color="#ffffff" size="22px"/>
 				</div>
 			</div>
 		</van-cell-group>
 		<span class="box1">
-			<span class="title">关联场所</span>
-			<span style="background: white;padding:0.26rem 0rem;">
+			<span class="title">营业信息</span>
+			<span>
 				<span class="add" @click="btnPlace">
-					<van-icon name="plus" size="0.5rem"/>
-					<span style="margin-left: 0.06rem;">请选择</span>
+					<span class="circle">
+						<van-icon name="plus" size="0.2rem" color="#FFFFFF"/>
+					</span>
+					
+					<span>请选择</span>
 				</span>
 			</span>
 			<span class="body">
-				<PlaceItem v-for="item in data.ktvList" :key="item.id">
-					<van-cell  :value="item.name" @click="deletBtn(item)">
-						<van-icon slot="right-icon" name="clear"></van-icon>
-					</van-cell>
-				</PlaceItem>
+				<van-cell v-for="item in data.ktvList" :key="item.id">
+					 <template slot="title">
+						<van-icon :name="closeImg" style="margin-right: 0.26rem;line-height: 100%;" @click="deletBtn(item)"/>
+						<span class="custom-text">{{item.name}}</span>
+					 </template>
+				</van-cell>
 			</span>
 		</span>
 		<div class="box2" v-if="box2Flage">
@@ -60,15 +64,15 @@
 
 <script>
 	import { createMerchant, editeMerchant } from "@/api/merchant.js"
-	import PlaceItem from "./components/placeItem.vue"
 	import { Toast } from 'vant';
 	import addPlace from "./components/searchPage.vue"
 	export default{
-		components:{ PlaceItem, addPlace },
+		components:{ addPlace },
 		data(){
 			return{
 				inputTypeFlag:true,
 				box2Flage:false,
+				closeImg: require("@/assets/img/merchant/close.png"),
 				data:{
 					name:"",
 					account:"",
@@ -105,6 +109,17 @@
 			},
 			btnPlace(){
 				this.box2Flage = !this.box2Flage;
+				if(this.box2Flage){
+					document.title = "门店选择"
+				}else{
+				   if(this.$route.params.type == "edite"){
+				   	document.title = "编辑商户"
+				   	return "编辑商户"
+				   }else{
+				   	document.title = "新建商户"
+				   	return "新建商户"
+				   }
+				}
 			},
 			handleFrom(type){
 				this.loading = true;
@@ -152,7 +167,7 @@
 </script>
 
 <style scoped="scoped">
-	.box{
+	.merchantEditbox{
 		height: 100%;
 		position: relative;
 		display: flex;
@@ -174,18 +189,23 @@
 	}
 	.add{
 		display: flex;
-		border: 1px dashed  #6666668a;
 		align-items: center;
 		justify-content: center;
-		padding: 0.26rem 0;
-		margin: 0 0.39rem;
+		width: 100%;
+		height: 1.222rem;
 		color: #6666668a;
+		background:rgba(239,238,243,1);
+	}
+	.add span:nth-child(2){
+		font-size:14px;
+		font-family:PingFangSC-Semibold;
+		font-weight:600;
+		color:rgba(68,68,68,1);
+		line-height:20px;
+		margin-left: 0.12rem;
 	}
 	.body{
-		/* background: yellow; */
-		border-top: 1px solid lightgray;
 		flex: 1;
-		margin: 0.52rem 0;
 		overflow: auto;
 	}
 	.box2{
@@ -201,5 +221,20 @@
 		margin: 0.26rem 0;
 		padding: 0 0.39rem;
 		background: #f2f2f25b;
+	}
+	.circle{
+		display: flex;
+		width: 0.364rem;
+		height: 0.364rem;
+		background: #2BC8D6;
+		border-radius: 50%;
+		align-items: center;
+		justify-content: center;
+	}
+</style>
+<style>
+	.merchantEditbox .van-cell__title{
+		display: flex;
+		align-items: center;
 	}
 </style>

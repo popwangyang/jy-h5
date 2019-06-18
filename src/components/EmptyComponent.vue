@@ -1,9 +1,10 @@
 <template>
 	<div class="emptyComponentBox">
+		<img :src="imgsrc" alt="">
 		<span style="color: #d0d0d0;">
 			{{text}}
 		</span>
-		<span class="item" @click="btn">
+		<span class="item"  @click="btn">
 			{{title}}
 		</span>
 	</div>
@@ -14,7 +15,7 @@
 		props:['text', 'title'],
 		data(){
 			return{
-				
+				imgsrc:require("@/assets/empty.png")
 			}
 		},
 		methods:{
@@ -27,19 +28,26 @@
 
 <style scoped="scoped" lang="less">
 	.emptyComponentBox{
-		// height: 100%;
-		// background: yellow;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
+		img{
+			margin-bottom: 0.1rem;
+		}
 		.item{
-			background: white;
-			border: 1px solid gainsboro;
-			padding: 0.3rem 0.9rem;
-			margin-top: 0.3rem;
+            padding-left: 0.3rem;
+			padding-right: 0.3rem;
+			margin-top: 0.8rem;
+			height:0.78rem;
+			background:linear-gradient(180deg,rgba(61,158,255,1) 0%,rgba(24,82,243,1) 100%);
+			border-radius:16px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: white;
 			&:active{
-				background: #0a0a0a00;
+				background: #134ae4c9;
 			}
 		}
 	}

@@ -9,14 +9,28 @@
 		background: #F6F6F6;
 	}
 	.button{
-		background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);
+		background:linear-gradient(180deg,rgba(61,158,255,1) 0%,rgba(24,82,243,1) 100%);
 		color: white !important;
 		border-radius:4px !important;
 	}
 	.button-round{
-		background:linear-gradient(180deg,rgba(54,210,254,1) 0%,rgba(50,156,238,1) 100%);
+		background:linear-gradient(180deg,rgba(61,158,255,1) 0%,rgba(24,82,243,1) 100%);
 		color: white !important;
 		border-radius:16px !important;
+	}
+	.button-small{
+		border: none !important;
+		background:linear-gradient(180deg,rgba(61,158,255,1) 0%,rgba(24,82,243,1) 100%);
+		border-radius:16px !important;
+		color: white !important;
+	}
+	.nav{
+		display: block;
+		font-size:12px;
+		font-family:PingFangSC-Regular;
+		font-weight:400;
+		color:rgba(153,153,153,1);
+		padding: 0.4rem 0;
 	}
 	#app{
 		height: 100%;

@@ -19,14 +19,16 @@
 			:loading="loading"
 			loading-type="spinner"
 			loading-text="加载中..."
-			type="primary" 
-			size="large" 
+			class="button"
+			size="large"
+			:disabled="disabled"
 			@click="onClickBtn">正式启用</van-button>
 		</span>
 	</div>
 </template>
 
 <script>
+	import { AccountOfficiallOpened } from "@/api/ktv.js"
 	import { setSelectDays, getTime } from "@/libs/util"
 	import SelectComponent from "@/components/SelectComponent.vue"
 	import Item1 from '@/components/list1.vue'
@@ -37,7 +39,8 @@
 			return{
 				columns: setSelectDays(30),
 				time:"",
-				loading:false
+				loading:false,
+				ktvID:""
 			}
 		},
 		computed:{
@@ -50,19 +53,30 @@
 				    return str;
 				}
 				
+			},
+			disabled(){
+				return this.time == "" ? true:false;
 			}
 		},
 		methods:{
 		   onClickBtn(){
 			   this.loading = true;
-			   setTimeout(() => {
-				   Toast.success('启用成功');
-				   this.loading =false;
-			   }, 1000)
+			   var send_data = {
+				   ktvID: this.ktvID,
+				   chargeable_time: parseInt(this.time.substr(0, this.time.length - 2))
+			   }
+			   AccountOfficiallOpened(send_data).then(res => {
+				   this.loading = false;
+				   Toast.success("账号启用成功")
+				   console.log(res)
+			   }).catch(err => {
+				   this.loading = false;
+				   Toast.fail("账号启用失败")
+			   })
 		   }
 		},
 		mounted() {
-			
+			this.ktvID = this.$route.query.ktvID;
 		}
 	}
 </script>

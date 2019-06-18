@@ -7,8 +7,9 @@ import config from '@/config'
 import  'lib-flexible'
 import Vant from 'vant';
 import 'vant/lib/index.css';
-
+import dealNumber from '@/assets/js/dealNumber'
 Vue.use(Vant);
+Vue.prototype.$dealNumber = dealNumber;
 Vue.prototype.axios = axios;
 // if (process.env.NODE_ENV !== 'production') require('@/mock')
 Vue.prototype.$config = config

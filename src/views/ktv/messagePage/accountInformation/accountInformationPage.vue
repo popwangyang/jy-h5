@@ -1,81 +1,171 @@
 <template>
 	<div class="accountInformationBox">
-		<div class="box1" v-if="hasDetail">
+		<div class="box1" v-if="statePage == 1">
 			<span class="line"></span>
 			<Item1
+			 label="昵称"
+			 :value="data.nickname"
+			/>
+			<Item1
 			 label="登录账号"
-			 value="5044822993@qq.com"
+			 :value="data.email"
+			/>
+			<Item1
+			label="手机号"
+			:value="data.phone"
 			/>
 			<Item1
 			 label="余额"
-			 value="4,899.00元"
+			 :value="data.balance"
 			/>
 			<Item1
 			 label="创建日期"
-			 value="2019年6月2日  11:23:32"
+			 :value="data.create_date"
 			/>
 			<span class="line"></span>
 			<Item1
 			 label="状态"
-			 value="已启用"
+			 v-if="data.phone != null"
+			 :value="data.phone"
+			/>
+			<Item1
+			 label="状态"
+			 :value="data.is_active"
 			/>
 			<Item1
 			 label="性质"
-			 value="试用账号"
+			 :value="account_status"
 			/>
 			<span class="footer">
-				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="stopAccontBtn">禁用账号</van-button>	
-				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="enableAccontBtn">正式启用</van-button>
+				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="stopAccontBtn" v-if="data.is_active == '已启用'">禁用账号</van-button>	
+				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="startAccontBtn" v-if="data.is_active == '已禁用'">启用账号</van-button>	
+				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="enableAccontBtn" v-if="data.account_status == 1">正式启用</van-button>
 				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="editBtn">编辑</van-button>
 			</span>
 		</div>
-		<div class="box2" v-else>
+		<div class="box2" v-if="statePage == 2">
 			<EmptyComponent 
 			 :text="text"
 			 :title="title"
 			 @eventBtn="createBtn"
 			/>
 		</div>
+		<div class="box2" v-if="statePage == 0">
+			<van-loading type="spinner" :vertical="true">加载中...</van-loading>
+		</div>
+		<div class="box2" v-if="statePage == 3">
+			<Error
+			text="数据请求异常"
+			img="fail"
+			/>
+		</div>
 	</div>
 </template>
 
 <script>
+	import { getAccountMessage, stopAccount } from '@/api/ktv.js'
 	import EmptyComponent from '@/components/EmptyComponent.vue'
+	import Error from '@/components/EmptyImageComponent.vue'
 	import Item1 from '@/components/list1.vue'
 	import { Dialog, Toast } from 'vant';
 	export default{
-		components:{ Item1, EmptyComponent },
+		components:{ Item1, EmptyComponent, Error },
 		data(){
 			return{
-				hasDetail:false,
+				statePage:0,
 				text:"暂未创建账号",
-				title:"新建试用账号"
+				title:"新建试用账号",
+				ktvID:"",
+				data:"",
+				account_status:""
 			}
 		},
 		methods:{
 			stopAccontBtn(){
+				var _this = this;
 				Dialog.confirm({
 				  title: '禁用账号',
 				  message: '禁用账号后，将无法登录，确定禁用吗？'
 				}).then(() => {
-					console.log("账号已禁用")
-				   Toast.success('账号已禁用');
-				}).catch(() => {
-				  // on cancel
+				   var send_data = {
+					   id: _this.data.id,
+					   is_active: 0,
+					   area_code_list: _this.data.area_code_list
+				   }
+				   Toast.loading({
+					   duration: 0,       // 持续展示 toast
+					   forbidClick: true, // 禁用背景点击
+					   loadingType: 'circular',
+				   })
+				   stopAccount(send_data).then(res => {
+					   Toast.clear();
+					   Toast.success('账号已禁用');
+					   this.data.is_active = '已禁用';
+				   }).catch(() => {
+					   Toast.fail('操作失败');
 				});
+				})
+			},
+			startAccontBtn(){
+				var _this = this;
+				Dialog.confirm({
+				  title: '启用账号',
+				  message: '启用账号后，将可以登录，确定启用吗？'
+				}).then(() => {
+				   var send_data = {
+					   id: _this.data.id,
+					   is_active: 1,
+					   area_code_list: _this.data.area_code_list
+				   }
+				   Toast.loading({
+					   duration: 0,       // 持续展示 toast
+					   forbidClick: true, // 禁用背景点击
+					   loadingType: 'circular',
+				   })
+				   stopAccount(send_data).then(res => {
+					   Toast.clear();
+					   Toast.success('账号已启用');
+					   this.data.is_active = '已启用';
+				   }).catch(() => {
+					   Toast.fail('操作失败');
+				});
+			  })
 			},
 			enableAccontBtn(){
-				this.$router.push({name:"enableAccont"})
+				this.$router.push({name:"enableAccont", query:{ktvID: this.$route.query.ktvID}})
 			},
 			editBtn(){
-				this.$router.push({name:"editAccountInformation", query:{type:"edit"}})
+				this.$router.push({name:"editAccountInformation", query:{type:"edit", ktvID: this.$route.query.ktvID}})
 			},
 			createBtn(){
-			    this.$router.push({name:"editAccountInformation", query:{type:"create"}})
+			    this.$router.push({name:"editAccountInformation", query:{type:"create", ktvID: this.$route.query.ktvID}})
+			},
+			getData(){
+				var send_data = {
+					code: "K",
+					ktv_id: this.ktvID
+				}
+				this.statePage = 0;
+				getAccountMessage(send_data).then(res => {
+					console.log(res)
+					if(res.length > 0){
+						this.statePage = 1;
+						this.data = res[0];
+						this.data.is_active = this.data.is_active? "已启用":"已禁用";
+						this.data.balance = this.data.balance+"元";
+						this.account_status = this.data.account_status == 1 ? "试用账号":"正式账号"
+					}else{
+						this.statePage = 2;
+					}
+				}).catch(err => {
+					this.statePage = 3;
+				})
 			}
 		},
 		mounted() {
-			document.title = "账号信息"
+			document.title = "账号信息";
+			this.ktvID = this.$route.query.ktvID;
+			this.getData();
 		}
 	}
 </script>

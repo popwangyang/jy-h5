@@ -24,7 +24,7 @@
 		},
 		methods:{
 			goDetailPage(){
-				this.$router.push({name:"ktvDetail", query:{item: JSON.stringify(this.item)}})
+				this.$router.push({name:"ktvDetail", query:{ktvID: this.item.id}})
 			}
 		}
 	}

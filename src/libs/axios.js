@@ -35,9 +35,11 @@ class HttpRequest {
     // 响应拦截
 
     instance.interceptors.response.use(response => {
+			
       const { data, status } = response
       return { data, status }
     }, error => {
+			console.log(error)
       const { data, status } = error.response
       if (status === 401) {
         // setToken('')

@@ -12,9 +12,13 @@
 						</template>
 						<template v-slot:error>加载失败</template>
 					</van-image>
-					<van-icon class="van-uploader__preview-delete" name="delete" size="0.4rem" color = "#fff" @click="deleteBtn"/>
+					<van-icon class="delete" name="delete" size="0.6rem" color = "#fff" @click="deleteBtn"/>
+					
 				</span>
-				<Upload ref="upload" @upload="upload" v-else/>
+				<span style="align-self: flex-end;margin-left: 10px;font-size: 14px;">
+					{{fileName}}
+				</span>
+				<Upload ref="upload" @upload="upload" v-if="src == '' || src.substr(0, 4) != 'http' || state != 0"/>
 			</span>
 		</span>
 	</div>
@@ -30,9 +34,13 @@
 		props:{
 			title:{
 				type:String,
-				default:"营业执照附件"
+				default:""
 			},
 			src:{
+				type:String,
+				default:""
+			},
+			name:{
 				type:String,
 				default:""
 			},
@@ -47,13 +55,14 @@
 		},
 		data(){
 			return{
-				state:0
+				state:0,
+				fileName: this.name
 			}
 		},
 		methods:{
 			upload(result){
 				console.log(result);
-				this.$emit("returnBack", result.id+"");
+				this.$emit("returnBack", result+"");
 			},
 			ImagePreviewBtn(){
 				ImagePreview([
@@ -63,6 +72,7 @@
 			deleteBtn(){
 				console.log('d')
 				this.state = 1;
+				this.fileName = "";
 				this.$emit("returnBack", "")
 			}
 		}
@@ -73,7 +83,8 @@
 	.list3Box{
 		padding: 0 0.39rem;
 		background: white;
-		height: 3.9rem;
+		min-height: 3.9rem;
+		padding-bottom: 10px;
 		.title{
 			display: flex;
 			padding: 0.4rem 0;
@@ -88,9 +99,9 @@
 					background: white;
 					.delete{
 						position: absolute;
-						bottom: 0rem;
-						right: 0rem;
-						z-index: 2;
+						bottom: 4px;
+						right: 2px;
+						color: white;
 					}
 				}
 			}

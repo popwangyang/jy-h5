@@ -29,7 +29,7 @@ export const editeMerchant = (data) => {
 	return axios.request({
 		url: `/copyright/ktv/merchant/${ID}`,
 		data,
-		method: 'put'
+		method:'put'
 	})
 }
 

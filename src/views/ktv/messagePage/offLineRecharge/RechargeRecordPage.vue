@@ -14,6 +14,7 @@
 </template>
 
 <script>
+	import { ktvRechargeRecord } from "@/api/ktv.js"
 	import EmptyImageComponent from "@/components/EmptyImageComponent.vue"
 	export default {
 		components: {
@@ -21,39 +22,44 @@
 		},
 		data() {
 			return {
-				empty: true,
 				text: "暂无充值记录",
-				list: [],
-				loading: false, //是否处于加载状态
-				finished: false, //是否已加载完所有数据
-				isLoading: false, //是否处于下拉刷新状态
+				list:[],
+				count:0,
+				loading: false,
+				finished: false,
+				isLoading: false, //控制下拉刷新的加载动画
+				page:1,
+				page_size:30,
+				empty:false,
 			}
 		},
 		methods: {
-			onClickLeft() {
-				this.$router.go(-1)
-			},
-			onLoad() { //上拉加载
-				setTimeout(() => {
-					for (let i = 0; i < 15; i++) {
-						this.list.push(this.list.length + 1);
-					}
+			onLoad() { //下拉刷新
+			    var send_data ={
+					page:this.page,
+					page_size:this.page_size,
+					platform: 3,
+					place_id: this.$route.query.ktvID,
+					order: 'create_date'
+				}
+				ktvRechargeRecord(send_data).then(res => {
+					var arr = this.list.concat(res.data.results);
+					var obj = {};
+					this.list = arr.reduce((cur,next) => {
+							obj[next.id] ? "" : obj[next.id] = true && cur.push(next);
+							return cur;
+						},[]);
+					this.count = res.data.count;
+					this.page++;
 					this.loading = false;
-					if (this.list.length >= 60) {
+					this.isLoading = false;
+					if (this.list.length >= this.count) {
 						this.finished = true;
 					}
-				}, 1000);
-			},
-			onRefresh() { //下拉刷新
-				setTimeout(() => {
-					this.finished = false;
-					this.isLoading = false;
-					this.list = []
-					this.onLoad()
-				}, 500);
-			},
-			createBtn() {
-				// this.$router.push({name:"merchantEdite"})
+					if (this.count == 0) {
+						this.empty = true;
+					}
+				})
 			},
 			goDetail() {
 

@@ -1,9 +1,6 @@
 <template>
 	<div class="ImplementationBox">
 		<span class="box" v-if="pageState == 1">
-			  <span class="nav">
-			  		企业信息
-			  </span>
 			  <Item1
 			  label="vod品牌"
 			  :value="data.vod_brand"
@@ -23,31 +20,31 @@
 			  <span class="box3">
 			  	<span class="item">
 			  		<span class="icon" @click="clickBtn(1)">
-			  			<van-icon name="browsing-history" size="3.6em"></van-icon>
+			  			<van-icon :name="upgrade" size="1.352rem"></van-icon>
 			  		</span>
 			  		<span class="text">升级系统</span>
 			  	</span>
 			  	<span class="item">
 			  		<span class="icon" @click="clickBtn(2)">
-			  			<van-icon name="browsing-history" size="3.6em"></van-icon>
+			  			<van-icon :name="upgradeRecord" size="1.352rem"></van-icon>
 			  		</span>
 			  		<span class="text">升级记录</span>
 			  	</span>
 			  	<span class="item">
 			  		<span class="icon" @click="clickBtn(3)">
-			  			<van-icon name="browsing-history" size="3.6em"></van-icon>
+			  			<van-icon :name="editImplement" size="1.352rem"></van-icon>
 			  		</span>
 			  		<span class="text">编辑</span>
 			  	</span>
 			  	<span class="item">
 			  		<span class="icon" @click="clickBtn(4)">
-			  			<van-icon name="browsing-history" size="3.6em"></van-icon>
+			  			<van-icon :name="addImplement" size="1.352rem"></van-icon>
 			  		</span>
 			  		<span class="text">新增实施</span>
 			  	</span>
 			  	<span class="item">
 			  		<span class="icon" @click="clickBtn(5)">
-			  			<van-icon name="browsing-history" size="3.6em"></van-icon>
+			  			<van-icon :name="implementRecord" size="1.352rem"></van-icon>
 			  		</span>
 			  		<span class="text">实施记录</span>
 			  	</span>
@@ -103,6 +100,11 @@
 		components:{ Item1, EmptyComponent },
 		data(){
 			return{
+				addImplement: require("@/assets/img/ktv/addImplement.png"),
+				editImplement: require("@/assets/img/ktv/editImplement.png"),
+				implementRecord: require("@/assets/img/ktv/implementRecord.png"),
+				upgradeRecord: require("@/assets/img/ktv/upgradeRecord.png"),
+				upgrade: require("@/assets/img/ktv/upgrade.png"),
 				pageState:0,
 				UpgradeSystemFlage:false,
 				value:"",
@@ -209,9 +211,9 @@
 			display: block;
 			width: 100%;
 			position: relative;
-			background: #fafafa;
+			background: #f6f6f6;
 			 .nav{
-			 	background: #fafafa;
+			 	background: #f6f6f6;
 			 	display: block;
 			 	padding: 0.16rem 0.39rem;
 			 	color: #979797;
@@ -222,26 +224,23 @@
 			 	justify-content: flex-start;
 			 	flex-wrap: wrap;
 			 	background: white;
-			 	border-top: 0.16rem solid gainsboro;
+			 	margin-top: 0.26rem;
 			 	flex-direction: row;
 			 	.item{
-			 		width: 25%;
+			 		width: 20%;
 			 		display: flex;
 			 		flex-direction: column;
 			 		justify-content: center;
 			 		align-items: center;
+			 		font-size:12px;
+			 		font-family:PingFangSC-Semibold;
+			 		font-weight:600;
+			 		color:rgba(68,68,68,1);
 			 		margin-bottom: 0.26rem;
-			 		font-size: 14px;
 			 		.icon{
-			 			width: 1.5rem;
-			 			height: 1.5rem;
-			 			// background: yellow;
 			 			display: flex;
 			 			align-items: center;
 			 			justify-content: center;
-			 			border-radius: 50%;
-			 			border: 1px solid gainsboro;
-			 			margin-bottom: 0.26rem;
 			 			&:hover{
 			 				background: #0a0a0a00;
 			 			}
@@ -254,11 +253,12 @@
 			 	align-items: center;
 			 	.title{
 			 		font-size: 0.3rem;
-			 		padding: 0.3rem 0;
+			 		padding: 0.2rem 0;
+					color: #888888;
 			 	}
 			 	.input{
 			 		width: 5rem;
-			 		height: 2rem;
+			 		height: 1.6rem;
 			 		// background: yellow;
 			 		
 			 	}
@@ -273,5 +273,10 @@
 			position: relative;
 			background: #fafafa;
 		}
+	}
+</style>
+<style>
+	.ImplementationBox .van-dialog{
+		top:30%;
 	}
 </style>

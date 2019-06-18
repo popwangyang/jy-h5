@@ -8,13 +8,9 @@
 		</span>
 		<span class="body">
 		    <van-list v-model="loading" :finished="finished" :finished-text="finishedText" @load="getList" v-if=" searchValue != ''">
-					<span v-for="item in list" :key="item.id" @click="selectBtn(item)">
-						<van-cell  :value="item.name" v-if="item.isSelected">
-							<van-icon slot="right-icon" name="checked" color="#01cca3" ></van-icon>
-						</van-cell>
-						  <van-cell :value="item.name" v-else/>
-						</van-cell>
-					</span>
+				<van-cell  :value="item.name"  v-for="item in list" :key="item.id" @click="selectBtn(item)">
+					<van-icon slot="right-icon" name="checked" color="#01cca3" v-if="item.isSelected"></van-icon>
+				</van-cell>
 			  </van-list>
 		</span>
 		<span class="footer">
@@ -117,7 +113,7 @@
 			}
 		},
 		mounted() {
-		
+		document.title = "门店选择"
 		}
 	}
 </script>
@@ -127,11 +123,9 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-		background: floralwhite;
+		background: white;
 		.nav {
 			display: block;
-			border-bottom: 1px solid gainsboro;
-			border-top: 1px solid gainsboro;
 		}
 		.navRight {
 			height: 100%;

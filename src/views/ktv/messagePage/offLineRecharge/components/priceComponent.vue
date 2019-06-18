@@ -36,20 +36,25 @@
 		display: flex;
 		border-radius:4px;
 		border: 1px solid black;
-		padding: 0.16rem 0.7rem;
+		padding: 0.16rem 0.6rem;
 		align-items: center;
 		justify-content: center;
 		flex-direction: column;
-		
+		width: 2.6rem;
+		box-sizing: border-box;
 		.label{
-			font-size:16px;
-			// font-family:PingFangSC-Semibold;
+			font-size:0.4rem;
 			font-weight:600;
 			display: block;
 			margin-bottom: 0.16rem;
+			overflow: hidden;
+			text-overflow: ellipsis; 
+			-o-text-overflow: ellipsis;
+			white-space:nowrap;
+			
 		}
 		.value{
-			font-size:10px;
+			font-size:0.26rem;
 			// font-family:PingFangSC-Regular;
 			font-weight:400;
 		}

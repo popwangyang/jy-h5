@@ -10,8 +10,8 @@
 			<span>我们将尽快为您完成充值</span>
 		</span>
 		<span class="line"></span>
-		<van-cell title="支付金额" value="1300元" />
-		<van-cell title="实际到账" value="1500元" />
+		<van-cell title="支付金额" :value="$route.query.paymentAmount" />
+		<van-cell title="实际到账" :value="$route.query.realAmount" />
 		<span class="footer">
 			<van-button 
 			size="large"

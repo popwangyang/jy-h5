@@ -4,20 +4,19 @@
 			<span class="title">
 				<span class="titleLeft">
 					<span>账户余额</span>
-					<span>￥7,188.00</span>
+					<span>￥{{ktvData.balance}}</span>
 				</span>
 				<span class="titleRight">
-					<span @click="goRechargeRecord" style="color: #4479EF;">
+					<span @click="goRechargeRecord" style="color: #FFFFFF;margin-top: 0.28rem;">
 						充值记录
 					</span>
-					<van-icon name="arrow" />
 				</span>
 			</span>
 			<span class="line"></span>
 			<span class="content">
-				<span class="title">包厢充值单价</span>
+				<span class="content-title">包厢充值单价</span>
 				<span class="body">
-					<span class="item" v-for="item in rechargeList" @click="select(item.id)">
+					<span class="item" :key="item.id" v-for="item in rechargeList" @click="select(item.id)">
 						<PriceComponent
 						:label="item.recharge_amount"
 						:value="item.present_amount"
@@ -56,7 +55,7 @@
 </template>
 
 <script>
-	import { ktvRechargeList } from "@/api/ktv.js"
+	import { ktvRechargeList, getKTVDetail, ktvContractList, rechargeOffLine } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	import PriceComponent from "./components/priceComponent.vue"
 	export default{
@@ -67,20 +66,26 @@
 				loading:false,
 				rechargeList:[],
 				setSeal:"",
-				number:100
+				number:100,
+				ktvID:"",
+				ktvData:"",
+				packageID:"",
+				contractID:""
 			}
 		},
 		computed:{
 			paymentAmount(){
-				return this.setSeal == "" ? "" : this.setSeal.recharge_amount * this.number +"元";
+				console.log("ppppp")
+				return this.setSeal == "" ? "0元" : this.$dealNumber(this.setSeal.recharge_amount * this.number) +"元";
 			},
 			realAmount(){
-				return this.setSeal == "" ? "" : (this.setSeal.recharge_amount + this.setSeal.present_amount) * this.number+"元";
+				return this.setSeal == "" ? "0元" : this.$dealNumber((this.setSeal.recharge_amount + this.setSeal.present_amount) * this.number)+"元";
 			}
 		},
 		methods:{
 			select(id){
 				console.log(id)
+				this.packageID = id;
 				this.rechargeList.map((item, index) => {
 					if(item.id == id){
 						item.isSelected = !item.isSelected;
@@ -92,18 +97,30 @@
 			},
 			rechargeBtn(){
 				this.loading = true;
-				setTimeout(() => {
+				var send_data ={
+					contract: this.contractID.toString(),  //合同PK
+					package: this.packageID.toString(),  //套餐PK
+					ktv: this.ktvID  //场所PK
+				}
+				console.log(send_data);
+				rechargeOffLine(send_data).then(res => {
+					console.log(res);
 					this.loading = false;
-					// Toast.success('充值成功');
+					Toast.success("充值成功")
+					setTimeout(() => {
+						this.$router.push({name:"refillFeedback", query:{paymentAmount: this.paymentAmount, realAmount: this.realAmount}});
+					}, 500)
+					
+				}).catch(err => {
+					this.loading = false;
 					Toast("系统繁忙，请稍后重试")
-					this.$router.push({name:"refillFeedback"})
-				}, 1000)
+				})
 			},
 			goXieyi(){
 				this.$router.push({name:"xieyi"})
 			},
 			goRechargeRecord(){
-				this.$router.push({name:"RechargeRecord"})
+				this.$router.push({name:"RechargeRecord", query:{ktvID: this.ktvID}})
 			},
 			init(){
 				this.pageState = 0;
@@ -119,16 +136,36 @@
 						reject(false)
 					})
 				})
-// 				var P2 = new Promise((resolve, reject) => {
-// 					ktvDetail
-// 				})
-				Promise.all([P1]).then(res => {
+				var P2 = new Promise((resolve, reject) => {
+					getKTVDetail(this.ktvID).then(res => {
+						this.ktvData = res.data;
+						resolve(true);
+					}).catch(err => {
+						reject(false)
+					})
+				})
+				var P3 = new Promise((resolve, reject) => {
+					var send_data = {
+						ktv: this.ktvID,
+						state: 1
+					}
+					ktvContractList(send_data).then(res => {
+						this.number = res.data.results.length > 0 ? res.data.results[0].box_count:0;
+						this.contractID = res.data.results.length > 0 ? res.data.results[0].id:"";
+						resolve(true);
+					}).catch(err => {
+						reject(false)
+					})
+				})
+				Promise.all([P1, P2, P3]).then(res => {
 					this.pageState = 1;
+					console.log(this.ktvData);
 				})
 			}
 		},
 		mounted() {
 			document.title = "线下充值";
+			this.ktvID = this.$route.query.ktvID;
 			this.init()
 		}
 	}
@@ -148,18 +185,25 @@
 			display: flex;
 			padding: 0.3rem 0.39rem;
 			background: white;
+			height: 3.718rem;
+			background: url("../../../../assets/img/ktv/offLineRecharge.png") no-repeat;
+			background-size: cover;
 			.titleLeft{
 				display: flex;
 				width: 60%;
-				font-weight:600;
-				color:rgba(51,51,51,1);
+				font-size:16px;
 				flex-direction: column;
 				& span:nth-child(1){
-					font-size:14px;
+					font-family:PingFangSC-Medium;
+					font-weight:500;
+					color:rgba(255,255,255,1);
 					padding: 0.26rem 0;
 				}
 				& span:nth-child(2){
-					font-size: 24px;
+					font-size:24px;
+					font-family:DINAlternate-Bold;
+					font-weight:bold;
+					color:rgba(255,255,255,1);
 					padding: 0.16rem 0;
 				}
 			}
@@ -167,7 +211,7 @@
 				display: flex;
 				width: 40%;
 				justify-content: flex-end;
-				align-items: center;
+				align-items: flex-start;
 				font-size: 14px;
 			}
 		}
@@ -178,12 +222,18 @@
 		}
 		.content{
 			display: block;
-			background: white;
-			width: 100%;
-			.title{
+			background:rgba(255,255,255,1);
+			box-shadow:0px 2px 10px 2px rgba(61,191,248,0.11);
+			border-radius:4px;
+			margin: 0 0.4rem;
+			margin-top: -1.4rem;
+			padding: 0.26rem 0.3rem;
+			.content-title{
 				font-size:14px;
+				font-family:PingFangSC-Semibold;
 				font-weight:600;
 				color:rgba(51,51,51,1);
+				line-height: 0.52rem;
 			}
 			.body{
 				display: flex;
