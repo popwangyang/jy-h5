@@ -9,6 +9,7 @@
 			<van-field 
 			v-model="data.account" 
 			label="账号"
+			v-if="$route.query.type == 'create'"
 			input-align="right"
 			placeholder="请输入邮箱地址" />
 			<van-field 
@@ -20,7 +21,7 @@
 			:right-icon="passwordIconType"
 			@click-right-icon="righIconBtn"
 			placeholder="请输入" />
-			<div class="van-cell van-field">
+			<div class="van-cell van-field" v-if="$route.query.type == 'create'">
 				<div class="van-cell__title van-field__label">是否启用</div>
 				<div class="van-cell__value">
 					<van-switch v-model="data.checked" active-color="#2BC8D6" inactive-color="#ffffff" size="22px"/>
@@ -34,7 +35,6 @@
 					<span class="circle">
 						<van-icon name="plus" size="0.2rem" color="#FFFFFF"/>
 					</span>
-					
 					<span>请选择</span>
 				</span>
 			</span>
@@ -80,7 +80,7 @@
 		},
 		computed:{
 			title(){
-				if(this.$route.params.type == "edite"){
+				if(this.$route.query.type == "edite"){
 					document.title = "编辑商户"
 					return "编辑商户"
 				}else{

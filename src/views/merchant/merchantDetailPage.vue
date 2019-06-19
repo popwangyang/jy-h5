@@ -10,6 +10,7 @@
 				</span>
 				<van-cell title="商户名称" :value="data.name"/>
 				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.username"/>
+				<van-cell title="账号状态" :value="data.acc == null ? '无': data.acc.is_active ? '已启用':'已禁用'"/>
 			</span>
 			<span class="nav">关联场所:{{data.merchant_amount}}</span>
 			<span class="merchantDetailBody">
@@ -42,10 +43,8 @@
 			goEditePage(){
 				var data = {
 					name: this.data.name,
-					account: this.data.acc == null ? "" : this.data.acc.account,
-					password: this.data.acc == null ? "" : this.data.acc.password,
-					phone: this.data.acc == null ? "" : this.data.acc.phone,
-					checked: this.data.acc == null ? "" : this.data.acc.status == 1 ? true : false,
+					account: this.data.acc == null ? "" : this.data.acc.username,
+					checked: this.data.acc == null ? "" : this.data.acc.is_active,
 					ktvList: this.data.ktv_list,
 					id: this.data.id
 				}
