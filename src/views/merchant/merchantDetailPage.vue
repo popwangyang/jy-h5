@@ -8,8 +8,8 @@
 						<van-button class="button-small" size="mini" @click="goEditePage">编辑</van-button>
 					</span>
 				</span>
+				<van-cell title="商户名称" :value="data.name"/>
 				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.username"/>
-				<van-cell title="手机号" :value="data.acc == null ? '无': data.acc.phone"/>
 			</span>
 			<span class="nav">关联场所:{{data.merchant_amount}}</span>
 			<span class="merchantDetailBody">
@@ -49,7 +49,7 @@
 					ktvList: this.data.ktv_list,
 					id: this.data.id
 				}
-				this.$router.push({name:"merchantEdite", params:{type:'edite', data: data}})
+				this.$router.push({name:"merchantEdite", query:{type:'edite', data: JSON.stringify(data)}})
 			},
 			getDetail(id){
 				this.loading = true;

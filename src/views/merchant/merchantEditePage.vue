@@ -13,17 +13,12 @@
 			placeholder="请输入邮箱地址" />
 			<van-field 
 			v-model="data.password" 
+			v-if="$route.query.type == 'create'"
 			label="初始密码"
 			:type="inputType"
 			input-align="right"
 			:right-icon="passwordIconType"
 			@click-right-icon="righIconBtn"
-			placeholder="请输入" />
-			<van-field 
-			v-model="data.phone" 
-			label="手机号"
-			type="tel"
-			input-align="right"
 			placeholder="请输入" />
 			<div class="van-cell van-field">
 				<div class="van-cell__title van-field__label">是否启用</div>
@@ -159,8 +154,8 @@
 			}
 		},
 		mounted() {
-			if(this.$route.params.type == 'edite') {
-			  this.data = this.$route.params.data;	
+			if(this.$route.query.type == 'edite') {
+			  this.data = JSON.parse(this.$route.query.data);	
 			}
 		}
 	}
