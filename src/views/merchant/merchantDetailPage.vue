@@ -8,10 +8,10 @@
 						<van-button class="button-small" size="mini" @click="goEditePage">编辑</van-button>
 					</span>
 				</span>
-				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.account"/>
+				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.username"/>
 				<van-cell title="手机号" :value="data.acc == null ? '无': data.acc.phone"/>
 			</span>
-			<span class="nav">关联场所：2</span>
+			<span class="nav">关联场所:{{data.merchant_amount}}</span>
 			<span class="merchantDetailBody">
 				<van-cell :title="item.name" v-for="item in data.ktv_list" :key="item.id"/>
 			</span>

@@ -128,7 +128,7 @@
 					account: this.data.account,
 					password: this.data.password,
 					ktv: this.data.ktvList.reduce((cur, next) => { cur.push(next.id+""); return cur; }, []),
-					status: this.data.checked ? '1':'0'
+					status: this.data.checked
 				}
 				console.log(send_data);
 				if(type == "edite"){
