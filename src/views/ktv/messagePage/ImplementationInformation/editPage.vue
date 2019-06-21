@@ -9,26 +9,27 @@
 			label="vod品牌"
 			placeholder="请选择"
 			type="default"
+			:required="true"
 			:columns="columns | vodFilter"
 			v-model="data.vod_brand"
 			/>
 		 <van-field
 			v-model="data.vod_version"
-			clearable
+			required
 			label="系统版本号"
 			placeholder="请输入"
 			input-align="right"
 		/>	
 		<van-field
 			v-model="data.vod_ktv_id"
-			clearable
+			required
 			label="vod场所ID"
 			placeholder="请输入"
 			input-align="right"
 		/>
 		<van-field
 			v-model="data.implement_box_count"
-			clearable
+			required
 			label="实施包厢数"
 			placeholder="请输入"
 			input-align="right"
@@ -46,6 +47,8 @@
 </template>
 
 <script>
+	import { Error } from '@/libs/error.js'
+	import { checkForm } from '@/libs/util.js'
 	import { getVodList, addImplementDetail, editeImplementDetail } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	import SelectComponent from '@/components/SelectComponent.vue'
@@ -62,6 +65,12 @@
 					vod_version:"",
 					vod_brand:"",
 					implement_box_count:""
+				},
+				rule:{
+					vod_brand: { required: true, message:"请选择vode品牌"},
+					vod_version: { required: true, message:"系统版本号不能为空"},
+					vod_ktv_id: { required: true, message:"vod场所ID不能为空"},
+					implement_box_count: { required: true, message:"实施包厢数不能为空"},
 				}
 			}
 		},
@@ -78,7 +87,7 @@
 				this.$router.go(-1)
 			},
 			saveBtn(){
-				this.loading = true;
+				console.log(this.data)
 				var send_data = {
 					vod_ktv_id : this.data.vod_ktv_id,
 					vod_version : this.data.vod_version,
@@ -86,6 +95,11 @@
 					implement_box_count : this.data.implement_box_count,
 					ktv: this.ktvID
 				}
+				if(!checkForm(this.send_data, this.rule)) {
+					return;
+				}
+				this.loading = true;
+				
 				if(this.$route.query.type == "create"){
 					addImplementDetail(send_data).then(res => {
 						this.loading = false;

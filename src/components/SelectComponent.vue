@@ -1,5 +1,6 @@
 <template>
-	<div class="van-cell" style="border-bottom: 1px solid #ebedf0">
+	<div class="van-cell" style="border-bottom: 1px solid #ebedf0;position: relative;">
+		<span style="color: red;position: absolute;left: 6px;top: 9px;" v-if="required">*</span>
 		<div  class="van-cell van-field" @click="clickBtn" style="padding: 0;">
 			<div class="van-cell__title van-field__label">{{label}}</div>
 			<div class="van-cell__value" style="display: flex;align-items: center;justify-content: flex-end;">
@@ -66,6 +67,10 @@
 	import { getDay } from "@/libs/util"
 	export default{
 		props:{
+			required:{
+				type:Boolean,
+				default:false
+			},
 			type:{
 				type:String,
 				default:"default"

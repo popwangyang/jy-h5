@@ -8,11 +8,13 @@
 		label="场所名称"
 		placeholder="请输入"
 		input-align="right"
+		:required="rule.ktvName.required"
 		/>
        <SelectComponent 
 		label="场所类型"
 		placeholder="请选择"
 		type="default"
+		:required="true"
 		:columns="columns"
 		v-model="data.ktvType"
 		/>
@@ -22,28 +24,32 @@
 		 <van-field
 			v-model="data.personName"
 			label="联系人名称"
+			required
 			placeholder="请输入"
 			input-align="right"
 		/>
 		 <van-field
 			v-model="data.phone"
 			label="手机号"
+			required
 			placeholder="请输入"
 			input-align="right"
 		/>
 		 <van-field
 			v-model="data.tel"
 			label="场所电话"
+			required
 			placeholder="请输入"
 			input-align="right"
 		/>
 		<span class="nav">
-			联系人信息
+			营业信息
 		</span>
 		<SelectComponent 
 			label="开业时间"
 			placeholder="请选择"
 			:columns="[]"
+			:required="true"
 			type="date"
 			v-model="data.Ktime"
 		/>
@@ -51,6 +57,7 @@
 			label="营业状态"
 			placeholder="请选择"
 			type="default"
+			:required="true"
 			:columns="ktvState"
 			v-model="data.state"
 		/>
@@ -60,6 +67,7 @@
 			label="地址"
 			placeholder="请选择"
 			type="map"
+			:required="true"
 			:columns="[]"
 			v-model="data.address"
 		/>
@@ -68,6 +76,7 @@
 			type="textarea"
 			placeholder="请输入详细地址"
 			rows="2"
+			:required="true"
 			style="border: 1px solid #f6f6f6;"
 		 />
 		 <span class="box" v-if="YtimeFlage">
@@ -81,19 +90,50 @@
 </template>
 
 <script>
+	import { Error } from '@/libs/error.js'
 	import { Toast } from "vant"
 	import { setKtvDetail, creatKtvDetail } from '@/api/ktv.js'
-	import { setAddress } from '@/libs/util.js'
+	import { setAddress, checkForm } from '@/libs/util.js'
 	import SelectComponent from '@/components/SelectComponent.vue'
 	import YTimePage from "./businessHoursPage.vue"
 	export default{
 		components:{ SelectComponent, YTimePage },
 		data(){
+			const validateKtvName = (value, callback) => {
+                if (value === '') {
+                    callback(new Error("场所名字不能为空"));
+                } else if(value.length > 20) {
+                    callback(new Error("场所名字应小于20个字"));
+                }else{
+					callback();
+				}
+            };
+			const validatePhone = (value, callback) => {
+				 var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+			    if (value === '') {
+			        callback(new Error("手机号不能为空"));
+			    } else if(!myreg.test(value)){
+					callback(new Error("手机号格式不正确"));
+				}else{
+					callback();
+				}
+			};
+			const validateTel = (value, callback) => {
+				var myreg = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+			    if (value === '') {
+			        callback(new Error("场所电话不能为空"));
+			    } else if(myreg.test(value)){
+					callback(new Error("场所电话号码不正确"));
+				}else{
+					callback();
+				}
+			};
 			return{
+				error:"",
 				isEdite:false,
 				YtimeFlage:false,
 				columns: [ "量贩式", "夜场" ],
-				ktvState: ["营业", "倒闭"],
+				ktvState: ["正常", "停业","暂停营业"],
 				loading:false,
 				data:{
 					ktvName:"",
@@ -106,6 +146,18 @@
 					Ytime:"",
 					address:"",
 					detailAddress:""
+				},
+				rule:{
+					ktvName: { required: true, validator: validateKtvName },
+					ktvType: { required: true, message: "场所类型不能为空"},
+					personName: { required: true, message: "联系人名称不能为空" },
+					phone: { required: true, validator: validatePhone},
+					tel: { required: true, validator: validateTel},
+					Ktime: { required: true, message: "请选择开业时间"},
+					state: { required: true, message: "营业状态不能为空"},
+					Ytime: { required: true, message: "营业时间不能为空"},
+					address: { required: true, message: "区域地质不能为空"},
+					detailAddress: {required: true, message: "详细地址不能为空" }
 				}
 			}
 		},
@@ -158,7 +210,7 @@
 					this.data.tel = data.place_contact;
 					this.data.Ktime = data.opening_hours;
 					this.data.Ytime = eval("("+data.business_hours+")");
-					this.data.state = data.business_state == 1 ? "营业":"倒闭"
+					this.data.state = data.business_state == 1 ? "正常": data.business_state == "2" ? "停业":"暂停营业"
 					this.data.address = setAddress(data);
 					this.data.detailAddress = data.address;
 				}
@@ -167,6 +219,9 @@
 				this.YtimeFlage = !this.YtimeFlage;
 			},
 			handlerFrom(type){
+				if(!checkForm(this.data, this.rule)) {
+					return;
+				}
 			  var send_data = {
 					name: this.data.ktvName,
 					type: this.data.ktvType == "量贩式" ? "1":"2",
@@ -176,7 +231,7 @@
 					phone_number: this.data.phone,
 					opening_hours: this.data.Ktime,
 					business_hours: JSON.stringify(this.data.Ytime),
-					business_state: this.data.state == "营业" ? 1:2,
+					business_state: this.data.state == "正常" ? 1: this.data.state == "停业" ? 2:3,
 					province_code: this.data.address[0].code,
 					city_code: this.data.address[1].code,
 					county_code: this.data.address[2].code

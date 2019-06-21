@@ -126,6 +126,7 @@
 		background: white;
 		.nav {
 			display: block;
+			padding: 0;
 		}
 		.navRight {
 			height: 100%;

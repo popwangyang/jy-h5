@@ -5,14 +5,14 @@
 		</span>
 		<van-field
 		  v-model="data.company_name"
-		  clearable
 		  label="企业注册名称"
 		  placeholder="请输入"
+		  required
 		  input-align="right"
 		/>
 		<van-field
 		  v-model="data.license_number"
-		  clearable
+		  required
 		  label="营业执照编号"
 		  placeholder="请输入"
 		  input-align="right"
@@ -27,14 +27,14 @@
 		</span>
 		<van-field
 		  v-model="data.legal_representative"
-		  clearable
+		  required
 		  label="法人姓名"
 		  placeholder="请输入"
 		  input-align="right"
 		/>
 		<van-field
 		  v-model="data.legal_representative_card"
-		  clearable
+		  required
 		  label="身份证号"
 		  placeholder="请输入"
 		  input-align="right"
@@ -58,12 +58,36 @@
 </template>
 
 <script>
+	import { Error } from '@/libs/error.js'
+	import { checkForm } from '@/libs/util.js'
 	import { Toast } from "vant"
 	import { addKtvCorporateDetail, putKtvCorporateDetail } from "@/api/ktv.js"
 	import Item3 from '@/components/list3.vue'
 	export default{
 		components:{ Item3 },
 		data(){
+			const validateName = (value, callback) => {
+			    if (value === '') {
+			        callback(new Error("企业名字不能为空"));
+			    } else if(value.length > 20) {
+			        callback(new Error("企业名字应小于20个字"));
+			    }else{
+					callback();
+				}
+			};
+			 
+		    const validatelicense_number = (value, callback) => {
+				var myrey = /^[0-9a-zA-Z]{1,}$/;
+			     if (value === '') {
+			         callback(new Error("营业执照注册号不能为空"));
+			     } else if(value.length > 20) {
+			         callback(new Error("营业执照注册号不能超过20个字符"));
+			     }else if(!myrey.test(value)){
+					 callback(new Error("营业执照注册号为数字和字母组合"));
+			 	}else{
+					callback();
+				}
+			 };
 			return{
 				loading:false,
 				data:{
@@ -80,6 +104,14 @@
 						src:""
 					},
 					id:""
+				},
+				rule:{
+					company_name:{required: true, validator: validateName},
+					license_number:{required: true, validator: validatelicense_number},
+					license_photo:{required: true, message:"请上传营业执照照片"},
+					legal_representative:{required: true, message:"法人代表名称不能为空"},
+					legal_representative_card:{required: true, type:"IDcard", message:"法人身份证号不能为空"},
+					identity_card_photo:{required: true, message:"请上传身份证照片"}
 				}
 			}
 		},
@@ -93,7 +125,6 @@
 				this.$router.go(-1)
 			},
 			saveBtn(){
-				this.loading = true;
 				var send_data = {
 					company_name: this.data.company_name,
 					license_number:this.data.license_number,
@@ -103,6 +134,10 @@
 					identity_card_photo: this.data.identity_card_photo.id,
 					ktv: this.$route.query.id
 				}
+				if(!checkForm(send_data, this.rule)) {
+					return;
+				}
+				this.loading = true;
 				console.log(send_data)
 				if(this.$route.query.type == "create"){
 					addKtvCorporateDetail(send_data).then(res => {

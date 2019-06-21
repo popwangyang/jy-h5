@@ -58,12 +58,43 @@
 </template>
 
 <script>
+	import { Error } from '@/libs/error.js'
+	import { checkForm } from '@/libs/util.js'
 	import { createMerchant, editeMerchant } from "@/api/merchant.js"
 	import { Toast } from 'vant';
 	import addPlace from "./components/searchPage.vue"
 	export default{
 		components:{ addPlace },
 		data(){
+			const validateName = (value, callback) => {
+				if(value == ""){
+					callback(new Error("商户名称不能为空"))
+				}else if(value.length > 50){
+					callback(new Error("商户名称不能超过50个字"))
+				}else{
+					callback();
+				}
+			}
+			const validateAccount = (value, callback) => {
+				var myrey = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+				if(value == ""){
+					callback(new Error("账号不能为空"))
+				}else if(!myrey.test(value)){
+					callback(new Error("邮箱格式不正确"))
+				}else{
+					callback();
+				}
+			}
+			const validatePassword = (value, callback) =>{
+				var myrey = /^[a-zA-Z0-9]{6,20}$/;
+				if(value == ''){
+					callback(new Error("账号密码不能为空"))
+				}else if(!myrey.test(value)){
+					callback(new Error("请输入6~20位数字和字母组合"))
+				}else{
+					callback();
+				}
+			}
 			return{
 				inputTypeFlag:true,
 				box2Flage:false,
@@ -72,9 +103,14 @@
 					name:"",
 					account:"",
 					password:"",
-					phone:"",
 					checked:true,
 					ktvList:[]
+				},
+				rule:{
+					name: { required: true, validator: validateName },
+					account: { required: true, type:'email', message:"账号不能为空" },
+					password: {required: true, validator: validatePassword},
+					ktvList: { required: true, type:'array', message:"请选择关联的ktv"}
 				}
 			}
 		},
@@ -117,6 +153,9 @@
 				}
 			},
 			handleFrom(type){
+				if(!checkForm(this.data, this.rule)){
+					return;
+				}
 				this.loading = true;
 				var send_data = {
 					name: this.data.name,

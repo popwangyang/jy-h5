@@ -904,3 +904,91 @@ export const setAddress = function(data){
 	result.push({name:data.county, code: data.county_code});
 	return result;
 }
+
+import { Error } from '@/libs/error.js'
+
+const typeCheck = (type, value) => {
+	var flag = false;
+	if(!!type){
+		switch(type){
+			case 'phone':
+			  var myreg=/^[1][3,4,5,7,8][0-9]{9}$/;
+			      flag = myreg.test(value)
+			break;
+			case 'tel':
+			  var myreg = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+				    flag = myreg.test(value);
+			break;
+			case 'IDcard':
+			  var myreg = /^[1-9]{1}[0-9]{14}$|^[1-9]{1}[0-9]{16}([0-9]|[xX])$/;
+				    flag = myreg.test(value);
+			break;
+			case "email":
+			  var myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+				    flag = myreg.test(value);
+			break;
+		}
+	}else{
+			flag = value == "" ? false:true;
+	}
+	return flag;
+}
+
+
+export const checkForm = function(data, rule){
+	var flage = true;
+	console.log(data)
+	for(var key in rule){
+		console.log(data[key], key)
+		if(!!rule[key].message && rule[key].required){
+			if(rule[key].type == 'array'){
+				if(data[key].length == 0){
+					 var err = new Error(rule[key].message);
+					err.show();
+					flage = false;
+				}
+			}else{
+				if(data[key] == ''){
+					var err = new Error(rule[key].message);
+					err.show();
+					flage = false;
+				}else if(!typeCheck(rule[key].type, data[key])){
+					var text ;
+					switch(rule[key].type){
+						case 'phone':
+						      text = "手机号格式有误"
+						break;
+						case 'tel':
+						     text = "电话号码格式有误"
+						break;
+						case 'IDcard':
+						    text = "身份证号格式有误"
+						break;
+						case "email":
+						   text = "邮箱格式有误"
+						break;
+						  default:
+							  text=rule[key].message;
+					}
+					var err = new Error(text);
+					err.show();
+					flage = false;
+				}
+			}
+		}
+		if(!!rule[key].validator){
+			rule[key].validator(data[key], function(err){
+				console.log(!!err, "errrrrr")
+				 if(!!err){
+					 err.show()
+					 flage = false;
+				 }
+			})
+		}
+		if(!flage){
+			return false;
+		}
+	}
+	return flage;
+}
+
