@@ -983,7 +983,7 @@ export const checkForm = function(data, rule){
 					 err.show()
 					 flage = false;
 				 }
-			})
+			}, data)
 		}
 		if(!flage){
 			return false;

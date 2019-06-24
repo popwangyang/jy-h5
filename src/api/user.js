@@ -35,12 +35,14 @@ export const logout = (token) => {
 
 // 根据邮箱获取验证码
 export const getIdentifyungCode = (email) => {
+	var params = {
+      username: email,
+			terminal_type: 'jingyi'
+    }
   return axios.request({
     url: 'copyright/rbac/verification-code',
     method: 'get',
-    data: {
-      username: email
-    }
+    params
   })
 }
 

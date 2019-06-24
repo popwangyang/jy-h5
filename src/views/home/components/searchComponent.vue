@@ -18,6 +18,7 @@
 
 <script>
 	import { Dialog } from 'vant';
+	import { mapActions } from 'vuex';
 	export default{
 		props:{
 			placeholder:{
@@ -42,6 +43,9 @@
 			}
 		},
 		methods:{
+			...mapActions([
+			  'handleLogOut'
+			]),
 			personBtn(){
 				this.showPopup = true;
 			},
@@ -54,7 +58,9 @@
 					Dialog.confirm({
 						message: '确定退出当前账号？'
 					}).then(() => {
-						// on confirm
+						this.handleLogOut().then(() => {
+						  this.$router.push({name: 'login'})
+						})
 					}).catch(() => {
 						// on cancel
 					});

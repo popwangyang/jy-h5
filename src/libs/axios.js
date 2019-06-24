@@ -1,7 +1,7 @@
 import axios from 'axios'
 import store from '@/store'
 import { getToken, setToken } from './util'
-
+import { Toast } from 'vant'
 import router from '../router'
 
 class HttpRequest {
@@ -42,10 +42,10 @@ class HttpRequest {
 			console.log(error)
       const { data, status } = error.response
       if (status === 401) {
-        // setToken('')
-        // router.push({
-        //   name: 'login'
-        // })
+        setToken('')
+        router.push({
+          name: 'login'
+        })
       }
       return Promise.reject({ data, status })
     })

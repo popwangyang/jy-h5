@@ -14,7 +14,7 @@
 			  </van-list>
 		</span>
 		<span class="footer">
-			<van-button class="button" size="large" @click="onClickBtn">返回</van-button>
+			<van-button class="button" size="large" @click="onClickBtn">确定</van-button>
 		</span>
 	</div>
 </template>

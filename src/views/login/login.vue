@@ -1,5 +1,5 @@
 <template>
-  <div class="loginBox">
+  <div class="loginBox" v-if="!isforgetPassword">
     <span class="title">
 		
 	</span>
@@ -14,7 +14,7 @@
 					账号登录
 				</span>
 			</span>
-			<span class="topRight"></span>
+			<!-- <span class="topRight"></span> -->
 		</span>
 		<span class="left"></span>
 		<span class="right"></span>
@@ -49,24 +49,32 @@
 			class="button"
 			@click="loginBtn">登录</van-button>
 		</span>
+		<span class="bodyFooter" style="color: #2266F6;" @click="forgetPassword">
+			忘记密码
+		</span>
 	</span>
 	<span class="loginFooter">
 		
 	</span>
   </div>
+  <div v-else style="height: 100%;">
+	  <ForgetPassword @event="forgetPassword"/>
+  </div>
 </template>
 
 <script>
+import ForgetPassword from './components/forgetPassword'
 import './login.less'
 import { mapActions } from 'vuex'
 export default{
+	components:{ ForgetPassword },
 	data(){
 		return{
-			username:'admin@hlchang.cn',
-			password:'abc12345',
+			username:'',  // admin@hlchang.cn
+			password:'',  // abc12345
 			passwordFlag:false,
 			loading:false,
-			
+			isforgetPassword:false,
 		}
 	},
 	computed:{
@@ -89,6 +97,9 @@ export default{
 		  'handleLogin',
 		  'getUserInfo'
 		]),
+		forgetPassword(){
+			this.isforgetPassword = !this.isforgetPassword;
+		},
 		loginBtn () {
 		  this.loading = true;
 		  console.log(this.handleLogin)
@@ -99,14 +110,15 @@ export default{
 			  this.loading = false;
 			  console.log(res)
 				 localStorage.setItem("active", 0);
+				 localStorage.setItem('jyH5', JSON.stringify({userName, password}));
 		      this.$router.push({
 		        name: this.$config.homeName
 		      })
 		  }).catch((err) => {
 			    this.loading = false;
 				console.log(err)
-				if(err.data.non_field_errors){
-					this.$toast.fail(err.data.non_field_errors[0]);
+				if(err.data.error){
+					this.$toast.fail(err.data.error[0]);
 				}else{
 					this.$toast.fail("登录异常,请联系管理员")
 				}
@@ -114,11 +126,19 @@ export default{
 		},
 		rightIconBtn(){
 			this.passwordFlag = !this.passwordFlag;
+		},
+		init(){
+			if(localStorage.getItem('jyH5')){
+			  const { userName, password } = JSON.parse(localStorage.getItem('jyH5'));
+			  this.username = userName;
+			  this.password = password;
+			}
 		}
 	},
 	mounted() {
 		
-		document.title = "鲸唱结算平台"
+		document.title = "鲸唱结算平台";
+		this.init();
 	}
 }
 </script>

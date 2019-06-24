@@ -37,7 +37,6 @@ const axios = {
           },
           method: 'post'
         }).then((res) => {
-          console.log(res, '89080980980989')
           setToken(res.data.token)
           Ajax.request(option).then((res) => {
             resolve(res)
