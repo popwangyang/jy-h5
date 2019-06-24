@@ -11,7 +11,6 @@ import  "@/assets/css/public.css"
 export default {
   data(){
 		return{
-			
 		}
 	},
 	mounted() {

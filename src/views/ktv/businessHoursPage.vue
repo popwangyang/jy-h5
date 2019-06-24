@@ -120,7 +120,6 @@
 				this.minMinute = parseInt(startTime[1]);
 			},
 			editeInit(){
-			
 				var data = this.value;
 				if(data.flag == '0'){
 					this.radio = "1";
@@ -144,7 +143,6 @@
 			},
 			selectBtn(item){
 				item.isSelect = !item.isSelect;
-				
 			},
 			markTime(data){
 				var arr = []
@@ -189,7 +187,7 @@
 					arr.push(obj);
 				}
 				this.time = arr;
-				console.log(this.time);
+				// console.log(this.time);
 			}
 		},
 		mounted() {
