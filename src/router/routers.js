@@ -17,6 +17,11 @@ export default [
 		}
 	},
 	{
+		path: '/putPassword',
+		name: 'putPassword',
+		component: () => import('@/views/home/putPassword.vue')
+	},
+	{
 		path: '/search',
 		name: 'search',
 		component: Search,

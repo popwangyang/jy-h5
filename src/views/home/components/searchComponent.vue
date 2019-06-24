@@ -10,6 +10,7 @@
 		<van-popup v-model="showPopup" position="bottom">
 			<span class="PopupBox">
 				<span @click="adminBtn">管理员</span>
+				<span @click="putPasswordBtn">修改密码</span>
 				<span @click="signOut">退出</span>
 			</span>
 		</van-popup>
@@ -46,6 +47,9 @@
 			...mapActions([
 			  'handleLogOut'
 			]),
+			putPasswordBtn(){
+				this.$router.push({name: 'putPassword'})
+			},
 			personBtn(){
 				this.showPopup = true;
 			},
@@ -78,7 +82,6 @@
 		.nav {
 			display: block;
 			border-bottom: 1px solid #F6F6F6;
-			// border-top: 1px solid gainsboro;
 			.van-search__content{
 				background-color:#EFEEF3;
 				.van-cell{
@@ -101,7 +104,7 @@
 		}
 		.PopupBox{
 			display: block;
-			height: 2.6rem;
+			height: 3.9rem;
 			background: white;
 			font-size:14px;
 			font-family:PingFangSC-Regular;
@@ -116,10 +119,9 @@
 					background: #0a0a0a33;
 				}
 			}
-			&>span:nth-child(1){
+			&>span:not(:last-child){
 				border-bottom: 1px solid #F6F6F6;
 			}
 		}
-			
 	}
 </style>

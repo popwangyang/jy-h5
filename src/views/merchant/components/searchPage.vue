@@ -70,7 +70,6 @@
 				this.loading = false;
 				this.finished = false;
 				this.finishedText = "没有更多了！";
-				this.getList();
 			},
 			getList(){
 				var send_data = {
@@ -90,6 +89,7 @@
 					setSelected(this.value, this.list);
 					console.log(this.list)
 					this.finishedText = "没有更多了！";
+					console.log(this.page, '[[[[[[[[[[[[[[]]]]]]]]]]]]]]')
 					this.page++;
 					this.total = res.data.count;
 					this.loading = false;
@@ -109,7 +109,7 @@
 					  this.init()
 					}
 				},
-				immediate: true
+				immediate: false
 			}
 		},
 		mounted() {

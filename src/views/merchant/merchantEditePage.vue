@@ -1,58 +1,60 @@
 <template>
 	<div class="merchantEditbox">
-		<van-cell-group>
-			<van-field 
-			v-model="data.name" 
-			label="商户名称"
-			input-align="right"
-			placeholder="请输入" />
-			<van-field 
-			v-model="data.account" 
-			label="账号"
-			v-if="$route.query.type == 'create'"
-			input-align="right"
-			placeholder="请输入邮箱地址" />
-			<van-field 
-			v-model="data.password" 
-			v-if="$route.query.type == 'create'"
-			label="初始密码"
-			:type="inputType"
-			input-align="right"
-			:right-icon="passwordIconType"
-			@click-right-icon="righIconBtn"
-			placeholder="请输入" />
-			<div class="van-cell van-field" v-if="$route.query.type == 'create'">
-				<div class="van-cell__title van-field__label">是否启用</div>
-				<div class="van-cell__value">
-					<van-switch v-model="data.checked" active-color="#2BC8D6" inactive-color="#ffffff" size="22px"/>
+		<div class="body">
+			<van-cell-group>
+				<van-field 
+				v-model="data.name" 
+				label="商户名称"
+				input-align="right"
+				placeholder="请输入" />
+				<van-field 
+				v-model="data.account" 
+				label="账号"
+				input-align="right"
+				placeholder="请输入邮箱地址" />
+				<van-field 
+				v-model="data.password" 
+				label="初始密码"
+				v-if="$route.query.type == 'create'"
+				:type="inputType"
+				input-align="right"
+				:right-icon="passwordIconType"
+				@click-right-icon="righIconBtn"
+				placeholder="请输入" />
+				<div class="van-cell van-field">
+					<div class="van-cell__title van-field__label">是否启用</div>
+					<div class="van-cell__value">
+						<van-switch v-model="data.checked" active-color="#2BC8D6" inactive-color="#ffffff" size="22px"/>
+					</div>
 				</div>
-			</div>
-		</van-cell-group>
-		<span class="box1">
-			<span class="title">营业信息</span>
-			<span>
-				<span class="add" @click="btnPlace">
-					<span class="circle">
-						<van-icon name="plus" size="0.2rem" color="#FFFFFF"/>
+			</van-cell-group>
+			<span class="box1">
+				<span class="title">关联场所</span>
+				<span>
+					<span class="add" @click="btnPlace">
+						<span class="circle">
+							<van-icon name="plus" size="0.2rem" color="#FFFFFF"/>
+						</span>
+						<span>请选择</span>
 					</span>
-					<span>请选择</span>
+				</span>
+				<span class="body">
+					<van-cell v-for="item in data.ktvList" :key="item.id">
+						 <template slot="title">
+							<van-icon :name="closeImg" style="margin-right: 0.26rem;line-height: 100%;" @click="deletBtn(item)"/>
+							<span class="custom-text">{{item.name}}</span>
+						 </template>
+					</van-cell>
 				</span>
 			</span>
-			<span class="body">
-				<van-cell v-for="item in data.ktvList" :key="item.id">
-					 <template slot="title">
-						<van-icon :name="closeImg" style="margin-right: 0.26rem;line-height: 100%;" @click="deletBtn(item)"/>
-						<span class="custom-text">{{item.name}}</span>
-					 </template>
-				</van-cell>
-			</span>
-		</span>
+		</div>
 		<div class="box2" v-if="box2Flage">
 			<addPlace v-model="data.ktvList" @ok="btnPlace"/>
 		</div>
 		<span class="footer">
-			<van-button class="button" size="large" @click="handleFrom('edite')" v-if="title == '编辑商户'">保存</van-button>
-			<van-button class="button" size="large" @click="handleFrom('create')" v-else>创建</van-button>
+			<span @click="handleFrom('edite')" v-if="title == '编辑商户'">保存账号</span>
+			<span @click="handleFrom('create')" v-else>创建账号</span>
+			<span @click="cancleBtn">取消</span>
 		</span>
 	</div>
 </template>
@@ -86,7 +88,7 @@
 				}
 			}
 			const validatePassword = (value, callback) =>{
-				var myrey = /^[a-zA-Z0-9]{6,20}$/;
+				var myrey = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
 				if(value == ''){
 					callback(new Error("账号密码不能为空"))
 				}else if(!myrey.test(value)){
@@ -132,6 +134,9 @@
 			}
 		},
 		methods:{
+			cancleBtn(){
+				this.$router.go(-1);
+			},
 			deletBtn(item){
 				this.data.ktvList.splice(this.data.ktvList.indexOf(item), 1);
 			},
@@ -153,6 +158,9 @@
 				}
 			},
 			handleFrom(type){
+				if(this.$route.query.type == 'edite'){
+					delete this.rule.password;
+				}
 				if(!checkForm(this.data, this.rule)){
 					return;
 				}
@@ -174,18 +182,18 @@
 							this.$router.go(-1)
 						}, 500)
 					}).catch(err => {
-						Toast.fail("编辑失败");
+						Toast.fail(err.data.error[0]);
 						this.loading = false;
 					})
 				}else{
 					createMerchant(send_data).then(res => {
 						this.loading = false;
-						Toast.success("创建成功");
+						Toast('创建账号后系统会将\n账号和密码发送至该箱发送邮件')
 						setTimeout(() => {
 							this.$router.go(-1)
 						}, 500)
 					}).catch(err => {
-						Toast.fail("创建失败");
+						Toast.fail(err.data.error[0]);
 						this.loading = false;
 					})
 				}
@@ -195,6 +203,7 @@
 		mounted() {
 			if(this.$route.query.type == 'edite') {
 			  this.data = JSON.parse(this.$route.query.data);	
+				console.log(this.data)
 			}
 		}
 	}
@@ -207,6 +216,9 @@
 		display: flex;
 		flex-direction: column;
 		background: #f2f2f25b;
+	}
+	.merchantEditbox .body{
+		flex: 1;
 	}
 	.box1{
 		flex: 1;
@@ -252,9 +264,25 @@
 		z-index: 100;
 	}
 	.footer{
-		margin: 0.26rem 0;
-		padding: 0 0.39rem;
-		background: #f2f2f25b;
+		font-size:16px;
+		font-weight:500;
+		color:rgba(153,153,153,1);
+		background:rgba(255,255,255,1);
+        box-shadow:0px -1px 5px -1px rgba(0,0,0,0.16);
+		display: flex;
+		height: 1.144rem;
+		justify-content: space-around;
+	}
+	.footer > span{
+		display: flex;
+		height: 100%;
+		width: 50%;
+		align-items: center;
+		justify-content: center;
+	}
+	.footer > span:last-child{
+		background: #458CF4;
+		color: white;
 	}
 	.circle{
 		display: flex;

@@ -1,10 +1,8 @@
 <template>
 	<span>
-		<!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh" > -->
 		<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="!empty">
 			<ListItem v-for="item in list" :key="item.id" :item="item"/>
 		</van-list>
-		<!-- </van-pull-refresh> -->
 		<span class="empty" v-if="empty">
 			<EmptyComponent :text="text" :title="title" @eventBtn="createBtn" v-if="flage" />
 			<EmptyImageComponent text="暂无数据" v-else />
@@ -93,20 +91,7 @@
 				this.init(); //加载数据
 			},
 			createBtn() {
-				this.$router.push({
-					name: "merchantEdite",
-					params: {
-						type:"create",
-						data: {
-							name: "",
-							account: "",
-							password: "",
-							phone: "",
-							checked: true,
-							ktvList: []
-						}
-					}
-				})
+				this.$router.push({ name: "merchantEdite", query: {type:"create"} })
 			}
 		}
 	}

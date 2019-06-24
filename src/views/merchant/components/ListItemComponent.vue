@@ -57,6 +57,11 @@
 	.boxSpan1 span:nth-child(1){
 		font-size: 0.36rem;
 		color: #444444;
+		display: block;
+		width: 8rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 	}
 	.boxSpan1 span:nth-child(2){
 		color: #999999;

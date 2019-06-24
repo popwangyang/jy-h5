@@ -1,13 +1,23 @@
 <template>
 	<div class="setNewBox">
-		<h2>新密码</h2>
+		<h2>修改密码</h2>
+		<div class="item">
+				<h4>原密码</h4>
+				<div>
+					<van-field
+						v-model="fromData.password_origin"
+						left
+						placeholder="请输入原密码"
+					  />
+				</div>
+		</div>
 		<div class="item">
 				<h4>新密码</h4>
 				<div>
 					<van-field
-						v-model="fromData.password1"
+						v-model="fromData.password"
 						left
-						placeholder="请输入新密码"
+						placeholder="请再次输入密码"
 					  />
 				</div>
 		</div>
@@ -15,7 +25,7 @@
 				<h4>确认密码</h4>
 				<div>
 					<van-field
-						v-model="fromData.password2"
+						v-model="fromData.password1"
 						left
 						placeholder="请再次输入密码"
 					  />
@@ -31,21 +41,31 @@
 	import { Error } from '@/libs/error.js'
 	import { Toast } from "vant"
 	import { checkForm } from '@/libs/util.js'
-	import { ConfirmToModifyTheNewPassword } from '@/api/user.js'
+	import { ConfirmOrigin } from '@/api/user.js'
+	import { mapActions } from 'vuex'
 	export default{
-		props:[ 'username', 'code' ],
 		data(){
-			const validatePassword1 = (value, callback) => {
+			const validatePasswordOrigin = (value, callback) => {
 				var myrey = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
 				if(value == ''){
-					callback(new Error("密码不能为空"))
+					callback(new Error("原密码不能为空"))
+				}else if(!myrey.test(value)){
+					callback(new Error("原密码不能正确"))
+				}else{
+					callback();
+				}
+			}
+			const validatePassword = (value, callback) => {
+				var myrey = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+				if(value == ''){
+					callback(new Error("新密码不能为空"))
 				}else if(!myrey.test(value)){
 					callback(new Error("请输入6~20位数字和字母组合"))
 				}else{
 					callback();
 				}
 			}
-			const validatePassword2 = (value, callback, data) => {
+			const validatePassword1 = (value, callback, data) => {
 				if(value == ''){
 					callback(new Error("请再次输入密码"))
 				}else if(value != data.password1){
@@ -57,32 +77,50 @@
 			return{
 				loading:false,
 				fromData: {
+				   password_origin: '',
+				   password: '',
 				   password1: '',
-				   password2: '',
 				},
 				rule:{
-					password1: { required: true, validator: validatePassword1 },
-					password2: { required: true, validator: validatePassword2 }
+					password_origin: { required: true, validator: validatePasswordOrigin },
+					password: { required: true, validator: validatePassword },
+					password1: { required: true, validator: validatePassword1 }
 				}
 			}
 		},
 		methods:{
+			...mapActions([
+				'handleLogOut'
+			]),
 			handleFrom(){
 				if(!checkForm(this.fromData, this.rule)) {
 					return;
 				}
-				const password = fromData.password1;
+				const { password_origin, password } = this.fromData;
+				let id = this.$store.state.user.userId
 				this.loading = true;
-			 ConfirmToModifyTheNewPassword({ username, code, password }).then(res => {
+			 ConfirmOrigin({ password_origin, password, id }).then(res => {
 				 this.loading = false;
-				 this.$emit('event2')
+				 Toast.success("密码修改成功")
+				 setTimeout(() => {
+					 this.handleLogOut().then(() => {
+						let user = JSON.parse(localStorage.getItem('jyH5'));
+						    user.password = '';
+							localStorage.setItem('jyH5', JSON.stringify(user));
+						this.$router.push({ name: 'login' })
+					 })
+				 }, 1000)
 			 }).catch(err => {
 				 this.loading = false;
 				 Toast.fail(err.data.error);
 			 })
 			}
+		},
+		mounted() {
+			if(localStorage.getItem('jyH5')){
+			  this.fromData.password_origin = JSON.parse(localStorage.getItem('jyH5')).password;
+			}
 		}
-	
 	}
 </script>
 

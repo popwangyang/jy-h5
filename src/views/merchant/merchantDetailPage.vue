@@ -8,7 +8,7 @@
 						<van-button class="button-small" size="mini" @click="goEditePage">编辑</van-button>
 					</span>
 				</span>
-				<van-cell title="商户名称" :value="data.name"/>
+				<!-- <van-cell title="商户名称" :value="data.name"/> -->
 				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.username"/>
 				<van-cell title="账号状态" :value="data.acc == null ? '无': data.acc.is_active ? '已启用':'已禁用'"/>
 			</span>
@@ -97,6 +97,11 @@
 	.boxItem1 .txt{
 		font-size:15px;
 		font-weight:600;
+		display: block;
+		width: 6rem;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
 		color:rgba(255,255,255,1);
 	}
 	.load{
