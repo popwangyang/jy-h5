@@ -1,19 +1,27 @@
 self.__precacheManifest = [
   {
-    "revision": "9198ae73af976bbefcb9",
-    "url": "css/chunk-6bcf02fa.2b779474.css"
+    "revision": "809fd6fce8316a3661a1",
+    "url": "css/chunk-68a783d3.f2e7289f.css"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
     "url": "robots.txt"
   },
   {
-    "revision": "9198ae73af976bbefcb9",
-    "url": "js/chunk-6bcf02fa.cbcb5b93.js"
+    "revision": "809fd6fce8316a3661a1",
+    "url": "js/chunk-68a783d3.fca2cca0.js"
   },
   {
     "revision": "55fc513be8d073b02d15",
     "url": "css/chunk-037ef96c.1c1c23ce.css"
+  },
+  {
+    "revision": "6a1d8857ee31eb3aa0f5",
+    "url": "css/chunk-05d1b2ba.3e2babcb.css"
+  },
+  {
+    "revision": "6a1d8857ee31eb3aa0f5",
+    "url": "js/chunk-05d1b2ba.da02beda.js"
   },
   {
     "revision": "2122fdee372f6c4ed1ce",
@@ -76,12 +84,12 @@ self.__precacheManifest = [
     "url": "js/chunk-3c78aeeb.03ae00a5.js"
   },
   {
-    "revision": "c9c87f4ca77dc7345904",
-    "url": "css/chunk-53329822.9b7f88ba.css"
+    "revision": "4eafcf5211cba245f422",
+    "url": "css/chunk-4b8289f0.1e523fca.css"
   },
   {
-    "revision": "c9c87f4ca77dc7345904",
-    "url": "js/chunk-53329822.0e3f2c12.js"
+    "revision": "4eafcf5211cba245f422",
+    "url": "js/chunk-4b8289f0.e23f1849.js"
   },
   {
     "revision": "2de8a7ab4d039b92f8b1",
@@ -108,16 +116,8 @@ self.__precacheManifest = [
     "url": "js/chunk-64d089ae.a5025b5f.js"
   },
   {
-    "revision": "809fd6fce8316a3661a1",
-    "url": "css/chunk-68a783d3.f2e7289f.css"
-  },
-  {
-    "revision": "809fd6fce8316a3661a1",
-    "url": "js/chunk-68a783d3.fca2cca0.js"
-  },
-  {
-    "revision": "9a2f5214e9771dbcc412",
-    "url": "js/app.5426f9f6.js"
+    "revision": "958462afd75855e99d31",
+    "url": "js/app.52bbf879.js"
   },
   {
     "revision": "55fc513be8d073b02d15",
@@ -228,11 +228,11 @@ self.__precacheManifest = [
     "url": "img/logo.82b9c7a5.png"
   },
   {
-    "revision": "60baa0a465c46d7fbba420f36880945f",
+    "revision": "995008beed45da8430f1b873a0f5be89",
     "url": "index.html"
   },
   {
-    "revision": "9a2f5214e9771dbcc412",
+    "revision": "958462afd75855e99d31",
     "url": "css/app.7e90cd7d.css"
   }
 ];

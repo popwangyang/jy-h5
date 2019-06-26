@@ -205,6 +205,9 @@
 		width: 100%;
 		height: 100%;
 		background: white;
+		display: flex;
+		flex-direction: column;
+		overflow: scroll;
 		.nav{
 			background: #fafafa;
 			display: block;
@@ -214,7 +217,7 @@
 		.box{
 			display: block;
 			width: 100%;
-			height: 10rem;
+			height: 7.5rem;
 		}
 		.footer{
 			width: 100%;
