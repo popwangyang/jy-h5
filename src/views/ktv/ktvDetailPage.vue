@@ -23,12 +23,7 @@
 					<van-cell title="场所编号" :value="data.serial_number"></van-cell>
 					<van-cell title="包厢数" :value="data.implement_box_count"/>
 					<van-cell title="所在地" :value="address"></van-cell>
-					<!-- <div class="phone">
-						<van-icon :name="Phone" size="0.46rem"></van-icon>
-						<span class="text">
-							联系商家
-						</span>
-					</div> -->
+		
 				</span>
 				<span class="nav">营业信息</span>
 				<span class="box2">
