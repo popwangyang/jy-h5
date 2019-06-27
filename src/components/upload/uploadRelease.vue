@@ -1,6 +1,13 @@
 <template>
 	<div class="uploadBox">
-		<div class="title"><span style="color: red;margin-left: -6px;margin-right: 2px;" v-if="required">*</span>{{title}}</div>
+		<div class="title">
+			<span>
+				<span style="color: red;margin-left: -6px;margin-right: 2px;" v-if="required">*</span>{{title}}
+			</span>
+			<span>
+				<slot></slot>
+			</span>
+		</div>
 		<div class="content">
 			<div class="imgList">
 				<div v-for="item in imgList" :key="item.index">
@@ -186,6 +193,8 @@
 			color: #323233;
 			font-size: 14px;
 			line-height: 24px;
+			display: flex;
+			justify-content: space-between;
 		}
 		.content{
 			background: #f6f6f6;

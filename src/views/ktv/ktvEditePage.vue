@@ -119,7 +119,7 @@
 				}
 			};
 			const validateTel = (value, callback) => {
-				var myreg = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/;
+				var myreg = /^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,12}$/;
 			    if (value === '') {
 			        callback(new Error("场所电话不能为空"));
 			    } else if(myreg.test(value)){

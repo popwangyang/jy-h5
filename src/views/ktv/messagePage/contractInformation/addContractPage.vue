@@ -41,7 +41,9 @@
 				:disabled="readOnly"
 				/> -->
 			<span class="line"></span>
-			<Upload :maxCount="maxCount" v-model="data.annex" title="合同文件"/>
+			<Upload :maxCount="maxCount" v-model="data.annex" title="合同文件">
+				
+			</Upload>
 			<span class="footer1" v-if="isSupplement">
 				<span @click="clickBtn">创建</span>
 				<span @click="cancelBtn">取消</span>
@@ -142,6 +144,7 @@
 					delete this.rule.begin_date;
 					delete this.rule.recharge_package;
 				}
+				console.log(this.data)
 				if(!checkForm(this.data, this.rule)){
 					return;
 				}
@@ -165,7 +168,7 @@
 						}, 500)
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail(err.data.error[0])
+						Toast.fail(err.data.number[0])
 					})
 				}else if(this.$route.query.type == "edite"){
 					send_data.id = this.id;
@@ -177,7 +180,7 @@
 						}, 500)
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail(err.data.error[0])
+						Toast.fail(err.data.number[0])
 					})
 				}else{
 					var data = {
@@ -199,21 +202,28 @@
 				}
 			},
 			getList(){
-				this.pageState = 0;
-				ktvRechargeList().then(res => {
-					
-					this.ktvRechargeList = res.data.results;
+				return new Promise((resolve, reject) => {
+					ktvRechargeList().then(res => {
+						this.ktvRechargeList = res.data.results;
+						resolve(true)
+					}).catch(e => {
+						reject(false);
+					})
 				})
+				
 			},
-			getContractDetail(){
+			async getContractDetail(){
 				var send_data = {
 					ktv: this.$route.query.ktvID,
 					state: 1
 				}
+				await this.getList();
+				console.log(this.ktvRechargeList, "//////////")
+				this.pageState = 0;
 				ktvContractList(send_data).then(res => {
 					console.log(res)
 					this.pageState = 1;
-                    var obj = res.data.results[0];
+                    var obj = res.data.results[res.data.count - 1];
 					this.id = obj.id;
 					this.data.annex = this.$route.query.type == "supplement" ? []:obj.annex;
 					this.data.number = obj.number;
@@ -224,8 +234,8 @@
 			}
 		},
 		mounted(){
-			this.getList();
-			document.title = "新增合同"
+			
+			
 			if(this.$route.query.type == 'edite'){
 				document.title = "修改合同"
 				this.getContractDetail()
@@ -234,6 +244,9 @@
 				this.isSupplement = true;
 				document.title = "补充合同"
 				this.getContractDetail()
+			}else{
+			    document.title = "新增合同"
+			    this.getList();
 			}
 		}
 	}

@@ -31,7 +31,9 @@
 				/>
 				<span class="line"></span>
 				<Upload v-model="data.annex" :isShow='true' title="合同文件"/>
-				<Upload v-model="item.annex" :isShow='true' title="补充合同" v-for="item in data.accessory_contract" :key="item.id"/>
+				<Upload v-model="item.annex" :isShow='true' title="补充合同" v-for="(item, index) in data.accessory_contract" :key="item.id">
+					<van-button size="mini" type="primary" class="button-small" v-if="index == data.accessory_contract.length - 1 ">编辑</van-button>
+				</Upload>
 			</span>
 			<span class="footer" v-if="showFooter">
 				<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
