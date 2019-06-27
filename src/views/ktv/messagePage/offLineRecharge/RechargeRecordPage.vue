@@ -3,7 +3,17 @@
 		<span class="content">
 			<van-list v-model="loading" :finished="finished" @load="onLoad" :offset="0" finished-text="没有更多了" v-if="!empty">
 				<div class="list-item">
-					<van-cell v-for="item in list" :key="item" title="合同编号" label="2019-6-3" value="已终止" is-link @click="goDetail" />
+					<van-cell v-for="item in list" :key="item.id" :title="item.package_name" :label="item.create_date">
+						<div>
+							<div class="rechargeFee">
+								+{{item.recharge_fee}}
+							</div>
+							<div>
+								{{item.status_des}}
+							</div>
+						</div>
+						
+					</van-cell>
 				</div>
 			</van-list>
 			<span v-if="empty" class="empty">
@@ -61,9 +71,6 @@
 					}
 				})
 			},
-			goDetail() {
-
-			}
 		},
 		mounted() {
 			document.title = "充值记录";
@@ -83,6 +90,11 @@
 			flex: 1;
 			// background: yellow;
 			overflow: auto;
+			.rechargeFee{
+				font-size:16px;
+				font-weight:600;
+				color:rgba(255,91,63,1);
+			}
 
 			.empty {
 				display: flex;

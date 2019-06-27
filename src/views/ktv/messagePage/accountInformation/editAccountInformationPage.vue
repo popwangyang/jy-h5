@@ -1,30 +1,29 @@
 <template>
 	<div class="editAccountInformationBox">
-		<van-field 
-		v-model="data.nickname" 
-		label="昵称"
-		input-align="right"
-		placeholder="请输入昵称" />
+
 		<van-field 
 		v-model="data.username" 
 		label="账号"
+		required
 		input-align="right"
 		placeholder="请输入邮箱地址" />
 		<van-field 
 		v-if="$route.query.type != 'edit'"
 		v-model="data.password" 
 		label="初始密码"
-		:type="inputType"
-		input-align="right"
-		:right-icon="passwordIconType"
-		@click-right-icon="righIconBtn"
-		placeholder="请输入" />
-		<van-field 
-		v-model="data.phone" 
-		label="手机号"
-		type="tel"
+		required
+		type="text"
 		input-align="right"
 		placeholder="请输入" />
+		<SelectComponent 
+		label="所属品牌"
+		placeholder="请选择"
+		type="default"
+		:required="true"
+		:columns="columns"
+		v-model="data.AccountType"
+		/>
+
 		<div class="van-cell van-field">
 			<div class="van-cell__title van-field__label">是否启用</div>
 			<div class="van-cell__value">
@@ -44,41 +43,67 @@
 </template>
 
 <script>
+	import SelectComponent from '@/components/SelectComponent.vue'
+	import { Error } from '@/libs/error.js'
+	import { checkForm } from '@/libs/util.js'
 	import { setTrialAccount, getAccountDetail, editAccount } from "@/api/ktv.js"
 	import { Toast } from 'vant';
 	export default{
+		components:{ SelectComponent },
 		data(){
+			const validatenickname = (value, callback) => {
+				if(value == ""){
+					callback(new Error("呢称不能为空"))
+				}else if(value.length > 20){
+					callback(new Error("呢称不能超过20个字"))
+				}else{
+					callback();
+				}
+			}
+			const validatepassword = (value, callback) => {
+				var myrey = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,20}$/;
+				if(value == ''){
+					callback(new Error("账号密码不能为空"))
+				}else if(!myrey.test(value)){
+					callback(new Error("请输入6~20位数字和字母组合"))
+				}else{
+					callback();
+				}
+			}
+			
 			return{
 				loading:false,
-				inputTypeFlag:true,
+				columns: [ "k乐宝", "丽音动感" ],
 				data:{
-					nickname: "",
+					accountType: "",
 					username: "",
 					password: "",
 					is_active: true,
 					group: [],
 					ktv_id: this.$route.query.ktvID,
-					phone:"",
 					id:""
 				},
 				buttonText:"",
 				ToastText:"",
-				ktvID:""
+				ktvID:"",
+				rule: {
+					accountType:{ required: true, message: '品牌名称不能为空' },
+					username:{ required: true, type: 'email', message: '邮箱账号不能为空' },
+					password: { required: true, validator: validatepassword },
+				}
 			}
 		},
 		computed:{
-			passwordIconType(){
-				return this.inputTypeFlag ? "closed-eye":"eye-o";
-			},
-			inputType(){
-				return this.inputTypeFlag ? "password":"text";
-			}
+
 		},
 		methods:{
-			righIconBtn(){
-				this.inputTypeFlag = !this.inputTypeFlag;
-			},
 			onClickBtn(){
+				if(this.$route.query.type == 'edit'){
+					delete this.rule.password;
+				}
+				if(!checkForm(this.data, this.rule)){
+					return;
+				}
 				this.loading = true;
 				var send_data = Object.assign({}, this.data);
 				    send_data.is_active = send_data.is_active ? 1:0;

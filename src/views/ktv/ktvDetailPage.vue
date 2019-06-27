@@ -14,19 +14,21 @@
 							<span class="type">
 								<span v-if="data.type == 1" class="lingfan">量贩</span>
 								<span v-else class="yedian">夜店</span>
-								<span>商户A</span>
+								<span>{{data.merchant_name}}</span>
 							</span>
 						</div>
 					</span>
-					<van-cell title="店主姓名" :value="data.contact"></van-cell>
-					<van-cell title="手机号" :value="data.phone_number"></van-cell>
-					<van-cell title="商户地址" :value="address"></van-cell>
-					<div class="phone">
+					<van-cell title="联系人" :value="data.contact"></van-cell>
+					<van-cell title="联系号码" :value="data.phone_number"></van-cell>
+					<van-cell title="场所编号" :value="data.serial_number"></van-cell>
+					<van-cell title="包厢数" :value="data.implement_box_count"/>
+					<van-cell title="所在地" :value="address"></van-cell>
+					<!-- <div class="phone">
 						<van-icon :name="Phone" size="0.46rem"></van-icon>
 						<span class="text">
 							联系商家
 						</span>
-					</div>
+					</div> -->
 				</span>
 				<span class="nav">营业信息</span>
 				<span class="box2">
@@ -67,13 +69,13 @@
 						</span>
 						<span class="text">签约信息</span>
 					</span>
-					<span class="item" v-if="data.isShowAccount">
+					<span class="item">
 						<span class="icon" @click="goPage(4)">
 							<van-icon :name="account" size="1.352rem"></van-icon>
 						</span>
 						<span class="text">账号信息</span>
 					</span>
-					<span class="item" v-if="data.isShowAccount">
+					<span class="item">
 						<span class="icon" @click="goPage(5)">
 							<van-icon :name="offLine" size="1.352rem"></van-icon>
 						</span>
@@ -182,6 +184,7 @@
 				getKTVDetail1(this.ktvID).then(res => {
 					this.pageState = 1;
 					this.data = res.data;
+					this.$store.commit('setKtvDate', this.data);
 				}).catch(err => {
 					this.pageState = 2;
 				})
@@ -227,9 +230,9 @@
 				}
 				.title{
 					background: url("../../assets/img/ktv/navImg.png") no-repeat;
-					background-size: cover;
+					background-size:100% 100%;
 					width: 100%;
-					height: 1.43rem;
+					// height: 1.43rem;
 					display: block;
 					padding: 0.26rem;
 					box-sizing: border-box;

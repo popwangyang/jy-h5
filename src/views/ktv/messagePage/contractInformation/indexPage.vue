@@ -30,18 +30,8 @@
 				 :value="data.charge_manage.state | charge_manageStateFilter"
 				/>
 				<span class="line"></span>
-				<Item2
-				 label="合同文件"
-				 :name="data.annex.name"
-				 :src="data.annex.download_url"
-				/>
-				<Item2
-				v-for="item in data.accessory_contract"
-				:key="item.id"
-				label="补充合同"
-				:name="item.annex.name"
-				:src="item.annex.download_url"
-				/>
+				<Upload v-model="data.annex" :isShow='true' title="合同文件"/>
+				<Upload v-model="item.annex" :isShow='true' title="补充合同" v-for="item in data.accessory_contract" :key="item.id"/>
 			</span>
 			<span class="footer" v-if="showFooter">
 				<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
@@ -86,20 +76,21 @@
 </template>
 
 <script>
+	import Upload from '@/components/upload/uploadRelease'
 	import { Toast, Dialog } from "vant"
 	import {ktvContractList, stopContract} from "@/api/ktv.js"
 	import Item1 from "@/components/list1.vue"
 	import Item2 from "@/components/list2.vue"
 	import EmptyComponent from "@/components/EmptyComponent.vue"
 	export default{
-		components:{ Item1, Item2, EmptyComponent },
+		components:{ Item1, Item2, EmptyComponent, Upload },
 		data(){
 			return{
 				pageState:0,
 				empty:false,
 				moreFlage:false,
 				showFooter:true,
-				data:""
+				data:"",
 			}
 		},
 		computed: {
@@ -108,6 +99,9 @@
 			}
 		},
 		filters: {
+			filterArray: function(value) {
+				return [value]
+			},
 			stateFilter: function(value) {
 				var result = ""
 				switch(parseInt(value)){
@@ -182,12 +176,15 @@
 					ktv: this.$route.query.ktvID,
 					state: 1
 				}
+				if(!this.showFooter){
+					send_data.state = '';
+				}
 				this.pageState = 0;
 				ktvContractList(send_data).then(res => {
 					console.log(res)
 					if(res.data.results.length > 0){
 						this.pageState = 1;
-						this.data = res.data.results[0]
+						this.data = res.data.results[0];
 					}else{
 						this.pageState = 2;
 					}

@@ -16,7 +16,7 @@
 				<div>
 					<van-field
 					v-model="fromData.code"
-					placeholder="请输入短信验证码"
+					placeholder="请输入验证码"
 					>
 						<span class="loading" slot="button">
 						   <span  class="code" @click="getCode" v-if="loadState == 0">发送验证码</span>
@@ -71,10 +71,12 @@
 				  this.loadState = 1;
 				getIdentifyungCode(this.fromData.username).then((res) => {
 					this.loadState = 2;
+					this.time =  60;
 					this.setInterval = setInterval(() => {
 						if(this.time <= 0){
 							clearInterval(this.setInterval);
 							this.loadState = 0;
+							this.time =  60;
 						}
 						this.time--;
 					}, 1000)

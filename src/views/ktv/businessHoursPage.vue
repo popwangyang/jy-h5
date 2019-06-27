@@ -1,6 +1,15 @@
 <template>
 	<div class="businessHoursBox">
 		<span class="nav">
+			选择工作日
+		</span>
+		<span class="van-cell">
+			<van-radio-group v-model="radio" style="display: flex;">
+			  <van-radio name="1" style="margin-right: 0.4rem;">全时段</van-radio>
+			  <van-radio name="2">部分时段</van-radio>
+			</van-radio-group>
+		</span>
+		<span class="nav" v-show= "radio != '1'">
 			营业时间
 		</span>
 		<SelectComponent 
@@ -11,6 +20,7 @@
 			:disabled="InputDisabled"
 			@change="timeChange"
 			v-model="startTime"
+			v-show= "radio != '1'"
 		/>
 		<SelectComponent 
 			label="结束时间"
@@ -21,16 +31,8 @@
 			:min-hour="minHour"
 			:min-minute="minMinute"
 			v-model="endTime"
+			v-show= "radio != '1'"
 		/>
-		<span class="nav">
-			选择工作日
-		</span>
-		<span class="van-cell">
-			<van-radio-group v-model="radio" style="display: flex;">
-			  <van-radio name="1" style="margin-right: 0.4rem;">全时段</van-radio>
-			  <van-radio name="2">部分时段</van-radio>
-			</van-radio-group>
-		</span>
 		<span class="box">
 			<span v-show="radio == '2'" >
 				<van-cell :title="item.name" :key="item.code" v-for="item in time" clickable @click="selectBtn(item)">
@@ -208,6 +210,7 @@
 		display: flex;
 		flex-direction: column;
 		overflow: scroll;
+		position: relative;
 		.nav{
 			background: #fafafa;
 			display: block;
@@ -223,6 +226,9 @@
 			width: 100%;
 			padding: 0 0.39rem;
 			box-sizing: border-box;
+			position: absolute;
+			bottom: 0.4rem;
+			
 		}
 	}
 </style>

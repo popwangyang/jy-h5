@@ -2,10 +2,9 @@
 	<div class="uploadBox">
 		<van-uploader
 		 :after-read="afterRead"
-		 :max-count="1"
-		 v-model="fileList"
+		 :max-count="30"
 		 multiple
-		 v-show="state == 0"
+		 v-show="1"
 		/>
 		<span class="box1" v-show="state == 1">
 				<van-image width="3.2rem" fit="contain" :src="src"  @click="foo">
@@ -134,18 +133,15 @@
 				console.log(evt);
 			},
 			uploadCom(e){
-				  
 				setTimeout(() => {
 					this.closeState = 1;
 					this.showCircle = 0;
 				}, 200)
-				// console.log("uploadCom", e)
 			},
 			uploadFail(){
 				console.log("uploadFail")
 			},
 			deleteBtn(){
-				console.log('deleteBtn')
 				this.fileName = "";
 				this.fileList = []
 				this.state = 0;

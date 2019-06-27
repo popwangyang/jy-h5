@@ -16,10 +16,8 @@
 				v-model="data.password" 
 				label="初始密码"
 				v-if="$route.query.type == 'create'"
-				:type="inputType"
+				type="text"
 				input-align="right"
-				:right-icon="passwordIconType"
-				@click-right-icon="righIconBtn"
 				placeholder="请输入" />
 				<div class="van-cell van-field">
 					<div class="van-cell__title van-field__label">是否启用</div>
@@ -126,12 +124,6 @@
 					return "新建商户"
 				}
 			},
-			passwordIconType(){
-				return this.inputTypeFlag ? "closed-eye":"eye-o";
-			},
-			inputType(){
-				return this.inputTypeFlag ? "password":"text";
-			}
 		},
 		methods:{
 			cancleBtn(){
@@ -139,9 +131,6 @@
 			},
 			deletBtn(item){
 				this.data.ktvList.splice(this.data.ktvList.indexOf(item), 1);
-			},
-			righIconBtn(){
-				this.inputTypeFlag = !this.inputTypeFlag;
 			},
 			btnPlace(){
 				this.box2Flage = !this.box2Flage;

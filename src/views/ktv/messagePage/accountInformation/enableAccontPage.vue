@@ -38,7 +38,7 @@
 		data(){
 			return{
 				columns: setSelectDays(30),
-				time:"",
+				time:"7天后",
 				loading:false,
 				ktvID:""
 			}
@@ -68,10 +68,10 @@
 			   AccountOfficiallOpened(send_data).then(res => {
 				   this.loading = false;
 				   Toast.success("账号启用成功")
-				   console.log(res)
+				   this.$router.go(-1);
 			   }).catch(err => {
 				   this.loading = false;
-				   Toast.fail("账号启用失败")
+				   Toast.fail(err.data.error[0])
 			   })
 		   }
 		},

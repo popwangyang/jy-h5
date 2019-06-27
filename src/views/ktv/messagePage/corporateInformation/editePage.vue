@@ -17,11 +17,8 @@
 		  placeholder="请输入"
 		  input-align="right"
 		/>
-		<Item3
-		 v-model="data.license_photo.id"
-		 title="营业执照照片"
-		 :src="data.license_photo.src"
-		/>
+		<Upload title="营业执照照片" v-model='data.license_photo' :required="true"/>
+		
 		<span class="nav">
 		  	法人信息
 		</span>
@@ -39,38 +36,33 @@
 		  placeholder="请输入"
 		  input-align="right"
 		/>
-		<Item3
-		 title="身份证照片"
-		 v-model="data.identity_card_photo.id"
-		 :src="data.identity_card_photo.src"
-		/>
+		<Upload title="身份证照片" v-model='data.identity_card_photo' :required="true"/>
 		<span class="footer">
-			<!-- <van-button plain hairline round type="default" size="small" @click="goPage">编辑</van-button> -->
 		    <van-button 
 			class="button"
 			size="large" 
 			:loading="loading"
 			loading-type="spinner"
-      loading-text="加载中..."
+            loading-text="加载中..."
 			@click="saveBtn">{{buttonText}}</van-button>
 		</span>
 	</div>
 </template>
 
 <script>
+	import Upload from '@/components/upload/uploadRelease'
 	import { Error } from '@/libs/error.js'
 	import { checkForm } from '@/libs/util.js'
 	import { Toast } from "vant"
 	import { addKtvCorporateDetail, putKtvCorporateDetail } from "@/api/ktv.js"
-	import Item3 from '@/components/list3.vue'
 	export default{
-		components:{ Item3 },
+		components:{ Upload },
 		data(){
 			const validateName = (value, callback) => {
 			    if (value === '') {
 			        callback(new Error("企业名字不能为空"));
-			    } else if(value.length > 20) {
-			        callback(new Error("企业名字应小于20个字"));
+			    } else if(value.length > 50) {
+			        callback(new Error("企业名字应小于50个字"));
 			    }else{
 					callback();
 				}
@@ -80,8 +72,8 @@
 				var myrey = /^[0-9a-zA-Z]{1,}$/;
 			     if (value === '') {
 			         callback(new Error("营业执照注册号不能为空"));
-			     } else if(value.length > 20) {
-			         callback(new Error("营业执照注册号不能超过20个字符"));
+			     } else if(value.length > 50) {
+			         callback(new Error("营业执照注册号不能超过50个字符"));
 			     }else if(!myrey.test(value)){
 					 callback(new Error("营业执照注册号为数字和字母组合"));
 			 	}else{
@@ -93,16 +85,10 @@
 				data:{
 					company_name:"",
 					license_number: "",
-					license_photo:{
-						id:"",
-						src:""
-					},
+					license_photo: [],
 					legal_representative:"",
 					legal_representative_card:"",
-					identity_card_photo:{
-						id:"",
-						src:""
-					},
+					identity_card_photo: [],
 					id:""
 				},
 				rule:{
@@ -173,18 +159,11 @@
 					var data = JSON.parse(this.$route.query.data)
 					this.data.company_name = data.company_name;
 					this.data.license_number = data.license_number;
-					this.data.license_photo = {
-						id: data.license_photo.id+"",
-						src: data.license_photo.download_url
-					};
+					this.data.license_photo = data.license_photo;
 					this.data.legal_representative = data.legal_representative;
 					this.data.legal_representative_card = data.legal_representative_card;
-					this.data.identity_card_photo = {
-						id: data.identity_card_photo.id+"",
-						src: data.identity_card_photo.download_url
-					};
+					this.data.identity_card_photo = data.identity_card_photo;
 					this.data.id = data.id
-						console.log(this.data)
 				}
 			}
 		},
@@ -211,9 +190,6 @@
 			height: 80px;
 			padding: 0.16rem 0.39rem;
 			width: 100%;
-			position: absolute;
-			bottom: 0;
-			left: 0;
 			box-sizing: border-box;
 			justify-content: flex-end;
 			align-items: center;

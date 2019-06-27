@@ -115,7 +115,7 @@
 				// this.$router.push({name:"merchantEdite"})
 			},
 			goDetail(){
-			   this.$router.push({name:"contractInformation", query:{type:"forwardContract"}})
+			   this.$router.push({name:"contractInformation", query:{type:"forwardContract", ktvID: this.$route.query.ktvID}})
 			}
 		},
 		mounted() {

@@ -87,7 +87,9 @@
 				this.$router.go(-1)
 			},
 			saveBtn(){
-				console.log(this.data)
+				if(!checkForm(this.data, this.rule)) {
+					return;
+				}
 				var send_data = {
 					vod_ktv_id : this.data.vod_ktv_id,
 					vod_version : this.data.vod_version,
@@ -95,11 +97,8 @@
 					implement_box_count : this.data.implement_box_count,
 					ktv: this.ktvID
 				}
-				if(!checkForm(this.send_data, this.rule)) {
-					return;
-				}
+				console.log(send_data, '提交信息')
 				this.loading = true;
-				
 				if(this.$route.query.type == "create"){
 					addImplementDetail(send_data).then(res => {
 						this.loading = false;

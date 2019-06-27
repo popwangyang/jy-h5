@@ -3,16 +3,12 @@
 		<div class="box1" v-if="statePage == 1">
 			<span class="line"></span>
 			<Item1
-			 label="昵称"
-			 :value="data.nickname"
-			/>
-			<Item1
 			 label="登录账号"
 			 :value="data.email"
 			/>
 			<Item1
 			label="手机号"
-			:value="data.phone"
+			:value="data.phone | phoneFilter"
 			/>
 			<Item1
 			 label="余额"
@@ -39,7 +35,7 @@
 			<span class="footer">
 				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="stopAccontBtn" v-if="data.is_active == '已启用'">禁用账号</van-button>	
 				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="startAccontBtn" v-if="data.is_active == '已禁用'">启用账号</van-button>	
-				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="enableAccontBtn" v-if="data.account_status == 1">正式启用</van-button>
+				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="enableAccontBtn" :disabled="data.account_status == 1 ? false:true">正式启用</van-button>
 				<van-button plain hairline round type="default" size="small" style="margin-left: 0.3rem;" @click="editBtn">编辑</van-button>
 			</span>
 		</div>
@@ -78,6 +74,11 @@
 				ktvID:"",
 				data:"",
 				account_status:""
+			}
+		},
+		filters:{
+			phoneFilter(val){
+				return val == null ? '暂无绑定手机号' : val;
 			}
 		},
 		methods:{

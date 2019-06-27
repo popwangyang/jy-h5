@@ -128,11 +128,20 @@
 					callback();
 				}
 			};
+			const validatePersonName = (value, callback) => {
+				if (value === '') {
+				    callback(new Error("联系人名称不能为空"));
+				} else if(value.length > 10){
+					callback(new Error("联系人名称不能超过20个字符"));
+				}else{
+					callback();
+				}
+			}
 			return{
 				error:"",
 				isEdite:false,
 				YtimeFlage:false,
-				columns: [ "量贩式", "夜场" ],
+				columns: [ "量贩式", "夜总会" ],
 				ktvState: ["正常", "停业","暂停营业"],
 				loading:false,
 				data:{
@@ -150,7 +159,7 @@
 				rule:{
 					ktvName: { required: true, validator: validateKtvName },
 					ktvType: { required: true, message: "场所类型不能为空"},
-					personName: { required: true, message: "联系人名称不能为空" },
+					personName: { required: true, validator: validatePersonName },
 					phone: { required: true, validator: validatePhone},
 					tel: { required: true, validator: validateTel},
 					Ktime: { required: true, message: "请选择开业时间"},

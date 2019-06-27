@@ -1,11 +1,8 @@
 <template>
 	<span>
-	  <!-- <van-pull-refresh v-model="isLoading" @refresh="onRefresh" > -->
 	  	<van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad" v-if="!empty">
 	  		<ListItem v-for="(item, index) in list" :key="index" :item="item"/>
 	  	</van-list>
-		
-	  <!-- </van-pull-refresh> -->
 	  <span class="empty" v-if="empty">
 	  	<EmptyComponent 
 		 :text="text"
@@ -36,7 +33,6 @@
 				count:0,
 				loading: false,
 				finished: false,
-				isLoading: false, //控制下拉刷新的加载动画
 				page:1,
 				page_size:30,
 				empty:false,
@@ -97,12 +93,8 @@
 					}
 				})
 			},
-// 			onRefresh() {
-// 				this.init()
-// 				this.onLoad();
-// 			},
 			createBtn(){
-				// this.$router.push({name:"merchantEdite"})
+				this.$router.push({name:"ktvEdite"})
 			}
 		},
 		mounted(){

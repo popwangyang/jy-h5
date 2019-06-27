@@ -8,9 +8,10 @@
 						<van-button class="button-small" size="mini" @click="goEditePage">编辑</van-button>
 					</span>
 				</span>
-				<!-- <van-cell title="商户名称" :value="data.name"/> -->
+				<van-cell title="商户ID" :value="data.id"/>
 				<van-cell title="账号" :value="data.acc == null ? '无': data.acc.username"/>
 				<van-cell title="账号状态" :value="data.acc == null ? '无': data.acc.is_active ? '已启用':'已禁用'"/>
+			    <van-cell title="创建日期" :value="data.create_date"/> 
 			</span>
 			<span class="nav">关联场所:{{data.merchant_amount}}</span>
 			<span class="merchantDetailBody">
@@ -88,9 +89,8 @@
 		justify-content: space-between;
 		align-items: center;
 		background: url("../../assets/img/merchant/navImg.png") no-repeat;
-		height: 1.118rem;
-		background-size: cover;
-		padding: 0 0.26rem;
+		background-size:100% 100%;
+		padding: 0.26rem 0.26rem;
 		box-sizing: border-box;
 		
 	}
@@ -98,10 +98,6 @@
 		font-size:15px;
 		font-weight:600;
 		display: block;
-		width: 6rem;
-		overflow: hidden;
-		white-space: nowrap;
-		text-overflow: ellipsis;
 		color:rgba(255,255,255,1);
 	}
 	.load{
@@ -113,6 +109,10 @@
 	}
 	.boxItem1>span:nth-child(1){
 		font-size: 0.46rem;
+	}
+	.boxItem1>span:nth-child(2){
+		align-self: flex-start;
+		margin-top: 0.1rem;
 	}
 	.merchantDetailBody{
 		flex: 1;

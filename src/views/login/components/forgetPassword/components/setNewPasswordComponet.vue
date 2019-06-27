@@ -75,6 +75,7 @@
 				this.loading = true;
 			 ConfirmToModifyTheNewPassword({ username, code, password }).then(res => {
 				 this.loading = false;
+				 Toast.success('密码修改成功')
 				 this.$emit('event2')
 			 }).catch(err => {
 				 this.loading = false;

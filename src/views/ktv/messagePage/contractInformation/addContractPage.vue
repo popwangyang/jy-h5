@@ -6,7 +6,7 @@
 				label="合同编号"
 				placeholder="请输入"
 				input-align="right"
-				:readonly="readOnly"
+				v-if="!isSupplement"
 			/>
 			<SelectComponent 
 				label="套餐名称"
@@ -14,7 +14,8 @@
 				type="default"
 				:columns="ktvRechargeList | listFilter"
 				v-model="recharge_packageName"
-				:disabled="readOnly"
+				v-if="!isSupplement"
+				
 				/>
 			<van-field
 				v-model="data.box_count"
@@ -29,10 +30,10 @@
 				type="date"
 				:columns="[]"
 				v-model="data.begin_date"
-				:disabled="readOnly"
+				v-if="!isSupplement"
 				/>
-<!-- 			<SelectComponent 
-				label="合同起始日期"
+			<!-- <SelectComponent 
+				label="开始扣费日期"
 				placeholder="请选择"
 				type="date"
 				:columns="[]"
@@ -40,14 +41,12 @@
 				:disabled="readOnly"
 				/> -->
 			<span class="line"></span>
-			
-			<Item3
-			title="合同文件"
-			v-model="data.annex.id"
-			:src="data.annex.src"
-			:name="data.annex.name"
-			/>
-			<span class="footer">
+			<Upload :maxCount="maxCount" v-model="data.annex" title="合同文件"/>
+			<span class="footer1" v-if="isSupplement">
+				<span @click="clickBtn">创建</span>
+				<span @click="cancelBtn">取消</span>
+			</span>
+			<span class="footer" v-else>
 				<van-button class="button" size="large" :loading="loading" @click="clickBtn">保存</van-button>
 			</span>
 		</span>
@@ -58,23 +57,42 @@
 </template>
 
 <script>
+	import { Error } from '@/libs/error.js'
+	import { checkForm } from '@/libs/util.js'
+	import Upload from '@/components/upload/uploadRelease'
 	import { Toast } from "vant"
 	import { addKtvContract, ktvRechargeList, ktvContractList, editeKtvContract, supplementKtvContract } from "@/api/ktv.js"
 	import SelectComponent from "@/components/SelectComponent.vue"
 	import Item3 from "@/components/list3.vue"
 	import Item1 from "@/components/list1.vue"
 	export default{
-		components:{ SelectComponent, Item3, Item1 },
+		components:{ SelectComponent, Item1, Upload },
 		data(){
+			const validateNumber = (value, callback) => {
+				if(value == ""){
+					callback(new Error("合同编号不能为空"))
+				}else if(value.length > 50){
+					callback(new Error("合同编号不能超过50个字"))
+				}else{
+					callback();
+				}
+			}
+			const validateBoxCount = (value, callback) => {
+				if(value == ""){
+					callback(new Error("包厢数不能为空"))
+				}else if(!Number.isFinite(parseInt(value)) && parseInt(value) > 0){
+					callback(new Error("包厢数应为正整数"))
+				}else{
+					callback();
+				}
+			}
 			return{
+				isSupplement: false, // 是否是补充合同；
+				maxCount: 30, // 补充合同为1，其他为30；
 				pageState:1,
 				data:{
 					number:"",
-					annex:{
-						id:"",
-						src:"",
-						name:""
-					},
+					annex: [],
 					begin_date:"",
 					ktv: this.$route.query.ktvID,
 					recharge_package:"",
@@ -84,7 +102,14 @@
 				recharge_packageName:"",
 				loading:false,
 				ktvRechargeList:[],
-				readOnly:false
+				rule:{
+					number:{ required: true, validator: validateNumber },
+					annex: { required: true, type: 'array', message: '合同附件不能为空'},
+					begin_date: { required: true, message: '合同起始日期不能为空' },
+					recharge_package: { required: true, message: '套餐名称不能为空' },
+					box_count: { required: true, validator: validateBoxCount },
+					
+				}
 			}
 		},
 		filters: {
@@ -108,14 +133,29 @@
 			}
 		},
 		methods: {
+			cancelBtn(){
+				this.$router.go(-1);
+			},
 			clickBtn() {
+				if(this.isSupplement){
+					delete this.rule.number;
+					delete this.rule.begin_date;
+					delete this.rule.recharge_package;
+				}
+				if(!checkForm(this.data, this.rule)){
+					return;
+				}
 				console.log(this.data)
 				Toast.loading({
 					duration: 0,       // 持续展示 toast
 					forbidClick: true, // 禁用背景点击
 				})
 				var send_data = Object.assign({}, this.data);
-				    send_data.annex = send_data.annex.id;
+				    send_data.annex = send_data.annex.reduce((cur, next) => {
+						cur.push(next.id);
+						return cur;
+					}, []).join(',');
+					send_data.box_count = Number(send_data.box_count);
 				if(this.$route.query.type == "create"){
 					addKtvContract(send_data).then(res => {
 						Toast.clear();
@@ -125,7 +165,7 @@
 						}, 500)
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail("创建失败")
+						Toast.fail(err.data.error[0])
 					})
 				}else if(this.$route.query.type == "edite"){
 					send_data.id = this.id;
@@ -137,7 +177,7 @@
 						}, 500)
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail("修改失败")
+						Toast.fail(err.data.error[0])
 					})
 				}else{
 					var data = {
@@ -161,7 +201,7 @@
 			getList(){
 				this.pageState = 0;
 				ktvRechargeList().then(res => {
-					this.pageState = 1;
+					
 					this.ktvRechargeList = res.data.results;
 				})
 			},
@@ -171,12 +211,12 @@
 					state: 1
 				}
 				ktvContractList(send_data).then(res => {
+					console.log(res)
+					this.pageState = 1;
                     var obj = res.data.results[0];
 					this.id = obj.id;
+					this.data.annex = this.$route.query.type == "supplement" ? []:obj.annex;
 					this.data.number = obj.number;
-					this.data.annex.id = obj.annex.id+"";
-					this.data.annex.src = obj.annex.download_url;
-					this.data.annex.name = obj.annex.name;
 					this.data.begin_date = obj.begin_date;
 					this.recharge_packageName = obj.package_name;
 					this.data.box_count = obj.box_count;
@@ -190,9 +230,10 @@
 				document.title = "修改合同"
 				this.getContractDetail()
 			}else if(this.$route.query.type == "supplement"){
+				this.maxCount = 1;
+				this.isSupplement = true;
 				document.title = "补充合同"
 				this.getContractDetail()
-				this.readOnly = true;
 			}
 		}
 	}
@@ -214,6 +255,31 @@
 			padding: 0 0.39rem;
 			box-sizing: border-box;
 			background: #f2f2f25b;
+		}
+		.footer1{
+			font-size:16px;
+			font-weight:500;
+			color:rgba(153,153,153,1);
+			background:rgba(255,255,255,1);
+		    box-shadow:0px -1px 5px -1px rgba(0,0,0,0.16);
+			display: flex;
+			height: 1.144rem;
+			justify-content: space-around;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+		}
+		.footer1 > span{
+			display: flex;
+			height: 100%;
+			width: 50%;
+			align-items: center;
+			justify-content: center;
+		}
+		.footer1 > span:last-child{
+			background: #458CF4;
+			color: white;
 		}
 	}
 </style>
