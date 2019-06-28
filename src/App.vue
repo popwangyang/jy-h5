@@ -12,9 +12,6 @@ export default {
   data(){
 		return{
 		}
-	},
-	mounted() {
-		console.log(this.$router, this.$route.meta.keepAlive)
 	}
 }
 </script>
