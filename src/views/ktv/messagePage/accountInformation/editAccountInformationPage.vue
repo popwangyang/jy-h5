@@ -1,6 +1,12 @@
 <template>
 	<div class="editAccountInformationBox">
-
+		<!-- <van-field 
+		v-model="data.nickname" 
+		label="昵称"
+		required
+		input-align="right"
+		placeholder="请输入昵称" /> -->
+		
 		<van-field 
 		v-model="data.username" 
 		label="账号"
@@ -21,7 +27,7 @@
 		type="default"
 		:required="true"
 		:columns="columns"
-		v-model="data.AccountType"
+		v-model="data.accountType"
 		/>
 
 		<div class="van-cell van-field">
@@ -75,6 +81,7 @@
 				loading:false,
 				columns: [ "k乐宝", "丽音动感" ],
 				data:{
+					nickname: "",
 					accountType: "",
 					username: "",
 					password: "",
@@ -87,9 +94,10 @@
 				ToastText:"",
 				ktvID:"",
 				rule: {
-					accountType:{ required: true, message: '品牌名称不能为空' },
+					nickname: { required: true, validator: validatenickname },
 					username:{ required: true, type: 'email', message: '邮箱账号不能为空' },
 					password: { required: true, validator: validatepassword },
+					accountType:{ required: true, message: '品牌名称不能为空' },
 				}
 			}
 		},
@@ -101,6 +109,7 @@
 				if(this.$route.query.type == 'edit'){
 					delete this.rule.password;
 				}
+				this.data.nickname = this.data.username;
 				if(!checkForm(this.data, this.rule)){
 					return;
 				}
@@ -118,11 +127,7 @@
 						}, 500)
 					  }).catch(err => {
 					  	this.loading = false;
-						if(err.data){
-					  	  Toast.fail(err.data.non_field_errors[0])
-						}else{
-						  Toast.fail("账号创建异常");
-						}
+					  	Toast.fail(err.data.message)
 					  })	
 					}else{
 						delete send_data.password;
@@ -135,7 +140,7 @@
 						}, 500)
 				      }).catch(err => {
 				      	this.loading = false;
-				      	Toast.fail("账号修改失败")
+				      	Toast.fail(err.data.message)
 				      })
 					}
 			},

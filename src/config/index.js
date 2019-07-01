@@ -19,7 +19,7 @@ export default {
   baseUrl: {
     dev: 'https://dev.bjywkd.com',
     test: 'https://test.bjywkd.com',
-    pro: 'https://pro.bjywkd.com',
+    pre: 'https://pre.bjywkd.com',
     info: 'https://info.bjywkd.com'
   },
   /**

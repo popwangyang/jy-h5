@@ -878,9 +878,21 @@ export const setSelectDays = function(num){
 export const getTime = function(num){
 	var days = num || 0;
 	var date = new Date();
-	    date.setDate(date.getDate() + days );
-	
+	    date.setDate(date.getDate() + days + 1 );
 	return getDay(date);
+}
+
+// 获取里某个日期还有几天；
+export const dateDiff = function(s1) {
+	  if(!!!s1){
+			return 0;
+		}
+	  var s1 = new Date(s1.replace(/-/g, "/"));
+		var s2 = new Date();//当前日期：2017-04-24
+		var days = s1.getTime() - s2.getTime();
+		var time = parseInt(days / (1000 * 60 * 60 * 24));
+    console.log(time)
+    return time;  //返回相差天数
 }
 
 // 设置是否选中;
@@ -992,3 +1004,30 @@ export const checkForm = function(data, rule){
 	return flage;
 }
 
+// 判定现在是周几；
+export const checkWeekDay = function(day){
+	let mydate = new Date();
+  let myddy = mydate.getDay();//获取存储当前日期
+  let weekday = ["星期日","星期一","星期二","星期三","星期四","星期五","星期六"];
+	if(weekday[myddy] == day){
+		return true;
+	}else{
+		return false;
+	}
+}
+
+// 检测上传类型是否合格；
+export const checkFormat = function(filetype, arr){
+	return arr.some(item => {
+		item.indexOf(filetype);
+	})
+}
+
+// 检测上传文件总大小；
+export const checkListSize = function(list, maxSize){
+	let totalSize = list.reduce((cur, next) => {
+		cur += next.size;
+		return cur;
+	}, 0)
+	return totalSize < maxSize;
+}

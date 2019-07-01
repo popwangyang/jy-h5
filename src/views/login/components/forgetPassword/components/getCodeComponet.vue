@@ -82,11 +82,7 @@
 					}, 1000)
 				}).catch(err => {
 					this.loadState = 0;
-					if(err.data.error){
-						Toast.fail(err.data.error);
-					}else{
-						Toast.fail('获取验证码失败');
-					}
+					Toast.fail(err.data.message);
 				})
 			},
 			handleFrom(){
@@ -94,7 +90,7 @@
 				testIdentifyungCode({ username, code }).then((res) => {
 					 this.$emit('event1', {username, code, index:2});
 				}).catch(err => {
-					Toast.fail(err.data.error);
+					Toast.fail(err.data.message);
 				})
 			}
 		},

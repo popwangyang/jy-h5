@@ -16,7 +16,7 @@
 					:label="item.create_date"
 					:value="item.state | stateFilter"
 					is-link
-					@click="goDetail"
+					@click="goDetail(item)"
 					/>
 				</div>
 		        </van-list>
@@ -114,8 +114,14 @@
 			createBtn(){
 				// this.$router.push({name:"merchantEdite"})
 			},
-			goDetail(){
-			   this.$router.push({name:"contractInformation", query:{type:"forwardContract", ktvID: this.$route.query.ktvID}})
+			goDetail(data){
+			   this.$router.push({name:"contractInformation", 
+			   query:{
+				      type:"forwardContract", 
+			          ktvID: this.$route.query.ktvID,
+					  number: data.number   // 查询合同的编号
+					},
+				})
 			}
 		},
 		mounted() {

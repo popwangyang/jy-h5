@@ -19,6 +19,12 @@
 				 label="合同起始日期"
 				 :value="data.begin_date"
 				/>
+<!-- 只有账号为正式启用状态，并且有合同生效时才展示 , account_status 为1时是账号为试用阶段，为2时账号为启用阶段-->
+				<Item1
+				 label="结算起始日期"
+				 v-if="$store.state.ktv.ktvData.account_status == 2"
+				 :value="$store.state.ktv.ktvData.chargeable_time"
+				/>
 				<span class="line"></span>
 				<Item1
 				 label="合同状态"
@@ -32,13 +38,13 @@
 				<span class="line"></span>
 				<Upload v-model="data.annex" :isShow='true' title="合同文件"/>
 				<Upload v-model="item.annex" :isShow='true' title="补充合同" v-for="(item, index) in data.accessory_contract" :key="item.id">
-					<van-button size="mini" type="primary" class="button-small" v-if="index == data.accessory_contract.length - 1 ">编辑</van-button>
+					<van-button size="mini" type="primary" class="button-small" v-if="index == 0 && !editDisabled " @click="goPage(1)">编辑</van-button>
 				</Upload>
 			</span>
 			<span class="footer" v-if="showFooter">
 				<van-button plain hairline round type="default" size="small" @click="moreBtn" style="margin-left: 0.26rem;">更多</van-button>
 				<van-button plain hairline round type="default" size="small" @click="goPage(1)" style="margin-left: 0.26rem;">补充</van-button>
-				<van-button plain hairline round type="default" size="small" @click="goPage(2)" style="margin-left: 0.26rem;">编辑</van-button>
+				<van-button plain hairline round type="default" size="small" @click="goPage(2)" style="margin-left: 0.26rem;" :disabled="editDisabled">编辑</van-button>
 			</span>
 		</span>
 		<span v-if="pageState == 2" class="box">
@@ -59,7 +65,7 @@
 		position="bottom"
 		>
 			<span class="moreBox">
-				<span class="moreBoxItem" @click="addBtn" v-if="canAddContract">
+				<span class="moreBoxItem" @click="addBtn">
 					新增合同
 				</span>
 				<span class="moreBoxItem" @click="checkBtn">
@@ -79,11 +85,12 @@
 
 <script>
 	import Upload from '@/components/upload/uploadRelease'
-	import { Toast, Dialog } from "vant"
+	import { Toast, Dialog, Notify } from "vant"
 	import {ktvContractList, stopContract} from "@/api/ktv.js"
 	import Item1 from "@/components/list1.vue"
 	import Item2 from "@/components/list2.vue"
 	import EmptyComponent from "@/components/EmptyComponent.vue"
+	import { checkWeekDay } from '@/libs/util'
 	export default{
 		components:{ Item1, Item2, EmptyComponent, Upload },
 		data(){
@@ -98,6 +105,15 @@
 		computed: {
 			canAddContract() {
 				return this.data.state == 1 ? false:true 
+			},
+			editDisabled() {  // 合同信息已到账状态，编辑按钮禁用掉；
+				var flag = false;
+				if(this.data.charge_manage.state == 2 || this.data.state == 3){
+					flag = true;
+				}else{
+					flag = false;
+				}
+				return flag;
 			}
 		},
 		filters: {
@@ -120,7 +136,6 @@
 				return result;
 			},
 			charge_manageStateFilter: function(value){
-				var result = "";
 				return value == 1 ? "未到账":"已到账";
 			}
 		},
@@ -133,12 +148,23 @@
 			},
 			goPage(index){
 				if(index == 1){
+					Notify({
+					  message: '请前往pc端修改, 创建补充合同',
+					  duration: 2000,
+					  background: '#1989fa'
+					});
+					return;
 					this.$router.push({name:"addContract", query:{type:"supplement", ktvID: this.$route.query.ktvID, contractID: this.data.id}})
 				}else{
-					this.$router.push({name:"addContract", query:{type:"edite", ktvID: this.$route.query.ktvID}})
+					this.$router.push({name:"addContract", query:{type:"edite", ktvID: this.$route.query.ktvID, number: this.data.number}})
 				}
 			},
 			addBtn(index){
+				if(!this.canAddContract){
+					Toast("请终止当前合同")
+					this.moreFlage = false;
+					return;
+				}
 				  this.$router.push({name:"addContract", query:{type:"create", ktvID: this.$route.query.ktvID}})
 			},
 			checkBtn(){
@@ -146,6 +172,14 @@
 			},
 			stopBtn(){
 				this.moreFlage = false;
+				if(!checkWeekDay('星期一')){
+					Notify({
+					  message: '当前不能终止合同，请在周一进行该操作',
+					  duration: 1000,
+					  background: 'red'
+					});
+					return;
+				}
 				Dialog.confirm({
 				  title: '提示',
 				  message: '确定要终止该合同？'
@@ -168,6 +202,9 @@
 					Toast.clear();
 					Toast.success("合同已终止");
 					this.data.state = 3;
+					setTimeout(() => {
+					  this.$router.go(-1);
+					}, 500)
 				}).catch(err => {
 					Toast.clear();
 					Toast.fail("操作失败");
@@ -180,6 +217,7 @@
 				}
 				if(!this.showFooter){
 					send_data.state = '';
+					send_data.number = this.number;
 				}
 				this.pageState = 0;
 				ktvContractList(send_data).then(res => {
@@ -187,6 +225,7 @@
 					if(res.data.results.length > 0){
 						this.pageState = 1;
 						this.data = res.data.results[0];
+						this.data.accessory_contract.reverse();
 					}else{
 						this.pageState = 2;
 					}
@@ -195,10 +234,12 @@
 		},
 		mounted() {
 			document.title = "合同信息";
-			this.getDate();
 			if(this.$route.query.type && this.$route.query.type == "forwardContract" ){
 				this.showFooter = false;
+				this.number = this.$route.query.number;
 			}
+			this.getDate();
+			
 		}
 	}
 </script>

@@ -71,7 +71,7 @@
 				   this.$router.go(-1);
 			   }).catch(err => {
 				   this.loading = false;
-				   Toast.fail(err.data.error[0])
+				   Toast.fail(err.data.message)
 			   })
 		   }
 		},

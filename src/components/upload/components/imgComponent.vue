@@ -1,12 +1,13 @@
 <template>
 	<div class="imgBox">
 			<span class="box">
-				<van-image width="3.2rem" fit="contain" :src="data.download_url" @click="ImagePreviewBtn">
+				<van-image width="3.2rem" fit="contain" :src="data.download_url" @click="ImagePreviewBtn" v-if="data.format != 'application/pdf'">
 					<template v-slot:loading>
 						<van-loading type="spinner" size="20"/>
 					</template>
 					<template v-slot:error>加载失败</template>
 				</van-image>
+				<img :src="pdfUrl" alt="" style="width: 0.5rem;height: 0.5rem;" v-else>
 				<van-icon class="delete" name="delete" size="0.6rem" color = "#fff" @click="deleteBtn" v-show="showDelete"/>
 				<van-circle
 				  v-model="currentRate"
@@ -18,7 +19,7 @@
 				  v-show="!data.isFinish"
 				/>
 			</span>
-			<span style="align-self: flex-end;margin-left: 10px;font-size: 14px; width: 50%;word-break: break-word;">
+			<span class="title" :class="{a: data.format == 'application/pdf', b: data.format != 'application/pdf' }" >
 				{{data.name}}
 			</span>
 	</div>
@@ -34,6 +35,7 @@
 		},
 		data(){
 			return{
+				pdfUrl: require('@/assets/img/ktv/pdf.png'),
 				currentRate: this.rate
 			}
 		},
@@ -70,9 +72,18 @@
 <style scoped="scoped" lang="less">
 	.imgBox{
 		display: flex;
-		// .imgBox >span::nth-child(1){
-		// 	
-		// }
+		.a{
+			align-self: center;
+		}
+		.b{
+			align-self: flex-end;
+		}
+		.title{
+			margin-left: 10px;
+			font-size: 14px; 
+			width: 50%;
+			word-break: break-word;
+		}
 		.box{
 			display: flex;
 			justify-content: center;

@@ -3,7 +3,7 @@
 		<span class="content" v-if="!empty">
 			<van-list v-model="loading" :finished="finished" @load="onLoad" :offset="10" finished-text="没有更多了">
 				<div class="list-item">
-					<van-cell v-for="item in list" :key="item.id" title="v2.3.0" value="2019-6-3 11:23:32" />
+					<van-cell v-for="item in list" :key="item.id" :title="item.new_version" :value="item.update_date" />
 				</div>
 			</van-list>
 		</span>

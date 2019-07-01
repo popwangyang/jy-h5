@@ -1,7 +1,10 @@
 <template>
 	<div class="accountInformationBox">
 		<div class="box1" v-if="statePage == 1">
-			<span class="line"></span>
+			<!-- <Item1
+			label="昵称"
+			:value="data.nickname"
+			/> -->
 			<Item1
 			 label="登录账号"
 			 :value="data.email"

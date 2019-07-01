@@ -72,9 +72,9 @@
 			  	theme="custom"
 			  	extra-key="."
 			  	close-button-text="完成"
-			  	@blur="keyboardshow = false"
 			  	@input="onInput"
 			  	@delete="onDelete"
+				@close="confirm"
 			  	:z-index="10000"
 			  />
 		</span>
@@ -121,20 +121,27 @@
 		},
 		methods:{
 			confirm(){
-				console.log(this.value)
+				this.UpgradeSystemFlage = false;
+				this.keyboardshow = false;
+				if(this.value == ''){
+					Toast.fail("版本号未输入");
+					return;
+				}
 				var vod_ktv ={
-					new_version: this.value,
+					new_version: 'V'+this.value,
 					original_version: this.data.vod_version,
 					vod_ktv: this.ktvID,
 				}
+				
 				upVod(vod_ktv).then(res => {
 					Toast.success("升级成功")
 					this.getData(this.ktvID);
 				}).catch(err => {
-					Toast.fail("升级失败")
+					Toast.fail(err.data.message)
 				})
 			},
 			cancel(){
+				this.keyboardshow = false;
 				this.value = ""
 			},
 			createBtn(){
@@ -164,10 +171,12 @@
 				}
 			},
 			UpgradeSystemBtn(){
+				this.value = '';
 				this.UpgradeSystemFlage = true;
+				this.keyboardshow = true;
 			},
 			onFocus(){
-				this.keyboardshow = true;
+				// this.keyboardshow = true;
 				 document.activeElement.blur();
 			},
 			onInput(e){

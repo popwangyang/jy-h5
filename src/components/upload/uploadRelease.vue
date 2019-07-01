@@ -29,6 +29,7 @@
 	import ImageComponent from './components/imgComponent.vue'
 	import { get } from '@/api/api.js'
 	import { Toast } from 'vant'
+	import { checkFormat, checkListFileSize } from '@/libs/util'
 	export default{
 		props:{
 			required: {
@@ -48,6 +49,16 @@
 				type: Boolean,
 				default: false
 			},
+			format: {
+				type: Array,
+				default: () => {
+				  return ['jpg', 'jpeg'];
+				}
+			},
+			maxSize: {  // 上传文件的总大小(M)；
+				type: Number,
+				default: 100
+			}
 		},
 		components:{ ImageComponent },
 		data(){
@@ -145,6 +156,13 @@
 			async afterRead(data){
 				console.log(this)
 				this.rate = 0;
+				console.log(data, "上传图片")
+				
+				if(!checkFormat(data.file.type, this.format)){
+					Toast(`仅支持 ${this.format.join(', ')} 格式`);
+					return;
+				}
+				
 				if(this.imgList.length >= this.maxCount){
 					Toast(`最多只能上传${this.maxCount}份文件`);
 					return;

@@ -32,18 +32,23 @@
 				v-model="data.begin_date"
 				v-if="!isSupplement"
 				/>
-			<!-- <SelectComponent 
-				label="开始扣费日期"
+			<!-- 结算起始日期，当账号为正式启用状态， 才可以编辑-->	
+			<SelectComponent 
+				label="结算起始日期"
 				placeholder="请选择"
-				type="date"
-				:columns="[]"
-				v-model="data.end_date"
-				:disabled="readOnly"
-				/> -->
+				type="default"
+				:columns="dateColumns"
+				v-model="data.chargeableTime"
+				v-if="isShowChargeable_time"
+			/>
 			<span class="line"></span>
-			<Upload :maxCount="maxCount" v-model="data.annex" title="合同文件">
-				
-			</Upload>
+			<Upload 
+			:maxCount="maxCount" 
+			v-model="data.annex" 
+			title="合同文件"
+			:formate='['jpg', 'jpeg']'
+			:maxSize="100" 
+			/>
 			<span class="footer1" v-if="isSupplement">
 				<span @click="clickBtn">创建</span>
 				<span @click="cancelBtn">取消</span>
@@ -60,7 +65,7 @@
 
 <script>
 	import { Error } from '@/libs/error.js'
-	import { checkForm } from '@/libs/util.js'
+	import { checkForm, setSelectDays, getTime, dateDiff } from '@/libs/util.js'
 	import Upload from '@/components/upload/uploadRelease'
 	import { Toast } from "vant"
 	import { addKtvContract, ktvRechargeList, ktvContractList, editeKtvContract, supplementKtvContract } from "@/api/ktv.js"
@@ -89,6 +94,7 @@
 				}
 			}
 			return{
+				dateColumns: setSelectDays(30),
 				isSupplement: false, // 是否是补充合同；
 				maxCount: 30, // 补充合同为1，其他为30；
 				pageState:1,
@@ -99,6 +105,7 @@
 					ktv: this.$route.query.ktvID,
 					recharge_package:"",
 					box_count:"",
+					chargeableTime: dateDiff(this.$store.state.ktv.ktvData.chargeable_time) + '天后',  // 结算起始日期存在ktv详情信息里
 				},
 				id:"",  // 合同id
 				recharge_packageName:"",
@@ -108,10 +115,16 @@
 					number:{ required: true, validator: validateNumber },
 					annex: { required: true, type: 'array', message: '合同附件不能为空'},
 					begin_date: { required: true, message: '合同起始日期不能为空' },
+					chargeableTime: { required: true, message: '结算起始日期不能为空' },
 					recharge_package: { required: true, message: '套餐名称不能为空' },
 					box_count: { required: true, validator: validateBoxCount },
 					
 				}
+			}
+		},
+		computed:{
+			isShowChargeable_time(){  // 是否显示结算起始日期编辑框
+				return (!this.isSupplement && this.$store.state.ktv.ktvData.account_status == 2);
 			}
 		},
 		filters: {
@@ -144,11 +157,12 @@
 					delete this.rule.begin_date;
 					delete this.rule.recharge_package;
 				}
-				console.log(this.data)
+				if(!this.isShowChargeable_time){  // 判定是否符合结算起始日期编辑
+					delete this.rule.chargeableTime;
+				}
 				if(!checkForm(this.data, this.rule)){
 					return;
 				}
-				console.log(this.data)
 				Toast.loading({
 					duration: 0,       // 持续展示 toast
 					forbidClick: true, // 禁用背景点击
@@ -159,6 +173,10 @@
 						return cur;
 					}, []).join(',');
 					send_data.box_count = Number(send_data.box_count);
+					send_data.chargeable_time = getTime(parseInt(this.data.chargeableTime.substr(0, this.data.chargeableTime.length - 2)));
+					delete send_data.chargeableTime;
+					console.log(send_data, "？？？？？？？？？");
+
 				if(this.$route.query.type == "create"){
 					addKtvContract(send_data).then(res => {
 						Toast.clear();
@@ -166,21 +184,28 @@
 						setTimeout(() => {
 						  this.$router.go(-1);
 						}, 500)
+						if(this.isShowChargeable_time){  // 在store中重新设置结算起始日期；
+							this.$store.commit("editKtvData", {key: 'chargeable_time', value: send_data.chargeable_time})
+						}
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail(err.data.number[0])
+						Toast.fail(err.data.errors[0].message)
 					})
 				}else if(this.$route.query.type == "edite"){
 					send_data.id = this.id;
 					editeKtvContract(send_data).then(res => {
 						Toast.clear();
 						Toast.success("修改成功")
+						if(this.isShowChargeable_time){ // 在store中重新设置结算起始日期；
+							this.$store.commit("editKtvData", {key: 'chargeable_time', value: send_data.chargeable_time})
+						}
+						console.log(this.$store.state.ktv.ktvData)
 						setTimeout(() => {
 						  this.$router.go(-1);
 						}, 500)
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail(err.data.number[0])
+						Toast.fail(err.data.errors[0].message)
 					})
 				}else{
 					var data = {
@@ -197,7 +222,7 @@
 						}, 500)
 					}).catch(err => {
 						Toast.clear();
-						Toast.fail("补充失败")
+						Toast.fail(err.data.errors[0].message)
 					})
 				}
 			},
@@ -214,11 +239,11 @@
 			},
 			async getContractDetail(){
 				var send_data = {
+					number: this.$route.query.number,
 					ktv: this.$route.query.ktvID,
 					state: 1
 				}
 				await this.getList();
-				console.log(this.ktvRechargeList, "//////////")
 				this.pageState = 0;
 				ktvContractList(send_data).then(res => {
 					console.log(res)

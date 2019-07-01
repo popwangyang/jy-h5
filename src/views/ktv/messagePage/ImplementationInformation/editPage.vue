@@ -55,6 +55,34 @@
 	export default{
 		components:{ SelectComponent },
 		data(){
+			const validatorBoxCount = (value, callback) => {
+				console.log(Number.isInteger(parseInt(value)), parseInt(value))
+				if(value == ''){
+					callback(new Error("包厢数不能为空"))
+				}else if(!Number.isInteger(parseInt(value)) || parseInt(value) <= 0){
+					callback(new Error("包厢数为大于0的正整数"))
+				}else{
+					callback();
+				}
+			}
+			const validatorVodVersion = (value, callback) => {
+				if(value == ''){
+					callback(new Error("系统版本号不能为空"))
+				}else if(value.length > 50){
+					callback(new Error("系统版本号不能超过50个字符"))
+				}else{
+					callback();
+				}
+			}
+			const validatorVodKtvId = (value, callback) => {
+				if(value == ''){
+					callback(new Error("vod场所ID不能为空"))
+				}else if(value.length > 50){
+					callback(new Error("vod场所ID不能超过50个字符"))
+				}else{
+					callback();
+				}
+			}
 			return{
 				columns:[],
 				loading:false,
@@ -67,10 +95,22 @@
 					implement_box_count:""
 				},
 				rule:{
-					vod_brand: { required: true, message:"请选择vode品牌"},
-					vod_version: { required: true, message:"系统版本号不能为空"},
-					vod_ktv_id: { required: true, message:"vod场所ID不能为空"},
-					implement_box_count: { required: true, message:"实施包厢数不能为空"},
+					vod_brand: { 
+						required: true, 
+						message:"请选择vode品牌",
+					},
+					vod_version: { 
+						required: true, 
+						validator: validatorVodVersion,
+					   },
+					vod_ktv_id: { 
+						required: true, 
+						validator: validatorVodKtvId,
+					},
+					implement_box_count: { 
+						required: true, 
+						validator: validatorBoxCount,
+					},
 				}
 			}
 		},
@@ -88,13 +128,13 @@
 			},
 			saveBtn(){
 				if(!checkForm(this.data, this.rule)) {
-					return;
-				}
+					return
+				};
 				var send_data = {
 					vod_ktv_id : this.data.vod_ktv_id,
 					vod_version : this.data.vod_version,
 					vod_brand : this.columns.filter(_ => _.brand == this.data.vod_brand)[0].id,
-					implement_box_count : this.data.implement_box_count,
+					implement_box_count : parseInt(this.data.implement_box_count),
 					ktv: this.ktvID
 				}
 				console.log(send_data, '提交信息')
@@ -109,7 +149,7 @@
 						console.log(res);
 					}).catch(err => {
 						this.loading = false;
-						Toast.fail("创建失败");
+						Toast.fail(err.data.message);
 					})
 				}else{
 					send_data.id = this.id;
@@ -122,7 +162,7 @@
 						console.log(res);
 					}).catch(err => {
 						this.loading = false;
-						Toast.fail("保存失败");
+						Toast.fail(err.data.message);
 					})
 				}
 			},

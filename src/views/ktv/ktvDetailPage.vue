@@ -21,7 +21,7 @@
 					<van-cell title="联系人" :value="data.contact"></van-cell>
 					<van-cell title="联系号码" :value="data.phone_number"></van-cell>
 					<van-cell title="场所编号" :value="data.serial_number"></van-cell>
-					<van-cell title="包厢数" :value="data.implement_box_count"/>
+					<!-- <van-cell title="包厢数" :value="data.implement_box_count"/> -->
 					<van-cell title="所在地" :value="address"></van-cell>
 		
 				</span>
@@ -198,8 +198,8 @@
 		height: 100%;
 		display: flex;
 		flex-direction: column;
-		padding-left:0.39rem;
-		padding-right: 0.39rem;
+		padding-left:0.26rem;
+		padding-right: 0.26rem;
 		padding-top: 0.26rem;
 		box-sizing: border-box;
 		background: #F6F6F6;

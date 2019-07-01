@@ -14,6 +14,9 @@ export default {
   mutations: {
      setKtvDate(state, data){
 			  state.ktvData = data;
+		 },
+		 editKtvData(state, data){
+			 state.ktvData[data.key] = data.value;
 		 }
   }
 }

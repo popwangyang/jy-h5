@@ -71,7 +71,9 @@
 				if(!checkForm(this.fromData, this.rule)) {
 					return;
 				}
-				const password = fromData.password1;
+				const password = this.fromData.password1;
+				const username = this.username;
+				const code = this.code;
 				this.loading = true;
 			 ConfirmToModifyTheNewPassword({ username, code, password }).then(res => {
 				 this.loading = false;
@@ -79,7 +81,7 @@
 				 this.$emit('event2')
 			 }).catch(err => {
 				 this.loading = false;
-				 Toast.fail(err.data.error);
+				 Toast.fail(err.data.message);
 			 })
 			}
 		}

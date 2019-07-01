@@ -125,6 +125,9 @@
 				}
 			},
 		},
+		watch:{
+			
+		},
 		methods:{
 			cancleBtn(){
 				this.$router.go(-1);
@@ -154,14 +157,13 @@
 					return;
 				}
 				this.loading = true;
-				var send_data = {
+				let send_data = {
 					name: this.data.name,
 					account: this.data.account,
 					password: this.data.password,
 					ktv: this.data.ktvList.reduce((cur, next) => { cur.push(next.id+""); return cur; }, []),
 					status: this.data.checked
 				}
-				console.log(send_data);
 				if(type == "edite"){
 					send_data.id = this.data.id;
 					editeMerchant(send_data).then(res => {
@@ -171,7 +173,7 @@
 							this.$router.go(-1)
 						}, 500)
 					}).catch(err => {
-						Toast.fail(err.data.error[0]);
+						Toast.fail(err.data.message);
 						this.loading = false;
 					})
 				}else{
@@ -182,7 +184,7 @@
 							this.$router.go(-1)
 						}, 500)
 					}).catch(err => {
-						Toast.fail(err.data.error[0]);
+						Toast.fail(err.data.message);
 						this.loading = false;
 					})
 				}
